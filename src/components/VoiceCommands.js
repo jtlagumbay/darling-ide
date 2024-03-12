@@ -48,8 +48,7 @@ const VoiceCommands = () => {
   }
 
   return (
-    <div>
-      <p>Microphone: {listening ? 'on' : 'off'}</p>
+    <div className='voice-cont'>
       <button onClick={() => setIsListening(prevState => !prevState)}>
         {listening ? 'Stop' : 'Start'}
       </button>

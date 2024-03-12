@@ -69,3 +69,56 @@ body {
   border-radius: 10px;
   padding: 10px 20px;
 }
+
+.ProseMirror {
+  max-height: 64.5vh;
+  overflow-y: auto;
+}
+
+.ProseMirror:focus-visible {
+  outline: 0;
+}
+
+
+/* Voice Commands */
+.voice-cont {
+  position: absolute;
+  right: 50px;
+  bottom: 50px;
+
+  /* circle */
+  height: 150px;
+  width: 150px;
+  border-radius: 150px;
+  background-color: white;
+
+  /* center things */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* dropshadow */
+  filter: drop-shadow(0 4px 12px #A17045);
+}
+
+
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--beige-3);
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--brown-2);
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #b88c56;
+}
