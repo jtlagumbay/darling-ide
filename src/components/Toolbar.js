@@ -7,7 +7,7 @@ export default function Toolbar() {
     return null;
   }
   return (
-    <>
+    <div className="container" style={{marginBottom: '10px'}}>
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
@@ -134,6 +134,6 @@ export default function Toolbar() {
       >
         purple
       </button>
-    </>
+    </div>
   );
 }

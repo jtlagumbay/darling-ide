@@ -61,3 +61,11 @@ body {
   flex-grow: 1;
   border-radius: 10px;
 }
+
+/* Text Editor */
+.ProseMirror, .container {
+  background-color: var(--beige-1);
+  color: var(--brown-3);
+  border-radius: 10px;
+  padding: 10px 20px;
+}
