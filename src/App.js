@@ -1,3 +1,4 @@
+import React from 'react';
 import './App.css';
 import Toolbar from './components/Toolbar';
 import TextEditor from './components/TextEditor';
