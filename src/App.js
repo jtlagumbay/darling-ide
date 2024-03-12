@@ -1,23 +1,17 @@
-import logo from './logo.svg';
 import './App.css';
+import Toolbar from './components/Toolbar';
+import TextEditor from './components/TextEditor';
+import Speech from './components/Speech';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Toolbar />
+
+      <div className='main'>
+        <TextEditor />
+        <Speech />
+      </div>
     </div>
   );
 }
