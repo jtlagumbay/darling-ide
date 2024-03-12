@@ -1,7 +1,9 @@
+import React from 'react';
 import './App.css';
 import Toolbar from './components/Toolbar';
 import TextEditor from './components/TextEditor';
 import Speech from './components/Speech';
+import VoiceCommands from './voice';
 
 function App() {
   return (
@@ -11,6 +13,7 @@ function App() {
       <div className='main'>
         <TextEditor />
         <Speech />
+        <VoiceCommands />
       </div>
     </div>
   );
