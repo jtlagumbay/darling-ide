@@ -1,10 +1,10 @@
 import React from 'react';
-import './App.css';
 import Toolbar from './components/Toolbar';
 import TextEditor from './components/TextEditor';
-import Speech from './components/Speech';
+import VoiceCommands from './components/VoiceCommands';
 
 import Header from './images/header.png';
+import './App.css';
 
 function App() {
   return (
@@ -30,7 +30,7 @@ function App() {
         <div className='content'>
           <Toolbar />
           <TextEditor />
-          <Speech />
+          <VoiceCommands />
         </div>
       </div>
     </div>
