@@ -45,16 +45,30 @@ body {
   height: -webkit-fill-available-space;
   color: var(--brown-3);
   margin-right: 10px;
+  flex-grow: 1;
 }
 
 .guide header {
   font-weight: 700;
   font-size: 25px;
   text-align: center;
+  margin-bottom: 16px;
 }
 
 .guide-content {
   text-align: justify;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 15px;
+  padding-left: 5px;
+}
+
+.note {
+  margin-top: 0px;
+}
+
+.guide-content::-webkit-scrollbar{
+  width: 10px;
 }
 
 .content {
