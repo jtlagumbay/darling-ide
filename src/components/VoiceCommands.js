@@ -3,35 +3,6 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import OnIcon from '@mui/icons-material/Mic';
 import OffIcon from '@mui/icons-material/MicOff';
 
-const commands = [
-  {
-    command: 'go back',
-    callback: () => window.history.back()
-  },
-  {
-    command: 'go forward',
-    callback: () => window.history.forward()
-  },
-  {
-    command: 'Please',
-    callback: ( { setIsListening }) => setIsListening(false),
-    isFuzzyMatch: true, // The spoken phrase can be not a perfect match
-    fuzzyMatchingThreshold: 50, // The spoken phrase can be not a perfect match
-    bestMatchOnly: true // Only the best match is returned
-  },
-  {
-    command: 'Honey',
-    callback: ({ setIsListening, resetTranscript }) => {
-      setIsListening(true);
-      resetTranscript();
-    },
-    isFuzzyMatch: true,
-    fuzzyMatchingThreshold: 50,
-    bestMatchOnly: true
-  },
-  // Add more commands as needed
-];
-
 const VoiceCommands = ({ setTranscript }) => {
   const [isListening, setIsListening] = useState(true);
   const {
@@ -39,14 +10,20 @@ const VoiceCommands = ({ setTranscript }) => {
     listening,
     resetTranscript,
     browserSupportsSpeechRecognition
-  } = useSpeechRecognition({ commands });
+  } = useSpeechRecognition();
 
   useEffect(() => {
     if (transcript.includes('please')) {
       setIsListening(false);
+      resetTranscript();
     }
 
-    setTranscript(transcript);
+    if(transcript.includes('honey')) {
+      setIsListening(true);
+    }
+    
+    setTranscript(transcript)
+    console.log(transcript)
   }, [transcript]);
 
   useEffect(() => {
@@ -64,7 +41,7 @@ const VoiceCommands = ({ setTranscript }) => {
   return (
     <div className='voice-cont'>
       <button onClick={() => setIsListening(prevState => !prevState)} className='mic-icon'>
-        {listening ?
+        {isListening ?
           <OnIcon fontSize='large' /> : 
           <OffIcon fontSize='large' />}
       </button>
