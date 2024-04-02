@@ -1,5 +1,7 @@
 import React, {useState, useEffect } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import OnIcon from '@mui/icons-material/Mic';
+import OffIcon from '@mui/icons-material/MicOff';
 
 const commands = [
   {
@@ -12,16 +14,26 @@ const commands = [
   },
   {
     command: 'Please',
-    callback: ( {resetTranscript }) => resetTranscript(),
-    isFuzzyMatch: false, // The spoken phrase must be a perfect match
-    fuzzyMatchingThreshold: 0, // The spoken phrase must be a perfect match
+    callback: ( { setIsListening }) => setIsListening(false),
+    isFuzzyMatch: true, // The spoken phrase can be not a perfect match
+    fuzzyMatchingThreshold: 50, // The spoken phrase can be not a perfect match
     bestMatchOnly: true // Only the best match is returned
+  },
+  {
+    command: 'Honey',
+    callback: ({ setIsListening, resetTranscript }) => {
+      setIsListening(true);
+      resetTranscript();
+    },
+    isFuzzyMatch: true,
+    fuzzyMatchingThreshold: 50,
+    bestMatchOnly: true
   },
   // Add more commands as needed
 ];
 
-const VoiceCommands = () => {
-  const [isListening, setIsListening] = useState(false);
+const VoiceCommands = ({ setTranscript }) => {
+  const [isListening, setIsListening] = useState(true);
   const {
     transcript,
     listening,
@@ -33,6 +45,8 @@ const VoiceCommands = () => {
     if (transcript.includes('please')) {
       setIsListening(false);
     }
+
+    setTranscript(transcript);
   }, [transcript]);
 
   useEffect(() => {
@@ -49,11 +63,14 @@ const VoiceCommands = () => {
 
   return (
     <div className='voice-cont'>
-      <button onClick={() => setIsListening(prevState => !prevState)}>
-        {listening ? 'Stop' : 'Start'}
+      <button onClick={() => setIsListening(prevState => !prevState)} className='mic-icon'>
+        {listening ?
+          <OnIcon fontSize='large' /> : 
+          <OffIcon fontSize='large' />}
       </button>
-      <button onClick={resetTranscript}>Reset</button>
-      <p>{transcript}</p>
+
+      {/* <button onClick={resetTranscript}>Reset</button> */}
+      {/* <p>{transcript}</p> */}
     </div>
   );
 };

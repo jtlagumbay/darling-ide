@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Toolbar from './components/Toolbar';
 import TextEditor from './components/TextEditor';
 import VoiceCommands from './components/VoiceCommands';
@@ -7,6 +7,8 @@ import Header from './images/header.png';
 import './App.css';
 
 function App() {
+  const [transcript, setTranscript] = useState('');
+
   return (
     <div className="App">
       {/* header */}
@@ -21,16 +23,16 @@ function App() {
 
           {/* guide content */}
           <div className='guide-content'>
-            <p>Note: Always say “please” at the end of the voiced instruction because it serves as the <text style={{fontWeight: 'bold'}}>ENTER</text> key</p>
-            <p>When opening a file, you need to say, <text style={{fontWeight: 'bold'}}>“Honey, open the folder, please”</text></p>
+            <p>Note: Always say “please” at the end of the voiced instruction because it serves as the <strong>ENTER</strong> key</p>
+            <p>When opening a file, you need to say, <strong>“Honey, open the folder, please”</strong></p>
           </div>
         </div>
 
         {/* content */}
         <div className='content'>
           <Toolbar />
-          <TextEditor />
-          <VoiceCommands />
+          <TextEditor transcript={transcript} />
+          <VoiceCommands setTranscript={setTranscript} />
         </div>
       </div>
     </div>

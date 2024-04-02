@@ -71,7 +71,7 @@ body {
 }
 
 .ProseMirror {
-  max-height: 64.5vh;
+  height: 64.5vh;
   overflow-y: auto;
 }
 
@@ -99,6 +99,18 @@ body {
 
   /* dropshadow */
   filter: drop-shadow(0 4px 12px #A17045);
+}
+
+.mic-icon {
+  padding: 20px;
+  border-radius: 40px;
+  border: 0.5px solid var(--brown-3);
+  cursor: pointer;
+  background-color: var(--beige-1);
+}
+
+.mic-icon:hover {
+  background-color: var(--beige-2);
 }
 
 
