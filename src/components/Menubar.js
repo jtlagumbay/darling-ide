@@ -15,6 +15,15 @@ export default function Menubar() {
   const { editor } = useCurrentEditor();
   const [zoomLevel, setZoomLevel] = useState(100); // Initial zoom level
 
+  /** Undo Redo Functionalities **/
+  const handleUndo = () => {
+    editor.commands.undo();
+  };
+
+  const handleRedo = () => {
+    editor.commands.redo();
+  };
+
   /** Cut Copy Paste Functionalities **/
   const handleCopy = async () => {
     try {
@@ -90,32 +99,32 @@ export default function Menubar() {
         <span className="menubar-button-label">Save As</span>
       </button>
       <div className="vertical-division"/>
-      <button className="menubar-button">
+      <button id="MENU-UNDO" className="menubar-button">
         <UndoIcon className="menubar-button-icon"/>
-        <span className="menubar-button-label">Undo</span>
+        <span className="menubar-button-label" onClick={handleUndo}>Undo</span>
       </button>
-      <button className="menubar-button">
+      <button id="MENU-REDO" className="menubar-button">
         <RedoIcon className="menubar-button-icon"/>
-        <span className="menubar-button-label">Redo</span>
+        <span className="menubar-button-label" onClick={handleRedo}>Redo</span>
       </button>
-      <button className="menubar-button" onClick={handleCut}>
+      <button id="MENU-CUT" className="menubar-button" onClick={handleCut}>
         <ContentCutIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Cut</span>
       </button>
-      <button className="menubar-button" onClick={handleCopy}>
+      <button id="MENU-COPY" className="menubar-button" onClick={handleCopy}>
         <ContentCopyIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Copy</span>
       </button>
-      <button className="menubar-button" onClick={handlePaste}>
+      <button id="MENU-PASTE" className="menubar-button" onClick={handlePaste}>
         <ContentPasteIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Paste</span>
       </button>
       <div className="vertical-division"/>
-      <button className="menubar-button" onClick={handleZoomIn}>
+      <button id="MENU-ZOOM-IN" className="menubar-button" onClick={handleZoomIn}>
         <ZoomInIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Zoom in</span>
       </button>
-      <button className="menubar-button" onClick={handleZoomOut}>
+      <button id="MENU-ZOOM-OUT" className="menubar-button" onClick={handleZoomOut}>
         <ZoomOutIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Zoom out</span>
       </button>
