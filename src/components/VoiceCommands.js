@@ -29,12 +29,8 @@ const VoiceCommands = ({ setTranscript }) => {
   }, [transcript]);
 
   useEffect(() => {
-    if (isListening) {
       SpeechRecognition.startListening({ autoStart: true, continuous: true });
-    } else {
-      SpeechRecognition.stopListening();
-    }
-  }, [isListening]);
+  }, [listening]);
 
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
