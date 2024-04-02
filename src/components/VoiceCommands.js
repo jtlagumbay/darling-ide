@@ -3,8 +3,24 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import OnIcon from '@mui/icons-material/Mic';
 import OffIcon from '@mui/icons-material/MicOff';
 
-const VoiceCommands = ({ setTranscript }) => {
-  const [isListening, setIsListening] = useState(true);
+const commands = [
+  {
+    command: 'copy',
+    callback: () => {
+      document.getElementById('MENU-COPY').click();
+    }
+  },
+  {
+    command: 'paste',
+    callback: () => {
+      document.getElementById('MENU-PASTE').click();
+    }
+  }
+]
+
+const VoiceCommands = () => {
+  const [isListening, setIsListening] = useState(false);
+  const [script, setScript] = useState('');
   const {
     transcript,
     listening,
@@ -15,7 +31,7 @@ const VoiceCommands = ({ setTranscript }) => {
   useEffect(() => {
     if (transcript.includes('please')) {
       setIsListening(false);
-      setTranscript(transcript.replace('please', ''));
+      setScript(transcript.replace('please', '').toLowerCase());
       resetTranscript();
     }
 
@@ -25,10 +41,21 @@ const VoiceCommands = ({ setTranscript }) => {
       resetTranscript();
     }
   
-    // console.log(transcript)
+    console.log(transcript)
   }, [transcript]);
 
   useEffect(() => {
+    commands.forEach(({ command, callback }) => {
+      if (script.toLowerCase().includes(command)) {
+        callback();
+        setScript('');
+      }
+    });
+  }, [script]);
+
+  useEffect(() => {
+    console.log(listening)
+    if(!listening)
       SpeechRecognition.startListening({ autoStart: true, continuous: true });
   }, [listening]);
 

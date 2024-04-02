@@ -7,11 +7,6 @@ import Header from './images/header.png';
 import './App.css';
 
 function App() {
-  const [transcript, setTranscript] = useState('');
-
-  useEffect(() => {
-    console.log("off: " + transcript);
-  }, [transcript])
 
   return (
     <div className="App">
@@ -35,8 +30,8 @@ function App() {
         {/* content */}
         <div className='content'>
           <Toolbar />
-          <TextEditor transcript={transcript} />
-          <VoiceCommands setTranscript={setTranscript} />
+          <TextEditor />
+          <VoiceCommands />
         </div>
       </div>
     </div>
