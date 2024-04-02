@@ -4,6 +4,7 @@ import ItalicIcon from '@mui/icons-material/FormatItalic';
 import StrikethroughIcon from '@mui/icons-material/FormatStrikethrough';
 import CodeIcon from '@mui/icons-material/Code';
 import ListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import Menubar from "./Menubar";
 
 export default function Toolbar() {
   const { editor } = useCurrentEditor();
@@ -12,6 +13,8 @@ export default function Toolbar() {
     return null;
   }
   return (
+  <div>
+    <Menubar />
     <div className="container" style={{marginBottom: '10px'}}>
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
@@ -139,6 +142,7 @@ export default function Toolbar() {
       >
         purple
       </button>
-    </div>
+      </div>
+  </div>
   );
 }

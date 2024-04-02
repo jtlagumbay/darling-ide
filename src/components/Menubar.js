@@ -8,14 +8,51 @@ import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
+import { useCurrentEditor } from "@tiptap/react";
 import React, { useState, useEffect } from 'react';
 
-export default function Menubar({ transcript, cursorPosition }) {
-  /** File Functionalities **/ 
-
-  /** Zoom Functionalities **/ 
+export default function Menubar() {
+  const { editor } = useCurrentEditor();
   const [zoomLevel, setZoomLevel] = useState(100); // Initial zoom level
 
+  /** Cut Copy Paste Functionalities **/
+  const handleCopy = async () => {
+    try {
+      const { from, to } = editor.state.selection;
+      const text = editor.state.doc.textBetween(from, to);
+      await navigator.clipboard.writeText(text)
+    } catch (error) {
+      console.error('Failed to perform copy operation:', error);
+    }
+  };
+
+  const handlePaste = async (event) => {
+    event.preventDefault();
+    try {
+      const text = await navigator.clipboard.readText();
+      console.log(text)
+      editor.chain().focus().insertContent(text).run()
+    } catch (error) {
+      console.error('Failed to read clipboard:', error);
+    }
+  };
+
+  const handleCut = async () => {
+    try {
+      const { from, to } = editor.state.selection;
+      const text = editor.state.doc.textBetween(from, to);
+      
+      // Remove the selected text
+      editor.chain().focus().deleteSelection().run();
+      
+      // Copy the selected text to the clipboard
+      await navigator.clipboard.writeText(text);
+    } catch (error) {
+      console.error('Failed to perform cut operation:', error);
+    }
+  };
+
+  /** Zoom Functionalities **/ 
   const handleZoomIn = () => {
     setZoomLevel(prev => prev+=5)
     console.log("in "+zoomLevel)
@@ -30,6 +67,10 @@ export default function Menubar({ transcript, cursorPosition }) {
     document.body.style.zoom = zoomLevel+'%';
   }, [zoomLevel])
 
+
+  if (!editor) {
+    return null;
+  }
   return (
     <div className="container menubar-container" >
       <button className="menubar-button">
@@ -57,15 +98,15 @@ export default function Menubar({ transcript, cursorPosition }) {
         <RedoIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Redo</span>
       </button>
-      <button className="menubar-button">
+      <button className="menubar-button" onClick={handleCut}>
         <ContentCutIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Cut</span>
       </button>
-      <button className="menubar-button">
+      <button className="menubar-button" onClick={handleCopy}>
         <ContentCopyIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Copy</span>
       </button>
-      <button className="menubar-button">
+      <button className="menubar-button" onClick={handlePaste}>
         <ContentPasteIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Paste</span>
       </button>

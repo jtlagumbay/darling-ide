@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Toolbar from './components/Toolbar';
 import TextEditor from './components/TextEditor';
 import VoiceCommands from './components/VoiceCommands';
-
+import Menubar from './components/Menubar';
 import Header from './images/header.png';
 import './App.css';
 
