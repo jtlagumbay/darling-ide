@@ -20,6 +20,7 @@ const VoiceCommands = ({ setTranscript }) => {
 
     if(transcript.includes('honey')) {
       setIsListening(true);
+      resetTranscript();
     }
     
     setTranscript(transcript)
