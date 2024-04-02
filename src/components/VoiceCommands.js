@@ -15,16 +15,17 @@ const VoiceCommands = ({ setTranscript }) => {
   useEffect(() => {
     if (transcript.includes('please')) {
       setIsListening(false);
+      setTranscript(transcript.replace('please', ''));
       resetTranscript();
     }
+
 
     if(transcript.includes('honey')) {
       setIsListening(true);
       resetTranscript();
     }
-    
-    setTranscript(transcript)
-    console.log(transcript)
+  
+    // console.log(transcript)
   }, [transcript]);
 
   useEffect(() => {

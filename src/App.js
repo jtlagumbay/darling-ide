@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Toolbar from './components/Toolbar';
 import TextEditor from './components/TextEditor';
 import VoiceCommands from './components/VoiceCommands';
@@ -8,6 +8,10 @@ import './App.css';
 
 function App() {
   const [transcript, setTranscript] = useState('');
+
+  useEffect(() => {
+    console.log("off: " + transcript);
+  }, [transcript])
 
   return (
     <div className="App">
