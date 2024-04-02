@@ -57,7 +57,7 @@ export default function Menubar() {
   };
 
   const handleSave = () => {
-    
+    handleSaveAs()
   }
 
   /** Save/As Functionalities **/
@@ -169,7 +169,7 @@ export default function Menubar() {
   }
   return (
     <div className="container menubar-container" >
-      <button className="menubar-button" onClick = {handleNewFile}>
+      <button id="MENU-NEW" className="menubar-button" onClick = {handleNewFile}>
         <NoteAddIcon />
         <span className="menubar-button-label">New</span>
       </button>
@@ -179,15 +179,15 @@ export default function Menubar() {
         style={{ display: 'none' }}
         onChange={openFileExplorer}
       />
-      <button className="menubar-button" onClick={handleOpenFile}>
+      <button id="MENU-OPEN" className="menubar-button" onClick={handleOpenFile}>
         <NoteAddIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Open</span>
       </button>
-      <button className="menubar-button" disabled={!unsavedChanges}>
+      <button id="MENU-SAVE" className="menubar-button" onClick={handleSave} disabled={!unsavedChanges}>
         <SaveIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Save</span>
       </button>
-      <button className="menubar-button" onClick={handleSaveAs} disabled={!unsavedChanges}>
+      <button id="MENU-SAVE-AS" className="menubar-button" onClick={handleSaveAs} disabled={!unsavedChanges}>
         <SaveAsIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Save As</span>
       </button>
