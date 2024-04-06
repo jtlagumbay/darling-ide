@@ -2,21 +2,7 @@ import React, {useState, useEffect } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import OnIcon from '@mui/icons-material/Mic';
 import OffIcon from '@mui/icons-material/MicOff';
-
-const commands = [
-  {
-    command: 'copy',
-    callback: () => {
-      document.getElementById('MENU-COPY').click();
-    }
-  },
-  {
-    command: 'paste',
-    callback: () => {
-      document.getElementById('MENU-PASTE').click();
-    }
-  }
-]
+import { commands } from './commands';
 
 const VoiceCommands = () => {
   const [isListening, setIsListening] = useState(false);
