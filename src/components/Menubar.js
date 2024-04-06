@@ -8,7 +8,7 @@ import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
-import { useCurrentEditor } from "@tiptap/react";
+import { isTextSelection, useCurrentEditor } from "@tiptap/react";
 import React, { useState, useEffect, useRef } from 'react';
 
 export default function Menubar() {
@@ -137,6 +137,10 @@ export default function Menubar() {
     }
   };
 
+  const handleSelectAll = () => {
+    editor.chain().focus().selectAll().run();
+  };
+
   /** Zoom Functionalities **/ 
   const handleZoomIn = () => {
     setZoomLevel(prev => prev+=5)
@@ -221,6 +225,7 @@ export default function Menubar() {
         <ZoomOutIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Zoom out</span>
       </button>
+      <button id="MENU-SELECT-ALL" onClick={handleSelectAll} hidden />
      </div>
   )
 }

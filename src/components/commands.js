@@ -26,5 +26,5 @@ export const commands = [
     command('zoom out', 'MENU-ZOOM-OUT'), 
     
     // extra commands
-    // command('select all', 'MENU-SELECT-ALL'),
+    command('select all', 'MENU-SELECT-ALL'),
 ]
