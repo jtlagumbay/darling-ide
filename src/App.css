@@ -134,3 +134,42 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background-color: #b88c56;
 }
+
+.menubar-button{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: transparent;
+  border: none;
+  margin:5px;
+  color: var(--brown-3);
+}
+
+.menubar-button:disabled{
+  color: var(--brown-3-fade);
+}
+
+.menubar-button:hover{
+  filter: brightness(0.1); 
+}
+
+.menubar-container{
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  margin-bottom: 10px;
+}
+.menubar-button-label {
+  padding-top: 3px;
+  font-size: 1em;
+}
+
+
+
+.vertical-division {
+  border-left: 3px solid var(--brown-3);
+  height: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+}

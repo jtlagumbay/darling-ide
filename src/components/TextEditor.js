@@ -11,6 +11,7 @@ import TextStyle from "@tiptap/extension-text-style";
 
 import StarterKit from "@tiptap/starter-kit";
 import Toolbar from "./Toolbar";
+import Menubar from "./Menubar";
 
 export default function TextEditor({ transcript }) {
   const extensions = [
@@ -31,7 +32,7 @@ export default function TextEditor({ transcript }) {
   return (
     <div>
       <EditorProvider
-        slotBefore={ <Toolbar /> }
+        slotBefore={<Toolbar />}
         extensions={ extensions }
         content={ transcript }
       ></EditorProvider>
