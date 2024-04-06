@@ -42,7 +42,7 @@ body {
   border-radius: 10px;
 
   width: 20%;
-  height: -webkit-fill-available-space;
+  /* height: -webkit-fill-available-space; */
   color: var(--brown-3);
   margin-right: 10px;
   flex-grow: 1;
@@ -56,8 +56,9 @@ body {
 }
 
 .guide-content {
+  flex: 1;
   text-align: justify;
-  max-height: 380px;
+  max-height: 80vh;
   overflow-y: auto;
   padding-right: 15px;
   padding-left: 5px;
