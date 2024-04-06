@@ -5,57 +5,59 @@ import OffIcon from '@mui/icons-material/MicOff';
 
 const commands = [
   {
-    command: 'go back',
-    callback: () => window.history.back()
+    command: 'copy',
+    callback: () => {
+      document.getElementById('MENU-COPY').click();
+    }
   },
   {
-    command: 'go forward',
-    callback: () => window.history.forward()
-  },
-  {
-    command: 'Please',
-    callback: ( { setIsListening }) => setIsListening(false),
-    isFuzzyMatch: true, // The spoken phrase can be not a perfect match
-    fuzzyMatchingThreshold: 50, // The spoken phrase can be not a perfect match
-    bestMatchOnly: true // Only the best match is returned
-  },
-  {
-    command: 'Honey',
-    callback: ({ setIsListening, resetTranscript }) => {
-      setIsListening(true);
-      resetTranscript();
-    },
-    isFuzzyMatch: true,
-    fuzzyMatchingThreshold: 50,
-    bestMatchOnly: true
-  },
-  // Add more commands as needed
-];
+    command: 'paste',
+    callback: () => {
+      document.getElementById('MENU-PASTE').click();
+    }
+  }
+]
 
-const VoiceCommands = ({ setTranscript }) => {
-  const [isListening, setIsListening] = useState(true);
+const VoiceCommands = () => {
+  const [isListening, setIsListening] = useState(false);
+  const [script, setScript] = useState('');
   const {
     transcript,
     listening,
     resetTranscript,
     browserSupportsSpeechRecognition
-  } = useSpeechRecognition({ commands });
+  } = useSpeechRecognition();
 
   useEffect(() => {
     if (transcript.includes('please')) {
       setIsListening(false);
+      setScript(transcript.replace('please', '').toLowerCase());
+      resetTranscript();
     }
 
-    setTranscript(transcript);
+
+    if(transcript.includes('honey')) {
+      setIsListening(true);
+      resetTranscript();
+    }
+  
+    console.log(transcript)
   }, [transcript]);
 
   useEffect(() => {
-    if (isListening) {
+    commands.forEach(({ command, callback }) => {
+      if (script.toLowerCase().includes(command)) {
+        callback();
+        setScript('');
+      }
+    });
+  }, [script]);
+
+  useEffect(() => {
+    console.log(listening)
+    if(!listening)
       SpeechRecognition.startListening({ autoStart: true, continuous: true });
-    } else {
-      SpeechRecognition.stopListening();
-    }
-  }, [isListening]);
+  }, [listening]);
 
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
@@ -64,7 +66,7 @@ const VoiceCommands = ({ setTranscript }) => {
   return (
     <div className='voice-cont'>
       <button onClick={() => setIsListening(prevState => !prevState)} className='mic-icon'>
-        {listening ?
+        {isListening ?
           <OnIcon fontSize='large' /> : 
           <OffIcon fontSize='large' />}
       </button>

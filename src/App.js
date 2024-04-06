@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Toolbar from './components/Toolbar';
 import TextEditor from './components/TextEditor';
 import VoiceCommands from './components/VoiceCommands';
@@ -7,7 +7,6 @@ import Header from './images/header.png';
 import './App.css';
 
 function App() {
-  const [transcript, setTranscript] = useState('');
 
   return (
     <div className="App">
@@ -41,8 +40,8 @@ function App() {
         {/* content */}
         <div className='content'>
           <Toolbar />
-          <TextEditor transcript={transcript} />
-          <VoiceCommands setTranscript={setTranscript} />
+          <TextEditor />
+          <VoiceCommands />
         </div>
       </div>
     </div>
