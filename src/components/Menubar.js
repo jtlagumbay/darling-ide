@@ -10,13 +10,13 @@ import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import { useCurrentEditor } from "@tiptap/react";
 import React, { useState, useEffect, useRef } from 'react';
+import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem } from '../utils';
 
 export default function Menubar() {
   const { editor } = useCurrentEditor();
   const [zoomLevel, setZoomLevel] = useState(100); // Initial zoom level
   const [unsavedChanges, setUnsavedChanges] = useState(false);
   const fileInputRef = useRef(null);
-
   /** New/Open File Functionalities **/
   const handleNewFile = (event) => {
     if (!unsavedChanges) {
@@ -41,10 +41,14 @@ export default function Menubar() {
       }
     } 
     fileInputRef.current.click()
+    
   }
   const openFileExplorer = (event) => {
     const file = event.target.files[0];
     if (!file) return;
+    else {
+      setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME, file["name"])
+    }
 
     const reader = new FileReader();
 
@@ -56,37 +60,31 @@ export default function Menubar() {
     reader.readAsText(file);
   };
 
+  /** Save/As Functionalities **/
+
   const handleSave = () => {
-    handleSaveAs()
+    var fileName = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME)
+    saveFile(fileName)
   }
 
-  /** Save/As Functionalities **/
   const handleSaveAs = () => {
-    // Get the HTML content of the editor
-    const content = editor.getText();
-    console.log(content)
-    // Create a Blob object containing the HTML content
-    const blob = new Blob([content], { type: 'text/html' });
+    saveFile("untitled.txt")
+  }
 
-    // Create a temporary anchor element to trigger the download
+  const saveFile = (fileName) => {
+    const content = editor.getText();
+    const blob = new Blob([content], { type: 'text/html' });
     const anchor = document.createElement('a');
     anchor.href = URL.createObjectURL(blob);
-    anchor.download = 'document.txt';
-    
-     // Listen for the download start event
-    anchor.addEventListener('click', () => {
-      // Update unsavedChanges only if the download starts
-      setUnsavedChanges(false);
-    });
+    anchor.download = fileName;
     
     // Programmatically click the anchor element to start the download
     anchor.click();
     
-    // Clean up by revoking the object URL
-    URL.revokeObjectURL(anchor.href);
-
     // reset unsaved changes
     setUnsavedChanges(false)
+    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME, fileName)
+    console.log(getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME))
   };
 
   /** Undo Redo Functionalities **/

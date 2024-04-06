@@ -12,6 +12,7 @@ import TextStyle from "@tiptap/extension-text-style";
 import StarterKit from "@tiptap/starter-kit";
 import Toolbar from "./Toolbar";
 import Menubar from "./Menubar";
+import { LOCAL_STORAGE_KEYS, getLocalStorageItem } from "../utils";
 
 export default function TextEditor({ transcript }) {
   const extensions = [

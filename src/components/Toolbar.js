@@ -5,13 +5,26 @@ import StrikethroughIcon from '@mui/icons-material/FormatStrikethrough';
 import CodeIcon from '@mui/icons-material/Code';
 import ListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import Menubar from "./Menubar";
+import {useState, useEffect} from "react"
+import { LOCAL_STORAGE_KEYS, getLocalStorageItem } from "../utils";
 
 export default function Toolbar() {
   const { editor } = useCurrentEditor();
+  const [fileName, setFileName] = useState("Untitled.txt");
+
+  useEffect(() => {
+    const storedFileName = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME);
+    if (storedFileName) {
+      setFileName(storedFileName);
+    }
+  }, [getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME)]);
 
   if (!editor) {
     return null;
   }
+
+
+
   return (
   <div>
     <Menubar />
@@ -143,6 +156,7 @@ export default function Toolbar() {
         purple
       </button>
       </div>
+    <h1>{fileName ?? "Untitled.txt"}</h1>
   </div>
   );
 }
