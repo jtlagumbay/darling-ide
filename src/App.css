@@ -40,12 +40,11 @@ body {
   background-color: var(--beige-1);
   padding: 20px;
   border-radius: 10px;
-
   width: 20%;
-  /* height: -webkit-fill-available-space; */
   color: var(--brown-3);
   margin-right: 10px;
-  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .guide header {
@@ -56,12 +55,12 @@ body {
 }
 
 .guide-content {
-  flex: 1;
+  max-height: 95vh;
   text-align: justify;
-  max-height: 80vh;
   overflow-y: auto;
   padding-right: 15px;
   padding-left: 5px;
+  min-height: 0;
 }
 
 .note {
@@ -70,6 +69,17 @@ body {
 
 .guide-content::-webkit-scrollbar{
   width: 10px;
+}
+
+.guide-content::-webkit-scrollbar-track {
+  background-color: var(--beige-3);
+  border-radius: 20px;
+}
+
+.guide-content::-webkit-scrollbar-thumb {
+  background-color: var(--brown-2);
+  border-radius: 20px;
+  cursor: pointer;
 }
 
 .content {
@@ -86,7 +96,7 @@ body {
 }
 
 .ProseMirror {
-  height: 64.5vh;
+  height: 80vh;
   overflow-y: auto;
 }
 
