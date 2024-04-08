@@ -154,11 +154,25 @@ export default function Menubar() {
   };
 
   const handleDelete = () => {
-    editor.chain().focus().clearContent().run();
+    const { from, to } = editor.state.selection;
+
+    if(from === to) {
+      editor.chain().focus().setTextSelection({from: from - 1, to: to}).run();
+    }
+
+    editor.chain().focus().deleteSelection().run();
   };
 
+  const handleDeleteAll = () => {
+    editor.chain().focus().clearContent().run();
+  }
+
   const handleEnter = () => {
-    editor.commands.newlineInCode();
+    editor.chain().focus().enter().run();
+  }
+
+  const handleDeselect = () => {
+    editor.chain().focus().selectTextblockEnd().run();
   }
 
   useEffect(() => {
@@ -235,7 +249,9 @@ export default function Menubar() {
         <span className="menubar-button-label">Zoom out</span>
       </button>
       <button id="MENU-SELECT-ALL" onClick={handleSelectAll} hidden />
+      <button id="MENU-DESELECT" onClick={handleDeselect} hidden />
       <button id="MENU-DELETE" onClick={handleDelete} hidden />
+      <button id="MENU-DELETE-ALL" onClick={handleDeleteAll} hidden />
       <button id="MENU-ENTER" onClick={handleEnter} hidden />
      </div>
   )

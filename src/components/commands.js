@@ -29,6 +29,8 @@ export const commands = [
     
     // extra commands
     command('select all', 'MENU-SELECT-ALL'),
+    command('deselect', 'MENU-DESELECT'),
     command('enter', 'MENU-ENTER'),
-    command('delete all', 'MENU-DELETE'),
+    command('delete', 'MENU-DELETE'),
+    command('delete all', 'MENU-DELETE-ALL'),
 ]
