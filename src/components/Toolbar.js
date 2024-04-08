@@ -15,7 +15,12 @@ export default function Toolbar() {
   useEffect(() => {
     const storedFileName = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME);
     if (storedFileName) {
-      setFileName(storedFileName);
+      let fileExtension = storedFileName.split('.').pop();
+      let fileNameWithoutExtension = storedFileName.substring(0, storedFileName.length - fileExtension.length - 1);
+      let truncatedFileName = fileNameWithoutExtension.length > 10 
+        ? fileNameWithoutExtension.substring(0, 5) + '...' + fileNameWithoutExtension.slice(-3) + '.' + fileExtension
+        : storedFileName;
+      setFileName(truncatedFileName);
     } else {
       setFileName("Untitled.txt")
     }
