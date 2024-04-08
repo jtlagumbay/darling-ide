@@ -11,8 +11,8 @@ import TextStyle from "@tiptap/extension-text-style";
 
 import StarterKit from "@tiptap/starter-kit";
 import Toolbar from "./Toolbar";
-import Menubar from "./Menubar";
-import { LOCAL_STORAGE_KEYS, getLocalStorageItem } from "../utils";
+import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem } from "../utils";
+import { useEffect } from "react";
 
 export default function TextEditor({ transcript }) {
   const extensions = [
@@ -30,12 +30,19 @@ export default function TextEditor({ transcript }) {
     }),
   ];
 
+  const onUpdate = ({ editor }) => {
+    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, editor.getHTML())
+  }
+
+  useEffect(()=>{console.log(transcript)}, [transcript])
+  
   return (
     <div>
       <EditorProvider
         slotBefore={<Toolbar />}
         extensions={ extensions }
-        content={ transcript }
+        content={getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)}
+        onUpdate={editor => onUpdate(editor)}
       ></EditorProvider>
     </div>
   );

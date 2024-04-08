@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Toolbar from './components/Toolbar';
 import TextEditor from './components/TextEditor';
 import VoiceCommands from './components/VoiceCommands';
 import Menubar from './components/Menubar';
 import Header from './images/header.png';
 import './App.css';
+import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem } from './utils';
 
 function App() {
   const [transcript, setTranscript] = useState('');
+  useEffect(() => {
+    const storedFileContent = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT);
+    if (storedFileContent) {
+      setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT, storedFileContent)
+    }
+  }, []);
+  
 
   return (
     <div className="App">

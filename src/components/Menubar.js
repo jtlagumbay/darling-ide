@@ -10,13 +10,14 @@ import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import { useCurrentEditor } from "@tiptap/react";
 import React, { useState, useEffect, useRef } from 'react';
-import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem } from '../utils';
+import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem, removeLocalStorageItem } from '../utils';
 
 export default function Menubar() {
   const { editor } = useCurrentEditor();
   const [zoomLevel, setZoomLevel] = useState(100); // Initial zoom level
   const [unsavedChanges, setUnsavedChanges] = useState(false);
   const fileInputRef = useRef(null);
+
   /** New/Open File Functionalities **/
   const handleNewFile = (event) => {
     if (!unsavedChanges) {
@@ -31,6 +32,9 @@ export default function Menubar() {
         setUnsavedChanges(false);
       } 
     }
+    removeLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)
+    removeLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT)
+    removeLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME)
   }
 
   const handleOpenFile = () => {
@@ -55,6 +59,7 @@ export default function Menubar() {
     reader.onload = () => {
       const fileContent = reader.result;
       editor.commands.setContent(fileContent);
+      setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, fileContent)
     };
 
     reader.readAsText(file);
@@ -84,17 +89,15 @@ export default function Menubar() {
     // reset unsaved changes
     setUnsavedChanges(false)
     setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME, fileName)
-    console.log(getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME))
+    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT, content)
   };
 
   /** Undo Redo Functionalities **/
   const handleUndo = () => {
-    console.log("undo")
     editor.commands.undo();
   };
 
   const handleRedo = () => {
-    console.log("redo")
     editor.commands.redo();
   };
 
@@ -138,12 +141,10 @@ export default function Menubar() {
   /** Zoom Functionalities **/ 
   const handleZoomIn = () => {
     setZoomLevel(prev => prev+=5)
-    console.log("in "+zoomLevel)
   };
   
   const handleZoomOut = () => {
     setZoomLevel(prev => prev-=5)
-    console.log("out "+zoomLevel)
   };
 
   useEffect(() => {
@@ -156,9 +157,15 @@ export default function Menubar() {
   };
 
   // Attach handleChange to editor's change event
-  editor.on('transaction', () => {
-    handleChange();
-  });
+  useEffect(() => {
+    const current = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)
+    const initial = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT)
+    if (current !== initial) {
+        setUnsavedChanges(true);
+    } else {
+      setUnsavedChanges(false);
+    }
+  }, [getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT), getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT)]);
 
 
 

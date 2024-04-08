@@ -16,14 +16,14 @@ export default function Toolbar() {
     const storedFileName = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME);
     if (storedFileName) {
       setFileName(storedFileName);
+    } else {
+      setFileName("Untitled.txt")
     }
   }, [getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME)]);
 
   if (!editor) {
     return null;
   }
-
-
 
   return (
   <div>
