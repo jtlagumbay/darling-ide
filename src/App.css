@@ -173,3 +173,33 @@ body {
   margin-left: 10px;
   margin-right: 10px;
 }
+
+.tab-container{
+  display: flex;
+  flex-direction: row;
+  margin:10px;
+  margin-right: 20px;
+  align-items: center;
+  height: 50px;
+ 
+}
+
+.tab-close-cont {
+  display: flex;
+  align-items: center;
+   height: 50px;
+}
+
+.tab-name-cont{
+  padding:5%;
+}
+
+.tabcont-container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.tab-name-input-readonly{
+  background-color: transparent;
+}

@@ -16,6 +16,7 @@ export default function Menubar() {
   const { editor } = useCurrentEditor();
   const [zoomLevel, setZoomLevel] = useState(100); // Initial zoom level
   const [unsavedChanges, setUnsavedChanges] = useState(false);
+  const [enableSaveAs, setEnableSaveAs] = useState(false);
   const fileInputRef = useRef(null);
 
   /** New/Open File Functionalities **/
@@ -35,6 +36,7 @@ export default function Menubar() {
     removeLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)
     removeLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT)
     removeLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME)
+    setEnableSaveAs(true)
   }
 
   const handleOpenFile = () => {
@@ -69,7 +71,7 @@ export default function Menubar() {
 
   const handleSave = () => {
     var fileName = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME)
-    saveFile(fileName)
+    saveFile(fileName ?? "untitled.txt")
   }
 
   const handleSaveAs = () => {
@@ -90,6 +92,8 @@ export default function Menubar() {
     setUnsavedChanges(false)
     setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME, fileName)
     setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT, content)
+    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, content)
+    setEnableSaveAs(true)
   };
 
   /** Undo Redo Functionalities **/
@@ -151,10 +155,15 @@ export default function Menubar() {
     document.body.style.zoom = zoomLevel+'%';
   }, [zoomLevel])
 
-  const handleChange = () => {
-    // Set unsavedChanges to true when changes are made
-    setUnsavedChanges(true);
-  };
+  useEffect(() => {
+    var fileName = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME)
+    if (fileName) {
+      setEnableSaveAs(true)
+    } else {
+      setEnableSaveAs(false)
+    }
+  }, [])
+
 
   // Attach handleChange to editor's change event
   useEffect(() => {
@@ -192,7 +201,7 @@ export default function Menubar() {
         <SaveIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Save</span>
       </button>
-      <button id="MENU-SAVE-AS" className="menubar-button" onClick={handleSaveAs} disabled={!unsavedChanges}>
+      <button id="MENU-SAVE-AS" className="menubar-button" onClick={handleSaveAs} disabled={!enableSaveAs}>
         <SaveAsIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Save As</span>
       </button>
