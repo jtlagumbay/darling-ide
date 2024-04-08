@@ -1,3 +1,5 @@
+import { useCurrentEditor } from "@tiptap/react";
+
 const command = (name, id) => {
     return {
         command: name,
@@ -26,5 +28,9 @@ export const commands = [
     command('zoom out', 'MENU-ZOOM-OUT'), 
     
     // extra commands
-    // command('select all', 'MENU-SELECT-ALL'),
+    command('select all', 'MENU-SELECT-ALL'),
+    command('deselect', 'MENU-DESELECT'),
+    command('enter', 'MENU-ENTER'),
+    command('delete', 'MENU-DELETE'),
+    command('delete all', 'MENU-DELETE-ALL'),
 ]
