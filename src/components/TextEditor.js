@@ -30,7 +30,7 @@ export default function TextEditor({ transcript }) {
   ];
 
   return (
-    <div>
+    <div className="editor-cont">
       <EditorProvider
         slotBefore={<Toolbar />}
         extensions={ extensions }

@@ -15,7 +15,7 @@ export default function Toolbar() {
   return (
   <div>
     <Menubar />
-    <div className="container" style={{marginBottom: '10px'}}>
+    <div className="container">
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
