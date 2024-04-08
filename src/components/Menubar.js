@@ -10,6 +10,7 @@ import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import { useCurrentEditor } from "@tiptap/react";
 import React, { useState, useEffect, useRef } from 'react';
+import Modal from "./Modal/Modal";
 
 export default function Menubar() {
   const { editor } = useCurrentEditor();

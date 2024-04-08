@@ -5,8 +5,41 @@ import VoiceCommands from './components/VoiceCommands';
 import Menubar from './components/Menubar';
 import Header from './images/header.png';
 import './App.css';
+import Modal from './components/Modal/Modal';
+import './components/Modal/Modal.css';
 
 function App() {
+  {/* SAMPLE MODAL ONLY */}
+  const [fileName, setFileName] = useState('');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
+
+  const handleCancel = () => {
+      setFileName('')
+      setModalOpen(false);
+  };
+
+  const handleConfirm = () => {
+      console.log("File Name:", fileName);
+      setInputValue('')
+      setModalOpen(false);
+  };
+
+  const handleChange = (e) => {
+      setFileName(e.target.value);
+  };
+
+  const inputField = (
+      <input 
+      type="text"
+      value={fileName}
+      onChange={handleChange}
+      placeholder='Enter file name...'
+      />
+  )
 
   return (
     <div className="App">
@@ -14,6 +47,24 @@ function App() {
       <div>
         <img src={Header} alt="darling" className='logo' />
       </div>
+
+      {/* SAMPLE MODAL ONLY */}
+      <button onClick={openModal}>Show Modal</button>
+      <Modal
+        isOpen={modalOpen}
+        onClose={closeModal}
+        headerText="Save File As"
+        content={
+          <>
+            Please enter the name of the file
+          </>
+        }
+        inputField={inputField}
+        buttonText1="Cancel"
+        buttonText2="Save"
+        onCancel={handleCancel}
+        onConfirm={handleConfirm}
+      />
 
       <div className='main'>
         {/* guide bar */}
