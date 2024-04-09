@@ -75,7 +75,8 @@ body {
 }
 
 /* Text Editor */
-.ProseMirror, .container {
+.ProseMirror,
+.container {
   background-color: var(--beige-1);
   color: var(--brown-3);
   border-radius: 10px;
@@ -140,7 +141,7 @@ div:has(> .ProseMirror) {
 }
 
 /* Scrollbar */
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   width: 10px;
 }
 
@@ -164,25 +165,27 @@ div:has(> .ProseMirror) {
   justify-content: space-evenly;
   background-color: transparent;
   border: none;
-  margin:5px;
+  margin: 5px;
   color: var(--brown-3);
 }
 
-.menubar-button:disabled{
+.menubar-button:disabled {
   color: var(--brown-3-fade);
 }
 
-.menubar-button:hover{
-  filter: brightness(0.1); 
+.menubar-button:hover {
+  filter: brightness(0.1);
 }
 
-.menubar-container{
+.menubar-container {
   display: flex;
   flex-direction: row;
   height: 50px;
   margin-bottom: 10px;
 }
+
 .menubar-button-label {
+  font-family: "Poppins", sans-serif !important;
   padding-top: 3px;
   font-size: 1em;
 }
