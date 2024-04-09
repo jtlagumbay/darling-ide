@@ -22,12 +22,13 @@ function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowWelcomeScreen(false);
-    }, 20000); // 20 seconds
+      localStorage.setItem('showWelcomeScreen', 'true');
+    }, 19000); // 19 seconds
 
     return () => clearTimeout(timer); 
-  }, []);
+  }, [showWelcomeScreen]);
 
-  if (showWelcomeScreen) {
+  if (localStorage.getItem('showWelcomeScreen') === null){
     return <WelcomeScreen />;
   }
 
