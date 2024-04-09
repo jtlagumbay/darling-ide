@@ -6,7 +6,9 @@ import {
 } from "@tiptap/react";
 
 import StarterKit from "@tiptap/starter-kit";
-import Toolbar from "./Toolbar";
+import Header from "./Header";
+import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem } from "../utils";
+import { useEffect } from "react";
 
 export default function TextEditor({ transcript }) {
   const extensions = [
@@ -24,12 +26,19 @@ export default function TextEditor({ transcript }) {
     }),
   ];
 
+  const onUpdate = ({ editor }) => {
+    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, editor.getHTML())
+  }
+
+  useEffect(()=>{console.log(transcript)}, [transcript])
+  
   return (
     <div className="editor-cont">
       <EditorProvider
-        slotBefore={<Toolbar />}
+        slotBefore={<Header />}
         extensions={ extensions }
-        content={ transcript }
+        content={getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)}
+        onUpdate={editor => onUpdate(editor)}
       ></EditorProvider>
     </div>
   );

@@ -9,12 +9,14 @@ import UndoIcon from '@mui/icons-material/Undo';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import { useCurrentEditor } from "@tiptap/react";
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem, removeLocalStorageItem } from '../utils';
 
 export default function Menubar() {
   const { editor } = useCurrentEditor();
   const [zoomLevel, setZoomLevel] = useState(100); // Initial zoom level
   const [unsavedChanges, setUnsavedChanges] = useState(false);
+  const [enableSaveAs, setEnableSaveAs] = useState(false);
   const fileInputRef = useRef(null);
 
   /** New/Open File Functionalities **/
@@ -31,6 +33,10 @@ export default function Menubar() {
         setUnsavedChanges(false);
       } 
     }
+    removeLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)
+    removeLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT)
+    removeLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME)
+    setEnableSaveAs(true)
   }
 
   const handleOpenFile = () => {
@@ -41,62 +47,61 @@ export default function Menubar() {
       }
     } 
     fileInputRef.current.click()
+    
   }
   const openFileExplorer = (event) => {
     const file = event.target.files[0];
     if (!file) return;
+    else {
+      setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME, file["name"])
+    }
 
     const reader = new FileReader();
 
     reader.onload = () => {
       const fileContent = reader.result;
       editor.commands.setContent(fileContent);
+      setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, fileContent)
     };
 
     reader.readAsText(file);
   };
 
+  /** Save/As Functionalities **/
+
   const handleSave = () => {
-    handleSaveAs()
+    var fileName = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME)
+    saveFile(fileName ?? "untitled.txt")
   }
 
-  /** Save/As Functionalities **/
   const handleSaveAs = () => {
-    // Get the HTML content of the editor
-    const content = editor.getText();
-    console.log(content)
-    // Create a Blob object containing the HTML content
-    const blob = new Blob([content], { type: 'text/html' });
+    saveFile("untitled.txt")
+  }
 
-    // Create a temporary anchor element to trigger the download
+  const saveFile = (fileName) => {
+    const content = editor.getText();
+    const blob = new Blob([content], { type: 'text/html' });
     const anchor = document.createElement('a');
     anchor.href = URL.createObjectURL(blob);
-    anchor.download = 'document.txt';
-    
-     // Listen for the download start event
-    anchor.addEventListener('click', () => {
-      // Update unsavedChanges only if the download starts
-      setUnsavedChanges(false);
-    });
+    anchor.download = fileName;
     
     // Programmatically click the anchor element to start the download
     anchor.click();
     
-    // Clean up by revoking the object URL
-    URL.revokeObjectURL(anchor.href);
-
     // reset unsaved changes
     setUnsavedChanges(false)
+    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME, fileName)
+    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT, content)
+    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, content)
+    setEnableSaveAs(true)
   };
 
   /** Undo Redo Functionalities **/
   const handleUndo = () => {
-    console.log("undo")
     editor.commands.undo();
   };
 
   const handleRedo = () => {
-    console.log("redo")
     editor.commands.redo();
   };
 
@@ -140,7 +145,6 @@ export default function Menubar() {
   /** Zoom Functionalities **/ 
   const handleZoomIn = () => {
     setZoomLevel(prev => prev+=5)
-    console.log("in "+zoomLevel)
   };
   
   const handleZoomOut = () => {
@@ -179,15 +183,26 @@ export default function Menubar() {
     document.body.style.zoom = zoomLevel+'%';
   }, [zoomLevel])
 
-  const handleChange = () => {
-    // Set unsavedChanges to true when changes are made
-    setUnsavedChanges(true);
-  };
+  useEffect(() => {
+    var fileName = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME)
+    if (fileName) {
+      setEnableSaveAs(true)
+    } else {
+      setEnableSaveAs(false)
+    }
+  }, [])
+
 
   // Attach handleChange to editor's change event
-  editor.on('transaction', () => {
-    handleChange();
-  });
+  useEffect(() => {
+    const current = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)
+    const initial = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT)
+    if (current !== initial) {
+        setUnsavedChanges(true);
+    } else {
+      setUnsavedChanges(false);
+    }
+  }, [getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT), getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT)]);
 
 
 
@@ -214,7 +229,7 @@ export default function Menubar() {
         <SaveIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Save</span>
       </button>
-      <button id="MENU-SAVE-AS" className="menubar-button" onClick={handleSaveAs} disabled={!unsavedChanges}>
+      <button id="MENU-SAVE-AS" className="menubar-button" onClick={handleSaveAs} disabled={!enableSaveAs}>
         <SaveAsIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Save As</span>
       </button>
