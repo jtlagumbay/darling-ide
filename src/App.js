@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import './App.css';
+import Guide from './components/Guide';
 import Header from './components/Header';
 import TextEditor from './components/TextEditor';
 import VoiceCommands from './components/VoiceCommands';
-import Menubar from './components/Menubar';
 import WelcomeScreen from './components/WelcomeScreen';
-import Header from './images/header.png';
-import './App.css';
+import HeaderImg from './images/header.png';
 import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem } from './utils';
 
 function App() {
@@ -36,7 +36,7 @@ function App() {
     <div className="App">
       <div className='left-component'>
         {/* header */}
-        <img src={Header} alt="darling" className='logo' />
+        <img src={HeaderImg} alt="darling" className='logo' />
 
         <Guide />
       </div>
