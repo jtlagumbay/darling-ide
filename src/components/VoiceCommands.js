@@ -52,7 +52,7 @@ const VoiceCommands = () => {
 
   return (
     <div className='voice-cont'>
-        <Transcript transcript={script}/>
+        <Transcript transcript={script || 'Say something...'}/>
       <button onClick={() => setIsListening(prevState => !prevState)} className='mic-icon'>
         {isListening ?
           <OnIcon fontSize='large' /> : 

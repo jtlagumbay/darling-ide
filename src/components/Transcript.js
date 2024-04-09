@@ -3,13 +3,16 @@ import React, { useState, useEffect } from 'react';
 const commandOutput = {
     'new file': 'creating new file...',
     'open file': 'opening file...',
-    'undo': 'undoing last action...',
-    'redo': 'redoing last action...',
+    'save': 'saving file...',
+    'save as': 'saving file as...',
+    'undo': 'undo last action...',
+    'redo': 'redo last action...',
     'cut': 'cut text',
     'copy': 'copied text',
-    'paste': 'pasted text'
+    'paste': 'pasted text',
+    'zoom in': 'zoomed in',
+    'zoom out': 'zoomed out'
 }
-
 
 export default function Transcript({ transcript }) {
     const [output, setOutput] = useState(transcript);
@@ -24,21 +27,21 @@ export default function Transcript({ transcript }) {
           foundCommand = true;
         }
       });
-      if (!foundCommand) { setOutput(transcript);}
-      setIsCommand(foundCommand);
-      
-      if (foundCommand) { setKey(prevKey => prevKey + 1);}
+      if (!foundCommand) { 
+        setIsCommand(false)
+        setOutput(transcript);
+      } else {
+        setIsCommand(foundCommand);
+        setKey(prevKey => prevKey + 1);
+      }
     }, [transcript]);
     
-    console.log("test")
-    console.log(transcript)
-    console.log(output)
+    console.log("trascript:", transcript)
+    console.log("output:", output)
 
     return (
       <div key={key} className={`transcript-cont ${isCommand ? 'bounce' : ''}`}> 
-        <p> {output || 'No command'} </p>
+        <p className={!isCommand ? 'italic' : ''}> {output} </p>
       </div>
     );
-  }
-
-
+}
