@@ -7,6 +7,7 @@ import ListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import Menubar from "./Menubar";
 import {useState, useEffect} from "react"
 import { LOCAL_STORAGE_KEYS, getLocalStorageItem } from "../utils";
+import RenameFile from "./RenameFile";
 
 export default function Toolbar() {
   const { editor } = useCurrentEditor();
@@ -161,7 +162,8 @@ export default function Toolbar() {
         purple
       </button>
       </div>
-    <h1>{fileName ?? "Untitled.txt"}</h1>
+    {/* <h1>{fileName ?? "Untitled.txt"}</h1> */}
+    <RenameFile fileName={fileName} setFileName={setFileName} />
   </div>
   );
 }
