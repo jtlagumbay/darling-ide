@@ -31,10 +31,6 @@ export default function Header() {
     setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST, (tabs))
   }, [tabs])
 
-  useEffect(() => {
-    // console.log(localStorage)
-  },[getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)])
-
   function onTabDelete(tabToDelete) {
     var indexToDelete = tabs.findIndex(tab => tab.name === tabToDelete);
     var checkSelected = tabs[indexToDelete].isSelected

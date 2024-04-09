@@ -11,8 +11,6 @@ import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem } from "..
 import { useEffect, useState } from "react";
 
 export default function TextEditor({ transcript }) {
-    const [tabs, setTabs] = useState(getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST))
-
 
   const extensions = [
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -32,12 +30,10 @@ export default function TextEditor({ transcript }) {
   const onUpdate = ({ editor }) => {
     setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, editor.getHTML())
 
-    console.log(localStorage)
+    var list = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST)
+    console.log(list)
   }
 
-  useEffect(() => {
-    console.log(tabs)
-  }, [tabs])
 
   return (
     <div className="editor-cont">
