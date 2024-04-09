@@ -5,7 +5,6 @@ export default function Tabbar({ tabs, onTabDelete, onTabAdd, onTabChangeName, o
 
   return (
     <div className="tabcont-container">
-      <AddIcon onClick = {onTabAdd} />
       {tabs.map((tab) => {
         return <Tabs
           key = {tab.name}
@@ -16,8 +15,8 @@ export default function Tabbar({ tabs, onTabDelete, onTabAdd, onTabChangeName, o
           onTabClick = {()=>onTabClick(tab.name)}
         />
       })
-
       }
+      <AddIcon onClick = {onTabAdd} />
     </div>
   )
 }
