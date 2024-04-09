@@ -17,6 +17,7 @@ export default function Toolbar() {
   return (
     <div className="container toolbar" style={{marginBottom: '10px'}}>
       <button
+        id='BOLD'
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
         className={editor.isActive("bold") ? "is-active" : ""}
@@ -25,6 +26,7 @@ export default function Toolbar() {
         <BoldIcon />
       </button>
       <button
+        id='ITALIC'
         onClick={() => editor.chain().focus().toggleItalic().run()}
         disabled={!editor.can().chain().focus().toggleItalic().run()}
         className={editor.isActive("italic") ? "is-active" : ""}
@@ -33,6 +35,7 @@ export default function Toolbar() {
         <ItalicIcon />
       </button>
       <button
+        id='STRIKETHROUGH'
         onClick={() => editor.chain().focus().toggleStrike().run()}
         disabled={!editor.can().chain().focus().toggleStrike().run()}
         className={editor.isActive("strike") ? "is-active" : ""}
@@ -41,6 +44,7 @@ export default function Toolbar() {
         <StrikethroughIcon />
       </button>
       <button
+        id='CODE'
         onClick={() => editor.chain().focus().toggleCode().run()}
         disabled={!editor.can().chain().focus().toggleCode().run()}
         className={editor.isActive("code") ? "is-active" : ""}
@@ -49,6 +53,7 @@ export default function Toolbar() {
         <CodeIcon />
       </button>
       <button
+        id='BULLETS'
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         className={editor.isActive("bulletList") ? "is-active" : ""}
         title="List Bullets"
@@ -56,6 +61,7 @@ export default function Toolbar() {
         <FormatListBulletedIcon />
       </button>
       <button
+        id='NUMBERS'
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
         className={editor.isActive("orderedList") ? "is-active" : ""}
         title="List Numbers"
@@ -63,6 +69,7 @@ export default function Toolbar() {
         <FormatListNumberedIcon />
       </button>
       <button
+        id='BLOCK'
         onClick={() => editor.chain().focus().toggleCodeBlock().run()}
         className={editor.isActive("codeBlock") ? "is-active" : ""}
         title="Code Block"
