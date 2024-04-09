@@ -1,7 +1,7 @@
 import Tabs from "./Tab"
 import AddIcon from '@mui/icons-material/Add';
 import { useEffect } from "react";
-export default function TabContainer({ tabs, onTabDelete, onTabAdd, onTabChangeName, onTabClick }) {
+export default function Tabbar({ tabs, onTabDelete, onTabAdd, onTabChangeName, onTabClick }) {
 
   return (
     <div className="tabcont-container">

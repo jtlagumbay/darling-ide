@@ -10,7 +10,7 @@ import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
 
 import StarterKit from "@tiptap/starter-kit";
-import Toolbar from "./Toolbar";
+import Header from "./Header";
 import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem } from "../utils";
 import { useEffect } from "react";
 
@@ -39,7 +39,7 @@ export default function TextEditor({ transcript }) {
   return (
     <div>
       <EditorProvider
-        slotBefore={<Toolbar />}
+        slotBefore={<Header />}
         extensions={ extensions }
         content={getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)}
         onUpdate={editor => onUpdate(editor)}

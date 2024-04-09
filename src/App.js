@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Toolbar from './components/Toolbar';
+import Header from './components/Header';
 import TextEditor from './components/TextEditor';
 import VoiceCommands from './components/VoiceCommands';
-import Menubar from './components/Menubar';
-import Header from './images/header.png';
+import HeaderImg from './images/header.png';
 import './App.css';
 import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem } from './utils';
 
@@ -21,7 +20,7 @@ function App() {
     <div className="App">
       {/* header */}
       <div>
-        <img src={Header} alt="darling" className='logo' />
+        <img src={HeaderImg} alt="darling" className='logo' />
       </div>
 
       <div className='main'>
@@ -38,7 +37,7 @@ function App() {
 
         {/* content */}
         <div className='content'>
-          <Toolbar />
+          <Header />
           <TextEditor transcript={transcript} />
           <VoiceCommands setTranscript={setTranscript} />
         </div>
