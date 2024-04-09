@@ -3,9 +3,11 @@ import Toolbar from './components/Toolbar';
 import TextEditor from './components/TextEditor';
 import VoiceCommands from './components/VoiceCommands';
 import Menubar from './components/Menubar';
+import WelcomeScreen from './components/WelcomeScreen';
 import Header from './images/header.png';
 import './App.css';
 import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem } from './utils';
+import Guide from './components/Guide';
 
 function App() {
   const [transcript, setTranscript] = useState('');
@@ -16,33 +18,36 @@ function App() {
     }
   }, []);
   
+  const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowWelcomeScreen(false);
+    }, 20000); // 20 seconds
+
+    return () => clearTimeout(timer); 
+  }, []);
+
+  if (showWelcomeScreen) {
+    return <WelcomeScreen />;
+  }
 
   return (
     <div className="App">
-      {/* header */}
-      <div>
+      <div className='left-component'>
+        {/* header */}
         <img src={Header} alt="darling" className='logo' />
+
+        <Guide />
       </div>
-
-      <div className='main'>
-        {/* guide bar */}
-        <div className='guide'>
-          <header>Guide</header>
-
-          {/* guide content */}
-          <div className='guide-content'>
-            <p>Note: Always say “please” at the end of the voiced instruction because it serves as the <strong>ENTER</strong> key</p>
-            <p>When opening a file, you need to say, <strong>“Honey, open the folder, please”</strong></p>
-          </div>
-        </div>
+        
 
         {/* content */}
-        <div className='content'>
+        <div className='right-component'>
           <Toolbar />
-          <TextEditor transcript={transcript} />
-          <VoiceCommands setTranscript={setTranscript} />
+          <TextEditor />
+          <VoiceCommands />
         </div>
-      </div>
     </div>
   );
 }
