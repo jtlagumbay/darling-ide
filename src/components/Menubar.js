@@ -1,11 +1,11 @@
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import ContentCutIcon from '@mui/icons-material/ContentCut';
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import RedoIcon from '@mui/icons-material/Redo';
 import SaveIcon from '@mui/icons-material/Save';
 import SaveAsIcon from '@mui/icons-material/SaveAs';
 import UndoIcon from '@mui/icons-material/Undo';
-import RedoIcon from '@mui/icons-material/Redo';
-import ContentCutIcon from '@mui/icons-material/ContentCut';
-import ContentPasteIcon from '@mui/icons-material/ContentPaste';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import { useCurrentEditor } from "@tiptap/react";
@@ -149,7 +149,35 @@ export default function Menubar() {
   
   const handleZoomOut = () => {
     setZoomLevel(prev => prev-=5)
+    console.log("out "+zoomLevel)
   };
+
+  /** Extra Commands **/
+  const handleSelectAll = () => {
+    editor.chain().focus().selectAll().run();
+  };
+
+  const handleDelete = () => {
+    const { from, to } = editor.state.selection;
+
+    if(from === to) {
+      editor.chain().focus().setTextSelection({from: from - 1, to: to}).run();
+    }
+
+    editor.chain().focus().deleteSelection().run();
+  };
+
+  const handleDeleteAll = () => {
+    editor.chain().focus().clearContent().run();
+  }
+
+  const handleEnter = () => {
+    editor.chain().focus().enter().run();
+  }
+
+  const handleDeselect = () => {
+    editor.chain().focus().selectTextblockEnd().run();
+  }
 
   useEffect(() => {
     document.body.style.zoom = zoomLevel+'%';
@@ -235,6 +263,11 @@ export default function Menubar() {
         <ZoomOutIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Zoom out</span>
       </button>
+      <button id="MENU-SELECT-ALL" onClick={handleSelectAll} hidden />
+      <button id="MENU-DESELECT" onClick={handleDeselect} hidden />
+      <button id="MENU-DELETE" onClick={handleDelete} hidden />
+      <button id="MENU-DELETE-ALL" onClick={handleDeleteAll} hidden />
+      <button id="MENU-ENTER" onClick={handleEnter} hidden />
      </div>
   )
 }
