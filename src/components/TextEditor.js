@@ -8,9 +8,12 @@ import {
 import StarterKit from "@tiptap/starter-kit";
 import Header from "./Header";
 import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem } from "../utils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function TextEditor({ transcript }) {
+    const [tabs, setTabs] = useState(getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST))
+
+
   const extensions = [
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle.configure({ types: [ListItem.name] }),
@@ -28,10 +31,14 @@ export default function TextEditor({ transcript }) {
 
   const onUpdate = ({ editor }) => {
     setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, editor.getHTML())
+
+    console.log(localStorage)
   }
 
-  useEffect(()=>{console.log(transcript)}, [transcript])
-  
+  useEffect(() => {
+    console.log(tabs)
+  }, [tabs])
+
   return (
     <div className="editor-cont">
       <EditorProvider

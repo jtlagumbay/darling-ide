@@ -15,6 +15,11 @@ function App() {
     if (storedFileContent) {
       setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT, storedFileContent)
     }
+
+    const fileList = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST)
+    if (!fileList) {
+      setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST, [])
+    }
   }, []);
   
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);

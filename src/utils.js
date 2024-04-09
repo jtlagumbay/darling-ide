@@ -39,5 +39,6 @@ export const clearLocalStorage = () => {
 export const LOCAL_STORAGE_KEYS = {
   FILE_NAME: 'file_name',
   FILE_CONTENT: 'file_content',
-  FILE_INITIAL_CONTENT: 'file_initial_content'
+  FILE_INITIAL_CONTENT: 'file_initial_content',
+  FILE_LIST: 'file_list'
 };

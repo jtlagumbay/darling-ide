@@ -1,14 +1,15 @@
 import { useCurrentEditor } from "@tiptap/react";
 import Menubar from "./Menubar";
 import {useState, useEffect} from "react"
-import { LOCAL_STORAGE_KEYS, getLocalStorageItem } from "../utils";
+import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem } from "../utils";
 import Tabbar from "./Tabbar"
 import Toolbar from "./Toolbar";
 
 export default function Header() {
+  
   const { editor } = useCurrentEditor();
   const [fileName, setFileName] = useState("Untitled.txt");
-  const [tabs, setTabs] = useState([])
+  const [tabs, setTabs] = useState(getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST))
 
   useEffect(() => {
     const storedFileName = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME);
@@ -18,6 +19,21 @@ export default function Header() {
       setFileName("Untitled.txt")
     }
   }, [getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME)]);
+
+  useEffect(() => {
+    tabs && tabs.map(tab => {
+      if (tab.isSelected) {
+        setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT, tab.content)
+        setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, tab.content)
+        setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME, tab.name)
+      }
+    })
+    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST, (tabs))
+  }, [tabs])
+
+  useEffect(() => {
+    // console.log(localStorage)
+  },[getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)])
 
   function onTabDelete(tabToDelete) {
     var indexToDelete = tabs.findIndex(tab => tab.name === tabToDelete);
@@ -53,20 +69,20 @@ export default function Header() {
   }
 
   function onTabAdd() {
-  setTabs(tabs =>
-    tabs.map(tab =>
-      ({ ...tab, isSelected: false })
-    )
-  );    var newTab = {
+    setTabs(tabs =>
+      tabs.map(tab =>
+        ({ ...tab, isSelected: false })
+      )
+    );
+    var newTab = {
       name: "untitled"+tabs.length,
-      content: "<p>untitledx</p>",
+      content: "<p>untitled "+tabs.length + "</p>",
       isSelected: true
     }
     setTabs(tabs=>[...tabs, newTab])
   }
 
   function onTabClick(name) {
-    console.log(name)
     setTabs(tabs => 
       tabs.map(tab =>{
           var isSelected = tab.name===name
@@ -75,8 +91,6 @@ export default function Header() {
       )
     )
   }
-
-  useEffect(()=>{console.log(tabs)}, [tabs])
 
   if (!editor) {
     return null;
