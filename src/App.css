@@ -94,8 +94,12 @@ div:has(> .ProseMirror) {
 }
 
 .tiptap.ProseMirror {
-  height: calc(100dvh - 40px - 157px - 30px);
-  overflow-y: auto;
+  /* height: calc(100dvh - 40px - 157px - 30px);
+  overflow-y: auto; */
+  overflow-y: hidden;
+  height: 65vh;
+  border-radius: 0 0 10px 10px !important;
+
 }
 
 .ProseMirror:focus-visible {
@@ -188,6 +192,14 @@ div:has(> .ProseMirror) {
   margin-bottom: 10px;
 }
 
+.toolbar-container {
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
 .menubar-button-label {
   font-family: "Poppins", sans-serif !important;
   padding-top: 3px;
@@ -213,7 +225,7 @@ div:has(> .ProseMirror) {
 .tab-close-cont {
   display: flex;
   align-items: center;
-   height: 50px;
+  height: 50px;
 }
 
 .tab-name-cont {
@@ -236,12 +248,12 @@ div:has(> .ProseMirror) {
   display: flex;
   flex-direction: row;
   align-items: center;
-
+  border-radius: 10px 10px 0 0;
   background-color: var(--beige-1);
   border-bottom: 10px solid #E8D8C4;
   height: 50px;
 }
 
-.tab-name-input-readonly{
+.tab-name-input-readonly {
   background-color: transparent;
 }

@@ -33,4 +33,13 @@ export const commands = [
     command('enter', 'MENU-ENTER'),
     command('delete', 'MENU-DELETE'),
     command('delete all', 'MENU-DELETE-ALL'),
+
+    // toolbar
+    command('bold', 'TB-BOLD'),
+    command('italic', 'TB-ITALIC'),
+    command('strikethrough', 'TB-STRIKETHROUGH'),
+    command('code', 'TB-CODE'),
+    command('bullets', 'TB-BULLETS'),
+    command('numbers', 'TB-NUMBERS'),
+    command('block', 'TB-BLOCK'),
 ]
