@@ -160,6 +160,12 @@ export default function Menubar({ onTabAdd, onTabSave,
     editor.chain().focus().selectTextblockEnd().run();
   }
 
+  const handleTyping = () => {
+    const element = document.getElementById('MENU-TYPE');
+    const text = element.dataset.text;
+    editor.chain().focus().insertContent(text).run();
+  }
+
   useEffect(() => {
     document.body.style.zoom = zoomLevel+'%';
   }, [zoomLevel])
@@ -183,9 +189,9 @@ export default function Menubar({ onTabAdd, onTabSave,
       />
       <button id="MENU-OPEN" className="menubar-button" onClick={handleOpenFile}>
         <FileOpenIcon className="menubar-button-icon"/>
-        <span className="menubar-button-label">Open Folder</span>
+        <span className="menubar-button-label">Open File</span>
       </button>
-      <button id="MENU-SAVE" className="menubar-button" onClick={handleSave} disabled={unsavedChanges}>
+      <button id="MENU-SAVE" className="menubar-button" onClick={handleSave} disabled={!unsavedChanges}>
         <SaveIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Save File</span>
       </button>
@@ -193,7 +199,7 @@ export default function Menubar({ onTabAdd, onTabSave,
         <SaveAsIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Save As File</span>
       </button>
-      <button id="MENU-DOWNLOAD" className="menubar-button" onClick={handleDownload}>
+      <button id="MENU-DOWNLOAD" className="menubar-button" onClick={handleDownload} disabled={!enableSaveAs}>
         <DownloadIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Download</span>
       </button>
@@ -232,6 +238,7 @@ export default function Menubar({ onTabAdd, onTabSave,
       <button id="MENU-DELETE" onClick={handleDelete} hidden />
       <button id="MENU-DELETE-ALL" onClick={handleDeleteAll} hidden />
       <button id="MENU-ENTER" onClick={handleEnter} hidden />
+      <button id="MENU-TYPE" onClick={handleTyping} hidden />
      </div>
   )
 }
