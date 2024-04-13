@@ -20,8 +20,8 @@ const Modal = ({ isOpen, onClose, headerText, content, inputField, buttonText1, 
                     </div>
                     </div>
                     <div className='modal-btn'>
-                        <button className='modal-cancel' onClick={handleCancel}>{buttonText1}</button>
-                        <button className='modal-submit' onClick={handleConfirm}>{buttonText2}</button>
+                        <button className='modal-cancel' onClick={onCancel}>{buttonText1}</button>
+                        <button className='modal-submit' onClick={onConfirm}>{buttonText2}</button>
                     </div>
                 </div>
             </div>
