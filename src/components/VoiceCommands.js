@@ -27,7 +27,7 @@ const VoiceCommands = () => {
       setIsListening(true);
       resetTranscript();
     }
-  
+  console.log(transcript);
   }, [transcript]);
 
   useEffect(() => {

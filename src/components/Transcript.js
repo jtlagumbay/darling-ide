@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react';
 
 const commandOutput = {
-    'new file': 'creating new file...',
+    'new file': 'created new file',
     'open file': 'opening file...',
     'save': 'saving file...',
     'save as': 'saving file as...',
-    'undo': 'undo last action...',
-    'redo': 'redo last action...',
+    'undo': 'last action undone',
+    'redo': 'last action redone',
     'cut': 'cut text',
     'copy': 'copied text',
     'paste': 'pasted text',
     'zoom in': 'zoomed in',
-    'zoom out': 'zoomed out'
+    'zoom out': 'zoomed out',
+    'select all': 'selected all text',
+    'deselect': 'deselected text',
+    'enter': 'entered',
+    'delete': 'deleted',
+    'delete all': 'deleted all text'
 }
 
 export default function Transcript({ transcript }) {
@@ -35,9 +40,7 @@ export default function Transcript({ transcript }) {
         setKey(prevKey => prevKey + 1);
       }
     }, [transcript]);
-    
-    console.log("trascript:", transcript)
-    console.log("output:", output)
+  
 
     return (
       <div key={key} className={`transcript-cont ${isCommand ? 'bounce' : ''}`}> 
