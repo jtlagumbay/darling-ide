@@ -28,6 +28,9 @@ export default function Header() {
   }, [tabs])
 
   function onTabDelete(tabToDelete) {
+    /**
+     * TODO: Add modal to check if walay unsaved changes
+     */
     var indexToDelete = tabs.findIndex(tab => tab.name === tabToDelete);
     var checkSelected = tabs[indexToDelete].isSelected
     var activeTab = {}
@@ -109,9 +112,10 @@ export default function Header() {
     setTabs(tabs => 
       tabs.map(tab =>{
         if (tab.isSelected) {
-            setActiveTab(tab.name, tab.content, tab.content)
-          }
+          setActiveTab(tab.name, tab.content, tab.content)
           return ({ ...tab, initialContent: tab.content })
+          }
+          return tab
       }
       )
     )

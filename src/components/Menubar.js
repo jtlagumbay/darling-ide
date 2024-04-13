@@ -53,6 +53,9 @@ export default function Menubar({ onTabAdd, onTabSave, enableSaveAs }) {
   }
 
   const handleDownload = () => {
+    /**
+     * TODO: Add modal to check if walay unsaved changes
+     */
     saveFile()
   }
   const handleSaveAs = () => {
@@ -163,8 +166,6 @@ export default function Menubar({ onTabAdd, onTabSave, enableSaveAs }) {
     editor.on('transaction', () => {
       var initialContent = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT)
       var content = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)
-      console.log(initialContent, content)
-      console.log(initialContent==content)
       setUnsavedChanges(initialContent == content)
     })
   },[])
