@@ -192,6 +192,14 @@ div:has(> .ProseMirror) {
   margin-bottom: 10px;
 }
 
+.toolbar-container {
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
 .menubar-button-label {
   font-family: "Poppins", sans-serif !important;
   padding-top: 3px;
@@ -228,7 +236,7 @@ div:has(> .ProseMirror) {
 .tab-close-cont {
   display: flex;
   align-items: center;
-   height: 50px;
+  height: 50px;
 }
 
 .tab-close {
@@ -265,7 +273,7 @@ div:has(> .ProseMirror) {
   display: flex;
   flex-direction: row;
   align-items: center;
-
+  border-radius: 10px 10px 0 0;
   background-color: var(--beige-1);
   height: 60px;
   width: calc((3/4) * (100dvw - 40px));
@@ -277,7 +285,7 @@ div:has(> .ProseMirror) {
   display: none;
 }
 
-.tab-name-input-readonly{
+.tab-name-input-readonly {
   background-color: transparent;
 }
 
