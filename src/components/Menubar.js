@@ -120,7 +120,6 @@ export default function Menubar() {
     event.preventDefault();
     try {
       const text = await navigator.clipboard.readText();
-      console.log(text)
       editor.chain().focus().insertContent(text).run()
     } catch (error) {
       console.error('Failed to read clipboard:', error);
@@ -149,7 +148,6 @@ export default function Menubar() {
   
   const handleZoomOut = () => {
     setZoomLevel(prev => prev-=5)
-    console.log("out "+zoomLevel)
   };
 
   /** Extra Commands **/
