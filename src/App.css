@@ -94,12 +94,9 @@ div:has(> .ProseMirror) {
 }
 
 .tiptap.ProseMirror {
-  /* height: calc(100dvh - 40px - 157px - 30px);
-  overflow-y: auto; */
-  overflow-y: hidden;
-  height: 65vh;
-  border-radius: 0 0 10px 10px !important;
-
+  height: calc(100dvh - 40px - 157px - 30px);
+  overflow-y: auto;
+  border-radius: 0 0 10px 10px;
 }
 
 .ProseMirror:focus-visible {
