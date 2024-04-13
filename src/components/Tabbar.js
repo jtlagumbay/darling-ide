@@ -6,7 +6,8 @@ export default function Tabbar({ tabs, onTabDelete, onTabAdd, onTabChangeName, o
     <div className="tabcont-container">
       {tabs.map((tab) => {
         return <Tabs
-          key = {tab.name}
+          key = {tab.key}
+          id = {tab.key}
           name={tab.name}
           hasUnsavedChanges={tab.content!=tab.initialContent}
           isSelected={tab.isSelected}

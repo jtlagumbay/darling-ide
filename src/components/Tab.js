@@ -3,7 +3,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useState, useEffect } from 'react';
 import { cleanInputForId, getLocalStorageItem, LOCAL_STORAGE_KEYS } from "../utils"
 
-export default function Tab({ name, isSelected, onTabDelete, onTabChangeName, onTabClick, hasUnsavedChanges }) {
+export default function Tab({ name, isSelected, onTabDelete, onTabChangeName, onTabClick, hasUnsavedChanges, id }) {
   const [tabName, setTabName] = useState(name);
   const [error, setError] = useState(false);
   const handleChange = (e) => {
@@ -12,7 +12,7 @@ export default function Tab({ name, isSelected, onTabDelete, onTabChangeName, on
 
   const handleBlur = () => {
     var tabs = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST)
-    if (tabs.some(tab => tab.name === tabName)) {
+    if (tabs.some(tab => tab.name === tabName && tab.key !== id)) {
       setError(true)
       setTimeout(() => {
         setTabName(name)
