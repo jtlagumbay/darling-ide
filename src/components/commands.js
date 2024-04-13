@@ -1,5 +1,3 @@
-import { useCurrentEditor } from "@tiptap/react";
-
 const command = (name, id) => {
     return {
         command: name,
@@ -15,6 +13,7 @@ export const commands = [
     command('open file', 'MENU-OPEN'),  
     command('save file', 'MENU-SAVE'),  
     command('save as file', 'MENU-SAVE-AS'),
+    command('download', 'MENU-DOWNLOAD'),
     
     // file manipulation
     command('undo', 'MENU-UNDO'),  
