@@ -15,8 +15,16 @@ const commandOutput = {
     'select all': 'selected all text',
     'deselect': 'deselected text',
     'enter': 'entered',
-    'delete': 'deleted',
-    'delete all': 'deleted all text'
+    'delete': 'deleted text',
+    'delete all': 'deleted all text',
+    'bold': 'bolded text',
+    'italic': 'italicized text',
+    'strike': 'striked through text',
+    'code': 'coded text',
+    'bullets': 'bulleted text',
+    'numbers': 'added numbers',
+    'block': 'added block',
+    'type': 'typed text'
 }
 
 export default function Transcript({ transcript }) {
