@@ -281,11 +281,11 @@ div:has(> .ProseMirror) {
   background-color: transparent;
 }
 
-.tab-name-input-editable{
+/* .tab-name-input-editable{
   font-weight: 700;
-}
+} */
 
-.italicize{
+.italicize {
   font-style: italic;
 }
 
