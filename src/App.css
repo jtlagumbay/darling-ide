@@ -97,7 +97,7 @@ div:has(> .ProseMirror) {
   height: calc(100dvh - 40px - 157px - 30px);
   overflow-y: auto;
   height: 65vh;
-  border-radius: 0 0 10px 10px !important;
+  border-radius: 0 0 10px 10px;
 
 }
 
