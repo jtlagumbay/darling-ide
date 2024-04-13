@@ -5,8 +5,6 @@ import VoiceCommands from './components/VoiceCommands';
 import Menubar from './components/Menubar';
 import Header from './images/header.png';
 import './App.css';
-import Modal from './components/Modal/Modal';
-import './components/Modal/Modal.css';
 
 function App() {
   return (
