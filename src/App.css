@@ -88,7 +88,7 @@ body {
 
 .editor-cont {
   display: grid;
-  grid-template-rows: 200px calc(100dvh - 40px - 200px - 10px);
+  grid-template-rows: 220px calc(100dvh - 40px - 157px - 30px - 52px);
 }
 
 div:has(> .ProseMirror) {
@@ -97,7 +97,7 @@ div:has(> .ProseMirror) {
 }
 
 .tiptap.ProseMirror {
-  height: calc(100dvh - 40px - 157px - 30px - 35px);
+  height: calc(100dvh - 40px - 157px - 30px - 52px);
   overflow-y: auto;
   border-radius: 0 0 10px 10px;
 }

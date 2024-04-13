@@ -37,7 +37,7 @@ export const commands = [
     // toolbar
     command('bold', 'TB-BOLD'),
     command('italic', 'TB-ITALIC'),
-    command('strikethrough', 'TB-STRIKETHROUGH'),
+    command('strike', 'TB-STRIKETHROUGH'),
     command('code', 'TB-CODE'),
     command('bullets', 'TB-BULLETS'),
     command('numbers', 'TB-NUMBERS'),
