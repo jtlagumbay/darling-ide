@@ -160,6 +160,12 @@ export default function Menubar({ onTabAdd, onTabSave,
     editor.chain().focus().selectTextblockEnd().run();
   }
 
+  const handleTyping = () => {
+    const element = document.getElementById('MENU-TYPE');
+    const text = element.dataset.text;
+    editor.chain().focus().insertContent(text).run();
+  }
+
   useEffect(() => {
     document.body.style.zoom = zoomLevel+'%';
   }, [zoomLevel])
@@ -232,6 +238,7 @@ export default function Menubar({ onTabAdd, onTabSave,
       <button id="MENU-DELETE" onClick={handleDelete} hidden />
       <button id="MENU-DELETE-ALL" onClick={handleDeleteAll} hidden />
       <button id="MENU-ENTER" onClick={handleEnter} hidden />
+      <button id="MENU-TYPE" onClick={handleTyping} hidden />
      </div>
   )
 }
