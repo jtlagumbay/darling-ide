@@ -27,7 +27,6 @@ const VoiceCommands = () => {
       resetTranscript();
     }
   
-    console.log(transcript)
   }, [transcript]);
 
   useEffect(() => {
@@ -40,7 +39,6 @@ const VoiceCommands = () => {
   }, [script]);
 
   useEffect(() => {
-    console.log(listening)
     if(!listening)
       SpeechRecognition.startListening({ autoStart: true, continuous: true });
   }, [listening]);
