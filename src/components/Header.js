@@ -41,14 +41,19 @@ export default function Header() {
         ...tab,
         isSelected: false
       }));
-
-      if (indexToDelete <= updatedTabs.length - 1 && updatedTabs.length > 0) {
+      console.log(indexToDelete, updatedTabs.length)
+      if (indexToDelete===0 && updatedTabs.length ===0) {
+        setEnableSaveAs(false)
+        setUnsavedChanges(false)
+      } else if (indexToDelete <= updatedTabs.length - 1 && updatedTabs.length > 0) {
         updatedTabs[indexToDelete].isSelected = true
+        var activeTab = updatedTabs[indexToDelete]
+        setActiveTab(activeTab.name, activeTab.content, activeTab.initialContent)
       } else if (indexToDelete > updatedTabs.length - 1 && updatedTabs.length >0) {
         updatedTabs[--indexToDelete].isSelected = true
+        var activeTab = updatedTabs[indexToDelete]
+        setActiveTab(activeTab.name, activeTab.content, activeTab.initialContent)
       }
-      var activeTab = updatedTabs[indexToDelete]
-      setActiveTab(activeTab.name, activeTab.content, activeTab.initialContent)
 
     }
     setTabs(updatedTabs)
@@ -77,14 +82,16 @@ export default function Header() {
         name: name,
         content: content,
         initialContent: content,
-        isSelected: true
+        isSelected: true,
+        key:Date.now()
       }
     } else {
       newTab = {
         name: generateUniqueTabName(tabs),
         content: "<p>Write content here</p>",
         initialContent: "<p>Write content here</p>",
-        isSelected: true
+        isSelected: true,
+        key:Date.now()
       }
     }
     setActiveTab(newTab.name, newTab.content, newTab.initialContent)
@@ -131,18 +138,9 @@ export default function Header() {
     editor && editor.on('transaction', () => {
       var initialContent = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT)
       var content = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)
-      console.log(initialContent, content)
-      setUnsavedChanges(initialContent == content)
-
+      setUnsavedChanges(initialContent != content)
     })
 
-    editor && editor.on('blur', () => {
-      var initialContent = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT)
-      var content = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)
-      console.log(initialContent, content)
-      setUnsavedChanges(initialContent == content)
-
-    })
   },[])
 
 

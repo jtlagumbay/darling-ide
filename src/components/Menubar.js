@@ -191,7 +191,7 @@ export default function Menubar({ onTabAdd, onTabSave,
         <FileOpenIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Open Folder</span>
       </button>
-      <button id="MENU-SAVE" className="menubar-button" onClick={handleSave} disabled={unsavedChanges}>
+      <button id="MENU-SAVE" className="menubar-button" onClick={handleSave} disabled={!unsavedChanges}>
         <SaveIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Save File</span>
       </button>
@@ -199,7 +199,7 @@ export default function Menubar({ onTabAdd, onTabSave,
         <SaveAsIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Save As File</span>
       </button>
-      <button id="MENU-DOWNLOAD" className="menubar-button" onClick={handleDownload}>
+      <button id="MENU-DOWNLOAD" className="menubar-button" onClick={handleDownload} disabled={!enableSaveAs}>
         <DownloadIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Download</span>
       </button>
