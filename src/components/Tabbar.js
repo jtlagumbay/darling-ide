@@ -17,7 +17,7 @@ export default function Tabbar({ tabs, onTabDelete, onTabAdd, onTabChangeName, o
         />
       })
       }
-      <AddIcon onClick = {onTabAdd} />
+      <AddIcon onClick = {onTabAdd} fontSize="small" className="add-icon" />
     </div>
   )
 }

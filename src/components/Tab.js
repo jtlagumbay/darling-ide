@@ -14,7 +14,7 @@ export default function Tab({ name, isSelected, onTabDelete, onTabChangeName, on
 
 
   return (
-    <div className="tab-container">
+    <div className={isSelected ? "tab-container-active" : "tab-container-inactive"}>
       <div className="tab-name-cont "onClick={onTabClick} id={"TAB-CONTAINER-"+cleanInputForId(tabName)}>
         <input
           id={"TAB-INPUT-"+cleanInputForId(tabName)}
@@ -27,7 +27,7 @@ export default function Tab({ name, isSelected, onTabDelete, onTabChangeName, on
         />
       </div>
       <div className="tab-close-cont" onClick={onTabDelete} id={"TAB-CLOSE-"+cleanInputForId(tabName)}>
-        <CloseIcon  className="tab-close"/>
+        <CloseIcon  className="tab-close" fontSize='small' />
       </div>
       
     </div>

@@ -129,7 +129,7 @@ export default function Header() {
   }
 
   return (
-    <div>
+  <div style={{width: '100%'}}>
       <Menubar onTabAdd={onTabAdd} onTabSave={onTabSave} enableSaveAs={enableSaveAs}/>
       <Toolbar />
       <Tabbar tabs={tabs} onTabDelete={onTabDelete} onTabAdd={onTabAdd} onTabChangeName={onTabChangeName} onTabClick={onTabClick} />
