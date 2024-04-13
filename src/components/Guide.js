@@ -8,7 +8,7 @@ export default function Guide() {
           <div className='guide-content'>
             <p className='note'> Note: Always say <strong>"please."</strong> at the end of the voiced instruction because it serves as the <strong>ENTER</strong> key.</p>
             <p>When opening a file, you need to say, <strong>“Honey, new file, please.”</strong></p>
-            <p>When opening an existing file, you need to say, <strong>“Honey, open the folder, please.”</strong></p>
+            <p>When opening an existing file, you need to say, <strong>“Honey, open file, please.”</strong></p>
             <p>When saving a file, you need to say, <strong>“Honey, save the file, please.”</strong></p>
             <p>When saving as a new file, you need to say, <strong>“Honey, save as new file, please.”</strong></p>
             <p>When undoing, you need to say, <strong>“Honey, undo, please."</strong></p>

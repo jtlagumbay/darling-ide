@@ -183,7 +183,7 @@ export default function Menubar({ onTabAdd, onTabSave,
       />
       <button id="MENU-OPEN" className="menubar-button" onClick={handleOpenFile}>
         <FileOpenIcon className="menubar-button-icon"/>
-        <span className="menubar-button-label">Open Folder</span>
+        <span className="menubar-button-label">Open File</span>
       </button>
       <button id="MENU-SAVE" className="menubar-button" onClick={handleSave} disabled={unsavedChanges}>
         <SaveIcon className="menubar-button-icon"/>
