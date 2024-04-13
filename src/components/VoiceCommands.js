@@ -1,8 +1,9 @@
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect } from 'react';  
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import OnIcon from '@mui/icons-material/Mic';
 import OffIcon from '@mui/icons-material/MicOff';
 import { commands } from './commands';
+import Transcript from './Transcript';
 
 const VoiceCommands = () => {
   const [isListening, setIsListening] = useState(false);
@@ -26,14 +27,14 @@ const VoiceCommands = () => {
       setIsListening(true);
       resetTranscript();
     }
-  
+  console.log(transcript);
   }, [transcript]);
 
   useEffect(() => {
     commands.forEach(({ command, callback }) => {
       if (script.toLowerCase().includes(command)) {
         callback();
-        setScript('');
+        // setScript('');
       }
     });
   }, [script]);
@@ -49,14 +50,12 @@ const VoiceCommands = () => {
 
   return (
     <div className='voice-cont'>
+        <Transcript transcript={script || 'Say something...'}/>
       <button onClick={() => setIsListening(prevState => !prevState)} className='mic-icon'>
         {isListening ?
           <OnIcon fontSize='large' /> : 
           <OffIcon fontSize='large' />}
       </button>
-
-      {/* <button onClick={resetTranscript}>Reset</button> */}
-      {/* <p>{transcript}</p> */}
     </div>
   );
 };
