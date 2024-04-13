@@ -13,12 +13,18 @@ import DownloadIcon from '@mui/icons-material/Download';
 import { useCurrentEditor } from "@tiptap/react";
 import React, { useState, useEffect, useRef } from 'react';
 import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem, generateUniqueTabName } from '../utils';
+import Modal from './Modal/Modal';
+import './Modal/Modal.css';
 
 export default function Menubar({ onTabAdd, onTabSave,
   enableSaveAs, unsavedChanges
 }) {
   const { editor } = useCurrentEditor();
   const [zoomLevel, setZoomLevel] = useState(100); // Initial zoom level
+  const [isSaveAsModelOpen, setIsSaveAsModelOpen] = useState(false);
+  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
+  const [isDownloadConfirm, setIsDownloadConfirm] = useState(false);
+  const [fileNameInput, setFileNameInput] = useState('');
   const fileInputRef = useRef(null);
 
   /** New/Open File Functionalities **/
@@ -55,16 +61,39 @@ export default function Menubar({ onTabAdd, onTabSave,
   }
 
   const handleDownload = () => {
-    /**
-     * TODO: Add modal to check if walay unsaved changes
-     */
-    saveFile()
+    /* modal to check if there are no unsaved changes */
+    if(unsavedChanges){
+      setIsDownloadModalOpen(true);
+    } else {
+      setIsDownloadConfirm(true);
+    }
   }
+
+  const handleConfirmDownload = () => {
+    saveFile();
+    setIsDownloadModalOpen(false);
+    setIsDownloadConfirm(false);
+  }
+
   const handleSaveAs = () => {
-    /**
-     * TODO: Add modal to ask for name
-     */
-    onTabAdd(generateUniqueTabName(getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST)), getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT))
+    /* modal to ask for file name using input field */
+    setFileNameInput('');
+    setIsSaveAsModelOpen(true);
+  }
+
+  const handleConfirmSaveAs = () => {
+    let newFileName = fileNameInput;
+    let fileContent = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT);
+
+    if (!newFileName) {
+      newFileName = generateUniqueTabName(getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST));
+    }
+
+    // Add the new tab with the file name
+    onTabAdd(newFileName, fileContent);
+
+    // Close the modal
+    setIsSaveAsModelOpen(false);
   }
 
   const saveFile = () => {
@@ -203,6 +232,52 @@ export default function Menubar({ onTabAdd, onTabSave,
         <DownloadIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Download</span>
       </button>
+
+      {/* Modal for Save As File */}
+      <Modal 
+        isOpen={isSaveAsModelOpen}
+        onClose={() => setIsSaveAsModelOpen(false)}
+        headerText="Save File As"
+        content="Please enter the name of the file."
+        inputField={
+          <input
+            type='text'
+            value={fileNameInput}
+            placeholder='Please enter the file name...'
+            onChange={(e) => setFileNameInput(e.target.value)}
+          />
+        }
+        buttonText1="Cancel"
+        buttonText2="Save"
+        onCancel={() => setIsSaveAsModelOpen(false)}
+        onConfirm={handleConfirmSaveAs}
+      />
+
+      {/* Modal for Download File with Unsaved Changes */}
+      <Modal 
+        isOpen={isDownloadModalOpen}
+        onClose={() => setIsDownloadModalOpen(false)}
+        headerText="Unsaved Changes"
+        content="There are unsaved changes. Are you sure you want to download the file? The contents will be automatically saved."
+        buttonText1="No"
+        buttonText2="Yes"
+        onCancel={() => setIsDownloadModalOpen(false)}
+        onConfirm={handleConfirmDownload}
+      />
+
+      {/* Modal for Download File with NO Unsaved Changes*/}
+      <Modal 
+        isOpen={isDownloadConfirm}
+        onClose={() => setIsDownloadConfirm(false)}
+        headerText="Download File"
+        content="Are you sure you want to download the file?"
+        buttonText1="No"
+        buttonText2="Yes"
+        onCancel={() => setIsDownloadConfirm(false)}
+        onConfirm={handleConfirmDownload}
+      />
+
+
       <div className="vertical-division"/>
       <button id="MENU-UNDO" className="menubar-button" onClick={handleUndo} disabled={!editor.can().undo()}>
         <UndoIcon className="menubar-button-icon"/>
