@@ -7,6 +7,9 @@
   --brown-2: #C19A6B;
   --brown-3: #552C08;
   --brown-3-fade: #552c0883;
+
+  --gray: #E8D8C4;
+  --gray-text: #AC9B85;
 }
 
 body {
@@ -79,7 +82,7 @@ body {
 .container {
   background-color: var(--beige-1);
   color: var(--brown-3);
-  border-radius: 0 0 10px 10px;
+  border-radius: 10px;
   padding: 10px 20px;
 }
 
@@ -213,16 +216,36 @@ div:has(> .ProseMirror) {
 
 /* TAB CSS */
 
-.tab-container {
+.tab-container-active,
+.tab-container-inactive {
   height: 50px;
   display: grid;
   grid-template-columns: 6fr 1fr;
+}
+
+.tab-container-active {
+  color: var(--brown-3) !important;
+  border-bottom: 5px solid var(--brown-3);
+}
+
+.tab-container-inactive {
+  color: var(--gray-text) !important;
+  border-bottom: 5px solid var(--gray);
 }
 
 .tab-close-cont {
   display: flex;
   align-items: center;
   height: 50px;
+}
+
+.tab-close {
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.tab-close:hover {
+  background-color: var(--beige-2);
 }
 
 .tab-name-cont {
@@ -237,8 +260,13 @@ div:has(> .ProseMirror) {
   background-color: transparent;
   border: none;
   outline: none;
-  width: 50%;
+  min-width: 50%;
   color: var(--brown-3);
+  margin-left: 10px
+}
+
+.tab-container-inactive input {
+  color: var(--gray-text)
 }
 
 .tabcont-container {
@@ -247,10 +275,34 @@ div:has(> .ProseMirror) {
   align-items: center;
   border-radius: 10px 10px 0 0;
   background-color: var(--beige-1);
-  border-bottom: 10px solid #E8D8C4;
-  height: 50px;
+  height: 60px;
+  width: calc((3/4) * (100dvw - 40px));
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.tabcont-container::-webkit-scrollbar {
+  display: none;
 }
 
 .tab-name-input-readonly {
   background-color: transparent;
+}
+
+/* .tab-name-input-editable{
+  font-weight: 700;
+} */
+
+.italicize {
+  font-style: italic;
+}
+
+.add-icon {
+  cursor: pointer;
+  border-radius: 20px;
+  margin: 0 10px;
+}
+
+.add-icon:hover {
+  background-color: var(--beige-2);
 }

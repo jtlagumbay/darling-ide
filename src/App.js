@@ -10,10 +10,16 @@ import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem } from './
 
 function App() {
   const [transcript, setTranscript] = useState('');
+
   useEffect(() => {
     const storedFileContent = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT);
     if (storedFileContent) {
       setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT, storedFileContent)
+    }
+
+    const fileList = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST)
+    if (!fileList) {
+      setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST, [])
     }
   }, []);
   
