@@ -213,7 +213,7 @@ export default function Menubar() {
     <div className="container menubar-container" >
       <button id="MENU-NEW" className="menubar-button" onClick = {handleNewFile}>
         <NoteAddIcon />
-        <span className="menubar-button-label">New</span>
+        <span className="menubar-button-label">New File</span>
       </button>
       <input
         type="file"
@@ -223,15 +223,15 @@ export default function Menubar() {
       />
       <button id="MENU-OPEN" className="menubar-button" onClick={handleOpenFile}>
         <NoteAddIcon className="menubar-button-icon"/>
-        <span className="menubar-button-label">Open</span>
+        <span className="menubar-button-label">Open Folder</span>
       </button>
       <button id="MENU-SAVE" className="menubar-button" onClick={handleSave} disabled={!unsavedChanges}>
         <SaveIcon className="menubar-button-icon"/>
-        <span className="menubar-button-label">Save</span>
+        <span className="menubar-button-label">Save File</span>
       </button>
       <button id="MENU-SAVE-AS" className="menubar-button" onClick={handleSaveAs} disabled={!enableSaveAs}>
         <SaveAsIcon className="menubar-button-icon"/>
-        <span className="menubar-button-label">Save As</span>
+        <span className="menubar-button-label">Save As File</span>
       </button>
       <div className="vertical-division"/>
       <button id="MENU-UNDO" className="menubar-button" onClick={handleUndo} disabled={!editor.can().undo()}>
@@ -257,11 +257,11 @@ export default function Menubar() {
       <div className="vertical-division"/>
       <button id="MENU-ZOOM-IN" className="menubar-button" onClick={handleZoomIn}>
         <ZoomInIcon className="menubar-button-icon"/>
-        <span className="menubar-button-label">Zoom in</span>
+        <span className="menubar-button-label">Zoom In</span>
       </button>
       <button id="MENU-ZOOM-OUT" className="menubar-button" onClick={handleZoomOut}>
         <ZoomOutIcon className="menubar-button-icon"/>
-        <span className="menubar-button-label">Zoom out</span>
+        <span className="menubar-button-label">Zoom Out</span>
       </button>
       <button id="MENU-SELECT-ALL" onClick={handleSelectAll} hidden />
       <button id="MENU-DESELECT" onClick={handleDeselect} hidden />
