@@ -2,6 +2,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ContentCutIcon from '@mui/icons-material/ContentCut';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import FileOpenIcon from '@mui/icons-material/FileOpen';
 import RedoIcon from '@mui/icons-material/Redo';
 import SaveIcon from '@mui/icons-material/Save';
 import SaveAsIcon from '@mui/icons-material/SaveAs';
@@ -181,7 +182,7 @@ export default function Menubar({ onTabAdd, onTabSave,
         onChange={openFileExplorer}
       />
       <button id="MENU-OPEN" className="menubar-button" onClick={handleOpenFile}>
-        <NoteAddIcon className="menubar-button-icon"/>
+        <FileOpenIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Open Folder</span>
       </button>
       <button id="MENU-SAVE" className="menubar-button" onClick={handleSave} disabled={unsavedChanges}>

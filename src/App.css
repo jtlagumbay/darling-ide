@@ -173,7 +173,7 @@ div:has(> .ProseMirror) {
   justify-content: space-evenly;
   background-color: transparent;
   border: none;
-  margin: 5px;
+  margin: 4px;
   color: var(--brown-3);
 }
 
