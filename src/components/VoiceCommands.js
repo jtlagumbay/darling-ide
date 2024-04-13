@@ -4,6 +4,7 @@ import OnIcon from '@mui/icons-material/Mic';
 import OffIcon from '@mui/icons-material/MicOff';
 import { commands } from './commands';
 import Transcript from './Transcript';
+import { useCurrentEditor } from '@tiptap/react';
 
 const VoiceCommands = () => {
   const [isListening, setIsListening] = useState(false);
@@ -14,6 +15,8 @@ const VoiceCommands = () => {
     resetTranscript,
     browserSupportsSpeechRecognition
   } = useSpeechRecognition();
+
+  const { editor } = useCurrentEditor(); 
 
   useEffect(() => {
     if (transcript.includes('please')) {
@@ -37,6 +40,18 @@ const VoiceCommands = () => {
         // setScript('');
       }
     });
+  }, [script]);
+
+  // for typing in texteditor
+  useEffect(() => {
+    if(script.includes('type this')) {
+      const text = script.replace('type this', '');
+
+      const btn = document.getElementById('MENU-TYPE');
+
+      btn.dataset.text = text;
+      btn.click();
+    }
   }, [script]);
 
   useEffect(() => {
