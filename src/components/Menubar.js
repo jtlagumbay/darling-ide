@@ -13,10 +13,11 @@ import { useCurrentEditor } from "@tiptap/react";
 import React, { useState, useEffect, useRef } from 'react';
 import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem, generateUniqueTabName } from '../utils';
 
-export default function Menubar({ onTabAdd, onTabSave, enableSaveAs }) {
+export default function Menubar({ onTabAdd, onTabSave,
+  enableSaveAs, unsavedChanges
+}) {
   const { editor } = useCurrentEditor();
   const [zoomLevel, setZoomLevel] = useState(100); // Initial zoom level
-  const [unsavedChanges, setUnsavedChanges] = useState(false);
   const fileInputRef = useRef(null);
 
   /** New/Open File Functionalities **/
@@ -66,7 +67,7 @@ export default function Menubar({ onTabAdd, onTabSave, enableSaveAs }) {
   }
 
   const saveFile = () => {
-    const content = editor.getText();
+    const content = editor.getHTML();
     const blob = new Blob([content], { type: 'text' });
     const anchor = document.createElement('a');
     anchor.href = URL.createObjectURL(blob);
@@ -161,15 +162,6 @@ export default function Menubar({ onTabAdd, onTabSave, enableSaveAs }) {
   useEffect(() => {
     document.body.style.zoom = zoomLevel+'%';
   }, [zoomLevel])
-
-  useEffect(() => {
-    editor.on('transaction', () => {
-      var initialContent = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT)
-      var content = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)
-      setUnsavedChanges(initialContent == content)
-    })
-  },[])
-
   
 
   if (!editor) {
