@@ -11,6 +11,7 @@ export default function Header() {
   const { editor } = useCurrentEditor();
   const [tabs, setTabs] = useState(getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST))
   const [enableSaveAs, setEnableSaveAs] = useState(false);
+  const [unsavedChanges, setUnsavedChanges] = useState(false);
 
 
   useEffect(() => {
@@ -33,7 +34,6 @@ export default function Header() {
      */
     var indexToDelete = tabs.findIndex(tab => tab.name === tabToDelete);
     var checkSelected = tabs[indexToDelete].isSelected
-    var activeTab = {}
     var updatedTabs = tabs.filter(tab => tab.name !== tabToDelete);
     if (checkSelected)
     {
@@ -44,11 +44,10 @@ export default function Header() {
 
       if (indexToDelete <= updatedTabs.length - 1 && updatedTabs.length > 0) {
         updatedTabs[indexToDelete].isSelected = true
-        activeTab = updatedTabs[indexToDelete]
       } else if (indexToDelete > updatedTabs.length - 1 && updatedTabs.length >0) {
         updatedTabs[--indexToDelete].isSelected = true
-        activeTab = updatedTabs[--indexToDelete]
       }
+      var activeTab = updatedTabs[indexToDelete]
       setActiveTab(activeTab.name, activeTab.content, activeTab.initialContent)
 
     }
@@ -128,13 +127,35 @@ export default function Header() {
     editor.commands.setContent(content)
   }
 
+  useEffect(() => {
+    editor && editor.on('transaction', () => {
+      var initialContent = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT)
+      var content = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)
+      console.log(initialContent, content)
+      setUnsavedChanges(initialContent == content)
+
+    })
+
+    editor && editor.on('blur', () => {
+      var initialContent = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT)
+      var content = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)
+      console.log(initialContent, content)
+      setUnsavedChanges(initialContent == content)
+
+    })
+  },[])
+
+
   if (!editor) {
     return null;
   }
 
   return (
   <div style={{width: '100%'}}>
-      <Menubar onTabAdd={onTabAdd} onTabSave={onTabSave} enableSaveAs={enableSaveAs}/>
+      <Menubar onTabAdd={onTabAdd} onTabSave={onTabSave}
+        enableSaveAs={enableSaveAs}
+        unsavedChanges={unsavedChanges}
+      />
       <Toolbar />
       <Tabbar tabs={tabs} onTabDelete={onTabDelete} onTabAdd={onTabAdd} onTabChangeName={onTabChangeName} onTabClick={onTabClick} />
   </div>
