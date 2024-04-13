@@ -52,3 +52,17 @@ export const generateUniqueTabName = (tabs) => {
 
   return uniqueName + (counter > 0 ? ` (${counter})` : '');
 }
+
+export const cleanInputForId = (input) => {
+  // Remove any characters that are not alphanumeric, hyphens, or underscores
+  const cleanedInput = input.replace(/[^\w-]/g, '');
+
+  // Make sure the ID starts with a letter (IDs cannot start with a number)
+  const startsWithLetter = /^[a-zA-Z]/.test(cleanedInput);
+  if (!startsWithLetter) {
+    // Prepend 'id_' if it doesn't start with a letter
+    return 'id_' + cleanedInput;
+  }
+
+  return cleanedInput;
+}

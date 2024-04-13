@@ -6,10 +6,12 @@ import Tabbar from "./Tabbar"
 import Toolbar from "./Toolbar";
 import { act } from "react-dom/test-utils";
 
-export default function Header({ print }) {
+export default function Header() {
   
   const { editor } = useCurrentEditor();
   const [tabs, setTabs] = useState(getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST))
+  const [enableSaveAs, setEnableSaveAs] = useState(false);
+
 
   useEffect(() => {
     tabs && tabs.map(tab => {
@@ -20,6 +22,9 @@ export default function Header({ print }) {
       }
     })
     setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST, (tabs))
+    if (tabs && tabs.length > 0) {
+      setEnableSaveAs(true)
+    }
   }, [tabs])
 
   function onTabDelete(tabToDelete) {
@@ -81,7 +86,8 @@ export default function Header({ print }) {
       }
     }
     setActiveTab(newTab.name, newTab.content, newTab.initialContent)
-    setTabs(tabs=>[...tabs, newTab])
+    setTabs(tabs => [...tabs, newTab])
+    setEnableSaveAs(true)
   }
 
   function onTabClick(name) {
@@ -124,7 +130,7 @@ export default function Header({ print }) {
 
   return (
     <div>
-      <Menubar onTabAdd={onTabAdd} onTabSave={onTabSave}/>
+      <Menubar onTabAdd={onTabAdd} onTabSave={onTabSave} enableSaveAs={enableSaveAs}/>
       <Toolbar />
       <Tabbar tabs={tabs} onTabDelete={onTabDelete} onTabAdd={onTabAdd} onTabChangeName={onTabChangeName} onTabClick={onTabClick} />
   </div>

@@ -10,6 +10,7 @@ import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem } from './
 
 function App() {
   const [transcript, setTranscript] = useState('');
+
   useEffect(() => {
     const storedFileContent = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT);
     if (storedFileContent) {

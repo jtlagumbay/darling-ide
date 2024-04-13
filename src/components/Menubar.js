@@ -11,13 +11,12 @@ import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import DownloadIcon from '@mui/icons-material/Download';
 import { useCurrentEditor } from "@tiptap/react";
 import React, { useState, useEffect, useRef } from 'react';
-import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem, removeLocalStorageItem } from '../utils';
+import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem, generateUniqueTabName } from '../utils';
 
-export default function Menubar({ onTabAdd, onTabSave }) {
+export default function Menubar({ onTabAdd, onTabSave, enableSaveAs }) {
   const { editor } = useCurrentEditor();
   const [zoomLevel, setZoomLevel] = useState(100); // Initial zoom level
   const [unsavedChanges, setUnsavedChanges] = useState(false);
-  const [enableSaveAs, setEnableSaveAs] = useState(false);
   const fileInputRef = useRef(null);
 
   /** New/Open File Functionalities **/
@@ -60,7 +59,7 @@ export default function Menubar({ onTabAdd, onTabSave }) {
     /**
      * TODO: Add modal to ask for name
      */
-    onTabAdd(getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME), getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT))
+    onTabAdd(generateUniqueTabName(getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST)), getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT))
   }
 
   const saveFile = () => {
@@ -159,15 +158,6 @@ export default function Menubar({ onTabAdd, onTabSave }) {
   useEffect(() => {
     document.body.style.zoom = zoomLevel+'%';
   }, [zoomLevel])
-
-  useEffect(() => {
-    var fileName = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME)
-    if (fileName) {
-      setEnableSaveAs(true)
-    } else {
-      setEnableSaveAs(false)
-    }
-  }, [])
 
   useEffect(() => {
     editor.on('transaction', () => {
