@@ -5,7 +5,6 @@ export default function Tabbar({ tabs, onTabDelete, onTabAdd, onTabChangeName, o
   return (
     <div className="tabcont-container">
       {tabs.map((tab) => {
-        // console.log(tab)
         return <Tabs
           key = {tab.name}
           name={tab.name}
