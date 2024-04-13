@@ -1,19 +1,17 @@
-import {
-  useEditor,
-  EditorContent,
-  FloatingMenu,
-  BubbleMenu,
-  EditorProvider,
-} from "@tiptap/react";
 import { Color } from "@tiptap/extension-color";
 import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
+import {
+  EditorProvider
+} from "@tiptap/react";
 
 import StarterKit from "@tiptap/starter-kit";
-import Toolbar from "./Toolbar";
-import Menubar from "./Menubar";
+import Header from "./Header";
+import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem } from "../utils";
+import { useEffect, useState } from "react";
 
 export default function TextEditor({ transcript }) {
+
   const extensions = [
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle.configure({ types: [ListItem.name] }),
@@ -29,12 +27,32 @@ export default function TextEditor({ transcript }) {
     }),
   ];
 
+  const onUpdate = ({ editor }) => {
+    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, editor.getHTML())
+
+    var fileList = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST)
+    var fileName = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME)
+
+    var updatedFileList = fileList.map(tab => {
+      if (tab.name == fileName) {
+        var newContent = {
+          ...tab,
+          content: editor.getHTML()
+        }
+        return newContent
+      } else return tab
+    })
+    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST, updatedFileList)
+  }
+
+
   return (
-    <div>
+    <div className="editor-cont">
       <EditorProvider
-        slotBefore={<Toolbar />}
+        slotBefore={<Header />}
         extensions={ extensions }
-        content={ transcript }
+        content={getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)}
+        onUpdate={editor => onUpdate(editor)}
       ></EditorProvider>
     </div>
   );

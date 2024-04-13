@@ -1,17 +1,19 @@
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import ContentCutIcon from '@mui/icons-material/ContentCut';
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import RedoIcon from '@mui/icons-material/Redo';
 import SaveIcon from '@mui/icons-material/Save';
 import SaveAsIcon from '@mui/icons-material/SaveAs';
 import UndoIcon from '@mui/icons-material/Undo';
-import RedoIcon from '@mui/icons-material/Redo';
-import ContentCutIcon from '@mui/icons-material/ContentCut';
-import ContentPasteIcon from '@mui/icons-material/ContentPaste';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
+import DownloadIcon from '@mui/icons-material/Download';
 import { useCurrentEditor } from "@tiptap/react";
 import React, { useState, useEffect, useRef } from 'react';
+import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem, generateUniqueTabName } from '../utils';
 
-export default function Menubar() {
+export default function Menubar({ onTabAdd, onTabSave, enableSaveAs }) {
   const { editor } = useCurrentEditor();
   const [zoomLevel, setZoomLevel] = useState(100); // Initial zoom level
   const [unsavedChanges, setUnsavedChanges] = useState(false);
@@ -19,84 +21,68 @@ export default function Menubar() {
 
   /** New/Open File Functionalities **/
   const handleNewFile = (event) => {
-    if (!unsavedChanges) {
-      // Clear the content of the editor
-      editor.commands.clearContent();
-    } else {
-      const confirmNewFile = window.confirm("There are unsaved changes. Are you sure you want to create a new file?");
-      if (confirmNewFile) {
-        // Clear the content of the editor
-        editor.commands.clearContent();
-        // Reset unsavedChanges state
-        setUnsavedChanges(false);
-      } 
-    }
+    onTabAdd()
   }
 
   const handleOpenFile = () => {
-    if (unsavedChanges) {
-      const confirmOpenFile = window.confirm("There are unsaved changes. Are you sure you want to open a new file?");
-      if (!confirmOpenFile) { 
-        return
-      }
-    } 
     fileInputRef.current.click()
   }
+
   const openFileExplorer = (event) => {
     const file = event.target.files[0];
     if (!file) return;
+    else {
+      setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME, file["name"])
+    }
 
     const reader = new FileReader();
 
     reader.onload = () => {
       const fileContent = reader.result;
-      editor.commands.setContent(fileContent);
+      onTabAdd(file["name"], fileContent)
     };
 
     reader.readAsText(file);
   };
 
+  /** Save/As Functionalities **/
+
   const handleSave = () => {
-    handleSaveAs()
+    // saveFile()
+    onTabSave()
   }
 
-  /** Save/As Functionalities **/
+  const handleDownload = () => {
+    /**
+     * TODO: Add modal to check if walay unsaved changes
+     */
+    saveFile()
+  }
   const handleSaveAs = () => {
-    // Get the HTML content of the editor
-    const content = editor.getText();
-    console.log(content)
-    // Create a Blob object containing the HTML content
-    const blob = new Blob([content], { type: 'text/html' });
+    /**
+     * TODO: Add modal to ask for name
+     */
+    onTabAdd(generateUniqueTabName(getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST)), getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT))
+  }
 
-    // Create a temporary anchor element to trigger the download
+  const saveFile = () => {
+    const content = editor.getText();
+    const blob = new Blob([content], { type: 'text' });
     const anchor = document.createElement('a');
     anchor.href = URL.createObjectURL(blob);
-    anchor.download = 'document.txt';
-    
-     // Listen for the download start event
-    anchor.addEventListener('click', () => {
-      // Update unsavedChanges only if the download starts
-      setUnsavedChanges(false);
-    });
+    anchor.download = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME);
     
     // Programmatically click the anchor element to start the download
     anchor.click();
     
-    // Clean up by revoking the object URL
-    URL.revokeObjectURL(anchor.href);
-
-    // reset unsaved changes
-    setUnsavedChanges(false)
   };
 
   /** Undo Redo Functionalities **/
   const handleUndo = () => {
-    console.log("undo")
     editor.commands.undo();
   };
 
   const handleRedo = () => {
-    console.log("redo")
     editor.commands.redo();
   };
 
@@ -115,7 +101,6 @@ export default function Menubar() {
     event.preventDefault();
     try {
       const text = await navigator.clipboard.readText();
-      console.log(text)
       editor.chain().focus().insertContent(text).run()
     } catch (error) {
       console.error('Failed to read clipboard:', error);
@@ -140,29 +125,52 @@ export default function Menubar() {
   /** Zoom Functionalities **/ 
   const handleZoomIn = () => {
     setZoomLevel(prev => prev+=5)
-    console.log("in "+zoomLevel)
   };
   
   const handleZoomOut = () => {
     setZoomLevel(prev => prev-=5)
-    console.log("out "+zoomLevel)
   };
+
+  /** Extra Commands **/
+  const handleSelectAll = () => {
+    editor.chain().focus().selectAll().run();
+  };
+
+  const handleDelete = () => {
+    const { from, to } = editor.state.selection;
+
+    if(from === to) {
+      editor.chain().focus().setTextSelection({from: from - 1, to: to}).run();
+    }
+
+    editor.chain().focus().deleteSelection().run();
+  };
+
+  const handleDeleteAll = () => {
+    editor.chain().focus().clearContent().run();
+  }
+
+  const handleEnter = () => {
+    editor.chain().focus().enter().run();
+  }
+
+  const handleDeselect = () => {
+    editor.chain().focus().selectTextblockEnd().run();
+  }
 
   useEffect(() => {
     document.body.style.zoom = zoomLevel+'%';
   }, [zoomLevel])
 
-  const handleChange = () => {
-    // Set unsavedChanges to true when changes are made
-    setUnsavedChanges(true);
-  };
+  useEffect(() => {
+    editor.on('transaction', () => {
+      var initialContent = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT)
+      var content = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)
+      setUnsavedChanges(initialContent == content)
+    })
+  },[])
 
-  // Attach handleChange to editor's change event
-  editor.on('transaction', () => {
-    handleChange();
-  });
-
-
+  
 
   if (!editor) {
     return null;
@@ -176,6 +184,7 @@ export default function Menubar() {
       <input
         type="file"
         ref={fileInputRef}
+        accept='.txt'
         style={{ display: 'none' }}
         onChange={openFileExplorer}
       />
@@ -183,13 +192,17 @@ export default function Menubar() {
         <NoteAddIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Open</span>
       </button>
-      <button id="MENU-SAVE" className="menubar-button" onClick={handleSave} disabled={!unsavedChanges}>
+      <button id="MENU-SAVE" className="menubar-button" onClick={handleSave} disabled={unsavedChanges}>
         <SaveIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Save</span>
       </button>
-      <button id="MENU-SAVE-AS" className="menubar-button" onClick={handleSaveAs} disabled={!unsavedChanges}>
+      <button id="MENU-SAVE-AS" className="menubar-button" onClick={handleSaveAs} disabled={!enableSaveAs}>
         <SaveAsIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Save As</span>
+      </button>
+      <button id="MENU-DOWNLOAD" className="menubar-button" onClick={handleDownload}>
+        <DownloadIcon className="menubar-button-icon"/>
+        <span className="menubar-button-label">Download</span>
       </button>
       <div className="vertical-division"/>
       <button id="MENU-UNDO" className="menubar-button" onClick={handleUndo} disabled={!editor.can().undo()}>
@@ -221,6 +234,11 @@ export default function Menubar() {
         <ZoomOutIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Zoom out</span>
       </button>
+      <button id="MENU-SELECT-ALL" onClick={handleSelectAll} hidden />
+      <button id="MENU-DESELECT" onClick={handleDeselect} hidden />
+      <button id="MENU-DELETE" onClick={handleDelete} hidden />
+      <button id="MENU-DELETE-ALL" onClick={handleDeleteAll} hidden />
+      <button id="MENU-ENTER" onClick={handleEnter} hidden />
      </div>
   )
 }
