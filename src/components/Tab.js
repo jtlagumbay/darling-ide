@@ -2,10 +2,14 @@ import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import { useState, useEffect } from 'react';
 import { cleanInputForId, getLocalStorageItem, LOCAL_STORAGE_KEYS } from "../utils"
+import Modal from './Modal/Modal';
+import './Modal/Modal.css';
 
-export default function Tab({ name, isSelected, onTabDelete, onTabChangeName, onTabClick, hasUnsavedChanges, id }) {
+export default function Tab({ name, isSelected, onTabDelete, onTabChangeName, onTabClick, hasUnsavedChanges, id}) {
   const [tabName, setTabName] = useState(name);
   const [error, setError] = useState(false);
+  const [isClosedModalOpen, setIsClosedModalOpen] = useState(false);
+
   const handleChange = (e) => {
     setTabName(e.target.value);
   };
@@ -25,6 +29,18 @@ export default function Tab({ name, isSelected, onTabDelete, onTabChangeName, on
     }
   };
 
+  const handleTabDelete = () => {
+    if(hasUnsavedChanges){
+      setIsClosedModalOpen(true);
+    } else {
+      onTabDelete();
+    }
+  }
+
+  const handleCloseModalConfirm = () => {
+    onTabDelete();
+    setIsClosedModalOpen(false);
+  }
 
   return (
     <div className={isSelected ? "tab-container-active" : "tab-container-inactive"}>
@@ -40,10 +56,21 @@ export default function Tab({ name, isSelected, onTabDelete, onTabChangeName, on
           className={`${isSelected ? "tab-name-input-editable" : "tab-name-input-readonly"} ${hasUnsavedChanges ? "italicize" : ""}`}
         />
       </div>
-      <div className="tab-close-cont" onClick={onTabDelete} id={"TAB-CLOSE-"+cleanInputForId(tabName)}>
+      <div className="tab-close-cont" onClick={handleTabDelete} id={"TAB-CLOSE-"+cleanInputForId(tabName)}>
         <CloseIcon  className="tab-close" fontSize='small' />
       </div>
       
+      {/* Modal for Closing the Tab with Unsaved Changes */}
+      <Modal 
+        isOpen={isClosedModalOpen}
+        onClose={() => setIsClosedModalOpen(false)}
+        headerText="Unsaved Changes"
+        content="There are unsaved changes. Are you sure you want to close the tab?"
+        buttonText1="No"
+        buttonText2="Yes"
+        onCancel={() => setIsClosedModalOpen(false)}
+        onConfirm={handleCloseModalConfirm}
+      />
     </div>
   )
 }
