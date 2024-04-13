@@ -131,7 +131,6 @@ export default function Header() {
     editor && editor.on('transaction', () => {
       var initialContent = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT)
       var content = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)
-      console.log(initialContent, content)
       setUnsavedChanges(initialContent == content)
 
     })

@@ -12,15 +12,16 @@ export default function Tab({ name, isSelected, onTabDelete, onTabChangeName, on
 
   const handleBlur = () => {
     var tabs = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST)
-    if(!tabs.some(tab => tab.name === tabName)){
-      onTabChangeName(tabName);
-      setError(false)
-    } else {
+    if (tabs.some(tab => tab.name === tabName)) {
       setError(true)
       setTimeout(() => {
         setTabName(name)
         setError(false)
       }, 1500)
+      console.log(tabs)
+    } else {
+      onTabChangeName(tabName);
+      setError(false)
     }
   };
 
