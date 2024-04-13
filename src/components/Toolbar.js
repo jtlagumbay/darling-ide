@@ -51,17 +51,6 @@ export default function Toolbar() {
         <span className="menubar-button-label">Strike</span>
       </button>
       <button
-        id='TB-CODE'
-        onClick={() => editor.chain().focus().toggleCode().run()}
-        disabled={!editor.can().chain().focus().toggleCode().run()}
-        // className={editor.isActive("code") ? "is-active" : ""}
-        className="menubar-button" 
-        title="Code"
-      >
-        <CodeIcon className="menubar-button-icon" />
-        <span className="menubar-button-label">Code</span>
-      </button>
-      <button
         id='TB-BULLETS'
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         // className={editor.isActive("bulletList") ? "is-active" : ""}
@@ -80,6 +69,17 @@ export default function Toolbar() {
       >
         <FormatListNumberedIcon className="menubar-button-icon" />
         <span className="menubar-button-label">Numbers</span>
+      </button>
+      <button
+        id='TB-CODE'
+        onClick={() => editor.chain().focus().toggleCode().run()}
+        disabled={!editor.can().chain().focus().toggleCode().run()}
+        // className={editor.isActive("code") ? "is-active" : ""}
+        className="menubar-button" 
+        title="Code"
+      >
+        <CodeIcon className="menubar-button-icon" />
+        <span className="menubar-button-label">Code</span>
       </button>
       <button
         id='TB-BLOCK'
