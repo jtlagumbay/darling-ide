@@ -1,24 +1,15 @@
 import { useCurrentEditor } from "@tiptap/react";
 import Menubar from "./Menubar";
 import {useState, useEffect} from "react"
-import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem } from "../utils";
+import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem, generateUniqueTabName } from "../utils";
 import Tabbar from "./Tabbar"
 import Toolbar from "./Toolbar";
+import { act } from "react-dom/test-utils";
 
 export default function Header({ print }) {
   
   const { editor } = useCurrentEditor();
-  const [fileName, setFileName] = useState("Untitled.txt");
   const [tabs, setTabs] = useState(getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST))
-
-  useEffect(() => {
-    const storedFileName = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME);
-    if (storedFileName) {
-      setFileName(storedFileName);
-    } else {
-      setFileName("Untitled.txt")
-    }
-  }, [getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME)]);
 
   useEffect(() => {
     tabs && tabs.map(tab => {
@@ -29,14 +20,12 @@ export default function Header({ print }) {
       }
     })
     setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST, (tabs))
-    window.dispatchEvent(new Event('storage'))
-
   }, [tabs])
 
   function onTabDelete(tabToDelete) {
     var indexToDelete = tabs.findIndex(tab => tab.name === tabToDelete);
     var checkSelected = tabs[indexToDelete].isSelected
-    
+    var activeTab = {}
     var updatedTabs = tabs.filter(tab => tab.name !== tabToDelete);
     if (checkSelected)
     {
@@ -47,11 +36,14 @@ export default function Header({ print }) {
 
       if (indexToDelete <= updatedTabs.length - 1 && updatedTabs.length > 0) {
         updatedTabs[indexToDelete].isSelected = true
+        activeTab = updatedTabs[indexToDelete]
       } else if (indexToDelete > updatedTabs.length - 1 && updatedTabs.length >0) {
         updatedTabs[--indexToDelete].isSelected = true
+        activeTab = updatedTabs[--indexToDelete]
       }
-    }
+      setActiveTab(activeTab.name, activeTab.content, activeTab.initialContent)
 
+    }
     setTabs(updatedTabs)
 
   }
@@ -66,31 +58,64 @@ export default function Header({ print }) {
     setTabs(updatedTabs)
   }
 
-  function onTabAdd() {
+  function onTabAdd(name, content) {
     setTabs(tabs =>
       tabs.map(tab =>
         ({ ...tab, isSelected: false })
       )
     );
-    var newTab = {
-      name: "untitled"+tabs.length,
-      content: "<p>untitled "+tabs.length + "</p>",
-      isSelected: true
+    var newTab = {}
+    if (name && content) {
+      newTab = {
+        name: name,
+        content: content,
+        initialContent: content,
+        isSelected: true
+      }
+    } else {
+      newTab = {
+        name: generateUniqueTabName(tabs),
+        content: "<p>Write content here</p>",
+        initialContent: "<p>Write content here</p>",
+        isSelected: true
+      }
     }
+    setActiveTab(newTab.name, newTab.content, newTab.initialContent)
     setTabs(tabs=>[...tabs, newTab])
   }
 
   function onTabClick(name) {
+    setTabs(getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST))
     setTabs(tabs => 
       tabs.map(tab =>{
           var isSelected = tab.name === name
           if (isSelected) {
-            editor.commands.setContent(tab.content)
+            setActiveTab(tab.name, tab.content, tab.initialContent)
           }
           return ({ ...tab, isSelected: isSelected })
       }
       )
     )
+  }
+
+  function onTabSave() {
+    setTabs(getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST))
+    setTabs(tabs => 
+      tabs.map(tab =>{
+        if (tab.isSelected) {
+            setActiveTab(tab.name, tab.content, tab.content)
+          }
+          return ({ ...tab, initialContent: tab.content })
+      }
+      )
+    )
+  }
+
+  function setActiveTab(name, content, initialContent) {
+    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME, name)
+    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, content)
+    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT, initialContent)
+    editor.commands.setContent(content)
   }
 
   if (!editor) {
@@ -99,7 +124,7 @@ export default function Header({ print }) {
 
   return (
     <div>
-      <Menubar />
+      <Menubar onTabAdd={onTabAdd} onTabSave={onTabSave}/>
       <Toolbar />
       <Tabbar tabs={tabs} onTabDelete={onTabDelete} onTabAdd={onTabAdd} onTabChangeName={onTabChangeName} onTabClick={onTabClick} />
   </div>

@@ -39,13 +39,10 @@ export default function TextEditor({ transcript }) {
           ...tab,
           content: editor.getHTML()
         }
-        console.log(newContent)
         return newContent
       } else return tab
     })
-    console.log(updatedFileList)
     setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST, updatedFileList)
-    console.log(localStorage)
   }
 
 

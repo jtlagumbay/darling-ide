@@ -8,11 +8,12 @@ import SaveAsIcon from '@mui/icons-material/SaveAs';
 import UndoIcon from '@mui/icons-material/Undo';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
+import DownloadIcon from '@mui/icons-material/Download';
 import { useCurrentEditor } from "@tiptap/react";
 import React, { useState, useEffect, useRef } from 'react';
 import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem, removeLocalStorageItem } from '../utils';
 
-export default function Menubar() {
+export default function Menubar({ onTabAdd, onTabSave }) {
   const { editor } = useCurrentEditor();
   const [zoomLevel, setZoomLevel] = useState(100); // Initial zoom level
   const [unsavedChanges, setUnsavedChanges] = useState(false);
@@ -21,34 +22,13 @@ export default function Menubar() {
 
   /** New/Open File Functionalities **/
   const handleNewFile = (event) => {
-    if (!unsavedChanges) {
-      // Clear the content of the editor
-      editor.commands.clearContent();
-    } else {
-      const confirmNewFile = window.confirm("There are unsaved changes. Are you sure you want to create a new file?");
-      if (confirmNewFile) {
-        // Clear the content of the editor
-        editor.commands.clearContent();
-        // Reset unsavedChanges state
-        setUnsavedChanges(false);
-      } 
-    }
-    removeLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)
-    removeLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT)
-    removeLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME)
-    setEnableSaveAs(true)
+    onTabAdd()
   }
 
   const handleOpenFile = () => {
-    if (unsavedChanges) {
-      const confirmOpenFile = window.confirm("There are unsaved changes. Are you sure you want to open a new file?");
-      if (!confirmOpenFile) { 
-        return
-      }
-    } 
     fileInputRef.current.click()
-    
   }
+
   const openFileExplorer = (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -60,8 +40,7 @@ export default function Menubar() {
 
     reader.onload = () => {
       const fileContent = reader.result;
-      editor.commands.setContent(fileContent);
-      setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, fileContent)
+      onTabAdd(file["name"], fileContent)
     };
 
     reader.readAsText(file);
@@ -70,30 +49,30 @@ export default function Menubar() {
   /** Save/As Functionalities **/
 
   const handleSave = () => {
-    var fileName = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME)
-    saveFile(fileName ?? "untitled.txt")
+    // saveFile()
+    onTabSave()
   }
 
+  const handleDownload = () => {
+    saveFile()
+  }
   const handleSaveAs = () => {
-    saveFile("untitled.txt")
+    /**
+     * TODO: Add modal to ask for name
+     */
+    onTabAdd(getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME), getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT))
   }
 
-  const saveFile = (fileName) => {
+  const saveFile = () => {
     const content = editor.getText();
-    const blob = new Blob([content], { type: 'text/html' });
+    const blob = new Blob([content], { type: 'text' });
     const anchor = document.createElement('a');
     anchor.href = URL.createObjectURL(blob);
-    anchor.download = fileName;
+    anchor.download = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME);
     
     // Programmatically click the anchor element to start the download
     anchor.click();
     
-    // reset unsaved changes
-    setUnsavedChanges(false)
-    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME, fileName)
-    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT, content)
-    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, content)
-    setEnableSaveAs(true)
   };
 
   /** Undo Redo Functionalities **/
@@ -190,19 +169,17 @@ export default function Menubar() {
     }
   }, [])
 
-
-  // Attach handleChange to editor's change event
   useEffect(() => {
-    const current = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)
-    const initial = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT)
-    if (current !== initial) {
-        setUnsavedChanges(true);
-    } else {
-      setUnsavedChanges(false);
-    }
-  }, [getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT), getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT)]);
+    editor.on('transaction', () => {
+      var initialContent = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT)
+      var content = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)
+      console.log(initialContent, content)
+      console.log(initialContent==content)
+      setUnsavedChanges(initialContent == content)
+    })
+  },[])
 
-
+  
 
   if (!editor) {
     return null;
@@ -216,6 +193,7 @@ export default function Menubar() {
       <input
         type="file"
         ref={fileInputRef}
+        accept='.txt'
         style={{ display: 'none' }}
         onChange={openFileExplorer}
       />
@@ -223,13 +201,17 @@ export default function Menubar() {
         <NoteAddIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Open</span>
       </button>
-      <button id="MENU-SAVE" className="menubar-button" onClick={handleSave} disabled={!unsavedChanges}>
+      <button id="MENU-SAVE" className="menubar-button" onClick={handleSave} disabled={unsavedChanges}>
         <SaveIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Save</span>
       </button>
       <button id="MENU-SAVE-AS" className="menubar-button" onClick={handleSaveAs} disabled={!enableSaveAs}>
         <SaveAsIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Save As</span>
+      </button>
+      <button id="MENU-DOWNLOAD" className="menubar-button" onClick={handleDownload}>
+        <DownloadIcon className="menubar-button-icon"/>
+        <span className="menubar-button-label">Download</span>
       </button>
       <div className="vertical-division"/>
       <button id="MENU-UNDO" className="menubar-button" onClick={handleUndo} disabled={!editor.can().undo()}>
