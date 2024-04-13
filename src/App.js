@@ -7,7 +7,6 @@ import Header from './images/header.png';
 import './App.css';
 
 function App() {
-  
   return (
     <div className="App">
       {/* header */}
