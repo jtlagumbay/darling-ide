@@ -5,7 +5,7 @@ import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem } from "..
 import Tabbar from "./Tabbar"
 import Toolbar from "./Toolbar";
 
-export default function Header() {
+export default function Header({ print }) {
   
   const { editor } = useCurrentEditor();
   const [fileName, setFileName] = useState("Untitled.txt");
@@ -29,6 +29,8 @@ export default function Header() {
       }
     })
     setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST, (tabs))
+    window.dispatchEvent(new Event('storage'))
+
   }, [tabs])
 
   function onTabDelete(tabToDelete) {
@@ -81,7 +83,10 @@ export default function Header() {
   function onTabClick(name) {
     setTabs(tabs => 
       tabs.map(tab =>{
-          var isSelected = tab.name===name
+          var isSelected = tab.name === name
+          if (isSelected) {
+            editor.commands.setContent(tab.content)
+          }
           return ({ ...tab, isSelected: isSelected })
       }
       )
@@ -93,7 +98,7 @@ export default function Header() {
   }
 
   return (
-  <div>
+    <div>
       <Menubar />
       <Toolbar />
       <Tabbar tabs={tabs} onTabDelete={onTabDelete} onTabAdd={onTabAdd} onTabChangeName={onTabChangeName} onTabClick={onTabClick} />

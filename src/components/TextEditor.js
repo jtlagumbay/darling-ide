@@ -30,8 +30,22 @@ export default function TextEditor({ transcript }) {
   const onUpdate = ({ editor }) => {
     setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, editor.getHTML())
 
-    var list = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST)
-    console.log(list)
+    var fileList = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST)
+    var fileName = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME)
+
+    var updatedFileList = fileList.map(tab => {
+      if (tab.name == fileName) {
+        var newContent = {
+          ...tab,
+          content: editor.getHTML()
+        }
+        console.log(newContent)
+        return newContent
+      } else return tab
+    })
+    console.log(updatedFileList)
+    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST, updatedFileList)
+    console.log(localStorage)
   }
 
 
