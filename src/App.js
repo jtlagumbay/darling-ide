@@ -36,21 +36,18 @@ function App() {
   // initialize welcome screen component
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
 
-  // make the welcome screen component appear for 19 seconds
+  // make the welcome screen component appear for 15 seconds
   useEffect(() => {
-    // after 19 seconds, record locally that welcome screen has been shown 
+    // after 15 seconds, record locally that welcome screen has been shown 
     // to avoid showing it again when the user refreshes
     const timer = setTimeout(() => {
-      setShowWelcomeScreen(false);
-      localStorage.setItem('showWelcomeScreen', 'true');
-    }, 19000); // 19 seconds
-
-    return () => clearTimeout(timer);
-    // call this hook every time showWelcomeScreen changes value 
+      setShowWelcomeScreen(false); 
+      localStorage.setItem('show_welcome_screen', 'true'); 
+    }, 15000);
+    return () => clearTimeout(timer); 
   }, [showWelcomeScreen]);
 
-  // if the welcome screen has not been shown, display the welcome screen
-  if (localStorage.getItem('showWelcomeScreen') === null){
+  if (localStorage.getItem('show_welcome_screen') === null){
     return <WelcomeScreen />;
   }
 
@@ -66,7 +63,7 @@ function App() {
       </div>
         
 
-        {/* holds the right ccomponent of the screen */}
+        {/* holds the right components of the screen */}
         <div className='right-component'>
           {/* contains toolbar and menubar */}
           <Header />
