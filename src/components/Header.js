@@ -154,8 +154,8 @@ function handleTabDeletion(indexToDelete) {
 
   // Remove the content associated with the tab being deleted from local storage
   if (tabToDelete.content === getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)) {
-      setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, "");
-      setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT, "");
+    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, "");
+    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT, "");
   }
 
   // Proceed with deleting the tab from the list
@@ -164,11 +164,31 @@ function handleTabDeletion(indexToDelete) {
 
   // Check if there are remaining tabs
   if (updatedTabs.length > 0) {
-      // Find the next tab and set its content to the editor
-      const nextTab = updatedTabs[indexToDelete % updatedTabs.length];
+    let nextTab;
+    // Find the index of the next tab
+    const nextTabIndex = indexToDelete === updatedTabs.length ? indexToDelete - 1 : indexToDelete;
+    // Get the next tab
+    nextTab = updatedTabs[nextTabIndex];
+
+    // Check if the next tab has unsaved changes
+    const nextTabHasUnsavedChanges = nextTab.content !== nextTab.initialContent;
+
+    // If the next tab has unsaved changes, set it as the active tab
+    if (nextTabHasUnsavedChanges) {
       setActiveTab(nextTab.name, nextTab.content, nextTab.initialContent);
+    } else {
+      // Find the next tab with unsaved changes
+      const unsavedTab = updatedTabs.slice(0, nextTabIndex).reverse().find(tab => tab.content !== tab.initialContent);
+      if (unsavedTab) {
+        setActiveTab(unsavedTab.name, unsavedTab.content, unsavedTab.initialContent);
+      } else {
+        // If no tab has unsaved changes, set the next tab as active
+        setActiveTab(nextTab.name, nextTab.content, nextTab.initialContent);
+      }
+    }
+    
   } else {
-      // If there are no remaining tabs, clear the editor's content
+      // if there are no remaining tabs, clear the editor's content
       setActiveTab("", "", "");
   }
 }
