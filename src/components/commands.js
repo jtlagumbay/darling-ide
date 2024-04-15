@@ -54,5 +54,5 @@ export const commands = [
 
     // tabs
     command('new tab', 'TAB-ADD'),
-    command('close tab', 'TAB-CLOSE-' + cleanInputForId(localStorage.getItem("file_name"))),
+    command('close tab', localStorage.getItem("file_name") ? 'TAB-CLOSE-' + cleanInputForId(localStorage.getItem("file_name")) : 'TAB-CLOSE'),
 ]

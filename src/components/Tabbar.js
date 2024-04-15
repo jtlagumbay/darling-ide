@@ -18,7 +18,7 @@ import Tabs from "./Tab"
  * @prop {Function} onTabChangeName Function for changing a tab's name
  * @prop {Function} onTabClick Function for clicking a tab
  */
-export default function Tabbar({ tabs, onTabDelete, onTabAdd, onTabChangeName, onTabClick }) {
+export default function Tabbar({ tabs, onTabDelete, onTabAdd, onTabChangeName, onTabClick, unsavedChanges }) {
   return (
     <div className="tabcont-container">
       {/* Iterates through each tab to render the tab component */}
@@ -27,7 +27,8 @@ export default function Tabbar({ tabs, onTabDelete, onTabAdd, onTabChangeName, o
           key = {tab.key}
           id = {tab.key}
           name={tab.name}
-          hasUnsavedChanges={tab.content!=tab.initialContent}
+          hasUnsavedChanges={tab.content != tab.initialContent}
+          unsavedChanges={unsavedChanges}
           isSelected={tab.isSelected}
           onTabDelete={() => onTabDelete(tab.name)}
           onTabChangeName={(newName) => onTabChangeName(newName, tab.name)}
@@ -36,10 +37,9 @@ export default function Tabbar({ tabs, onTabDelete, onTabAdd, onTabChangeName, o
       })
       }
       {/* Add Icon for adding new tab */}
-      <div className="tab-add-cont" id="TAB-ADD" >
-        <AddIcon onClick={onTabAdd} fontSize="small" className="add-icon" />
+      <div className="tab-add-cont" id="TAB-ADD" onClick={onTabAdd} >
+        <AddIcon fontSize="small" className="add-icon" />
         <span className="tab-add-label">Add</span>
-
       </div>
     </div>
   )

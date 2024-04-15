@@ -3,7 +3,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useState, useEffect } from 'react';
 import { cleanInputForId, getLocalStorageItem, LOCAL_STORAGE_KEYS } from "../utils"
 
-export default function Tab({ name, isSelected, onTabDelete, onTabChangeName, onTabClick, hasUnsavedChanges, id}) {
+export default function Tab({ name, isSelected, onTabDelete, onTabChangeName, onTabClick, hasUnsavedChanges, id, unsavedChanges}) {
   const [tabName, setTabName] = useState(name);
   const [error, setError] = useState(false);
 
@@ -51,7 +51,7 @@ export default function Tab({ name, isSelected, onTabDelete, onTabChangeName, on
           readOnly={!isSelected}
           onChange={handleChange}
           onBlur={handleBlur}
-          className={`${isSelected ? "tab-name-input-editable" : "tab-name-input-readonly"} ${hasUnsavedChanges ? "italicize" : ""}`}
+          className={`${isSelected ? "tab-name-input-editable" : "tab-name-input-readonly"} ${(hasUnsavedChanges||(unsavedChanges && tabName==getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME))) ? "italicize" : ""}`}
         />
       </div>
       <div className="tab-close-cont" onClick={onTabDelete} id={"TAB-CLOSE-"+cleanInputForId(tabName)}>

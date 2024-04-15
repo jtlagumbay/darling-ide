@@ -227,8 +227,8 @@ function handleTabDeletion(indexToDelete) {
     else {
       newTab = {
         name: generateUniqueTabName(tabs),
-        content: "",
-        initialContent: "",
+        content: "<p></p>",
+        initialContent: "<p></p>",
         isSelected: true,
         key:Date.now()
       }
@@ -331,7 +331,7 @@ function handleTabDeletion(indexToDelete) {
       {/* No props for the Toolbar */}
       <Toolbar />
       {/* Pass  to the Tabbar the tabs and the functionalities of the tab*/}
-      <Tabbar tabs={tabs} onTabDelete={onTabDelete} onTabAdd={onTabAdd} onTabChangeName={onTabChangeName} onTabClick={onTabClick} />
+      <Tabbar tabs={tabs} onTabDelete={onTabDelete} onTabAdd={onTabAdd} onTabChangeName={onTabChangeName} onTabClick={onTabClick} unsavedChanges={unsavedChanges}/>
       {/* Pass to the Modal the content of the modal and the functionalities of its button*/}
       <Modal {...modalProps} isOpen={isModalOpen} onClose={closeModal} />
   </div>

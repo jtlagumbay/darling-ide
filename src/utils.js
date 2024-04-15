@@ -87,7 +87,7 @@ export const generateUniqueTabName = (tabs) => {
  */
 export const cleanInputForId = (input) => {
   // Remove any characters that are not alphanumeric, hyphens, or underscores
-  const cleanedInput = input.replace(/[^\w-]/g, '');
+ try { const cleanedInput = input.replace(/[^\w-]/g, '');
 
   // Make sure the ID starts with a letter (IDs cannot start with a number)
   const startsWithLetter = /^[a-zA-Z]/.test(cleanedInput);
@@ -96,5 +96,8 @@ export const cleanInputForId = (input) => {
     return 'id_' + cleanedInput;
   }
 
-  return cleanedInput;
+    return cleanedInput;
+ } catch (err) {
+   console.log(err)
+  }
 }
