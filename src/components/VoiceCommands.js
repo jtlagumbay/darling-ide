@@ -34,7 +34,7 @@ const VoiceCommands = () => {
       setIsListening(true);
       resetTranscript();
     }
-  console.log(transcript);
+
   }, [transcript, resetTranscript]);
 
   // takes the script taken between 'honey' and 'please' 

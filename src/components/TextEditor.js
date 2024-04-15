@@ -91,7 +91,7 @@ export default function TextEditor({ transcript }) {
     return () => clearInterval(intervalId); // clear the interval when the component unmounts
   }, []); 
 
-    // console.log(isEmpty)
+    console.log(isEmpty)
 
   return (
   <div className={`editor-cont ${isEmpty ? 'first-open' : ''}`}>

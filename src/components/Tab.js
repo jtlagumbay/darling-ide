@@ -41,7 +41,6 @@ export default function Tab({ name, isSelected, onTabDelete, onTabChangeName, on
         setTabName(name)
         setError(false)
       }, 1500)
-      console.log(tabs)
     } else {
       onTabChangeName(tabName);
       setError(false)
