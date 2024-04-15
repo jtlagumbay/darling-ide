@@ -96,10 +96,19 @@ div:has(> .ProseMirror) {
   grid-template-rows: 1fr;
 }
 
-.tiptap.ProseMirror {
-  height: calc(100dvh - 40px - 157px - 30px - 52px);
+.editor-cont .tiptap.ProseMirror {
+  height: calc(100dvh - 40px - 157px - 30px - 35px);
   overflow-y: auto;
   border-radius: 0 0 10px 10px;
+}
+
+.editor-cont.first-open .tiptap.ProseMirror {
+  height: calc(100dvh - 40px - 157px - 30px - 35px);
+  overflow-y: auto;
+  border-radius: 0 0 10px 10px;
+  background-image: url('../src/images/welcome.png') !important;
+  background-size: contain !important;
+  background-position: center !important;
 }
 
 .ProseMirror:focus-visible {
@@ -154,9 +163,17 @@ div:has(> .ProseMirror) {
 /* Voice Commands */
 
 @keyframes bounce {
-  0% { transform: translateX(0); }
-  50% { transform: translateX(-10px); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(-10px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .transcript-cont {
@@ -316,7 +333,7 @@ div:has(> .ProseMirror) {
   background-color: transparent;
   border: none;
   outline: none;
-  min-width: fit-content;  
+  min-width: fit-content;
   color: var(--brown-3);
   padding: 0;
 }
@@ -349,9 +366,9 @@ div:has(> .ProseMirror) {
   font-weight: 700;
 } */
 
-.tab-name-error{
+.tab-name-error {
   color: red;
-  font-size: x-small; 
+  font-size: x-small;
   margin: 0;
   width: 100%;
 }

@@ -19,7 +19,15 @@ const commandOutput = {
     'deselect': 'deselected text',
     'enter': 'entered',
     'delete': 'deleted',
-    'delete all': 'deleted all text'
+    'delete all': 'deleted all text',
+    'bold': 'bolded text',
+    'italic': 'italicized text',
+    'strike': 'strikethrough text',
+    'code': 'coded text',
+    'bullets': 'added bullets',
+    'numbers': 'added numbers',
+    'block': 'added code block',
+    'type this': 'typed text in editor'
 }
 
 /* 
