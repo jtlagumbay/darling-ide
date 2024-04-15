@@ -1,5 +1,6 @@
 // import necessary libraries and components for the text editor
-import ListItem from "@tiptap/extension-list-item";
+import ListItem from "@tiptap/extension-list-item"
+import Placeholder from '@tiptap/extension-placeholder';
 import StarterKit from "@tiptap/starter-kit";
 import TextStyle from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
@@ -39,6 +40,9 @@ export default function TextEditor({ transcript }) {
         keepMarks: true,
         keepAttributes: false,
       },
+    }),
+    Placeholder.configure({
+      placeholder: 'Write content here'
     }),
   ];
 

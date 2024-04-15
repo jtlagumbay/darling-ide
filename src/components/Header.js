@@ -50,6 +50,9 @@ export default function Header() {
     // Enable save as if there is an opened tab
     if (tabs && tabs.length > 0) {
       setEnableSaveAs(true)
+    } 
+    if (tabs.length == 0) {
+      editor && editor.setEditable(false)
     }
   }, [tabs])
 
@@ -80,6 +83,7 @@ export default function Header() {
       if (indexToDelete===0 && updatedTabs.length ===0) {
         setEnableSaveAs(false)
         setUnsavedChanges(false)
+        editor.commands.clearContent()
       }
       
       // If there are tabs to the left of the deleted tab, make it the new active tab
@@ -152,8 +156,8 @@ export default function Header() {
     else {
       newTab = {
         name: generateUniqueTabName(tabs),
-        content: "<p>Write content here</p>",
-        initialContent: "<p>Write content here</p>",
+        content: "",
+        initialContent: "",
         isSelected: true,
         key:Date.now()
       }
@@ -165,6 +169,7 @@ export default function Header() {
     setTabs(tabs => [...tabs, newTab])
     // Enable SaveAs Button, this is specifically called since initially, when there are no tabs, the save as button is disabled.
     setEnableSaveAs(true)
+    editor.setEditable(true)
   }
 
   /**
