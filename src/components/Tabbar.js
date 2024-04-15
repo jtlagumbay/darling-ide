@@ -1,9 +1,27 @@
-import Tabs from "./Tab"
-import AddIcon from '@mui/icons-material/Add';
+/** Importing the libraries and functions **/
+
+// useState is used for handling reactive states in ReactJS and useEffect is used for handling side effects. Both are built-in functionalities provided by React.
 import { useEffect, useState } from "react";
+
+// Icon for adding tabs
+import AddIcon from '@mui/icons-material/Add';
+
+// Component for each Tab
+import Tabs from "./Tab"
+
+/**
+ * 
+ * @description React Functional Component for the Tab Bar 
+ * @prop {Array} Tabs List of Tabs
+ * @prop {Function} onTabDelete Function for deleting a tab
+ * @prop {Function} onTabAdd Function for adding a tab
+ * @prop {Function} onTabChangeName Function for changing a tab's name
+ * @prop {Function} onTabClick Function for clicking a tab
+ */
 export default function Tabbar({ tabs, onTabDelete, onTabAdd, onTabChangeName, onTabClick }) {
   return (
     <div className="tabcont-container">
+      {/* Iterates through each tab to render the tab component */}
       {tabs.map((tab) => {
         return <Tabs
           key = {tab.key}
@@ -17,6 +35,7 @@ export default function Tabbar({ tabs, onTabDelete, onTabAdd, onTabChangeName, o
         />
       })
       }
+      {/* Add Icon for adding new tab */}
       <AddIcon onClick = {onTabAdd} fontSize="small" className="add-icon" />
     </div>
   )
