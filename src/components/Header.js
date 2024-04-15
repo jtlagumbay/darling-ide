@@ -133,6 +133,10 @@ export default function Header() {
    * @description Adds tab to the list, called when plus icon on Tabbar is selected (name and content is empty), and when Open File in Menubar is clicked, where the name and content comes from the file opened.
    */
   function onTabAdd(name, content) {
+
+    // Get the current content of the tabs first from the localStorage, since this is also altered by the text editor.
+    setTabs(getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST))
+
     // Sets isSelected of all tabs to be false, suince the new tab added shall be the active tab.
     setTabs(tabs =>
       tabs.map(tab =>

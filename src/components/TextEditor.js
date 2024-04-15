@@ -71,6 +71,7 @@ export default function TextEditor({ transcript }) {
     });
     // save the updated file list to local storage
     setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST, updatedFileList);
+    console.log(getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST))
   }
   
   // a function to fetch fileList and update isEmpty to show welcome screen in the editor
@@ -92,8 +93,6 @@ export default function TextEditor({ transcript }) {
     // clear the interval when the component unmounts
     return () => clearInterval(intervalId);
   }, []); 
-
-    console.log(isEmpty)
 
   return (
   <div className={`editor-cont ${isEmpty ? 'first-open' : ''}`}>
