@@ -33,9 +33,10 @@ export default function Header() {
     // Iterates through each tab to check if it is the currently selected tab because its content has to be saved to another localStorage key.
     tabs && tabs.map(tab => {
       if (tab.isSelected) {
-        setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT, tab.content)
+        setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT, tab.initialContent)
         setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, tab.content)
         setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME, tab.name)
+        setUnsavedChanges(tab.initialContent != tab.content)
       }
     })
 
@@ -225,13 +226,12 @@ export default function Header() {
       // Fetch the initialContent from the localStorage
       var initialContent = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT)
       // Fetch the content from the localStorage
-      var content = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)
+      var content = editor.getHTML()
       // If the initial content does not match with the current content, make unsavedChanges to true
       setUnsavedChanges(initialContent != content)
     })
 
-  },[])
-
+  }, [])
 
   // If the editor was not instantiated, do not render anything
   if (!editor) {
