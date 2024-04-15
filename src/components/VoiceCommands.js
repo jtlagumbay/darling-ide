@@ -20,7 +20,7 @@ const VoiceCommands = () => {
     browserSupportsSpeechRecognition
   } = useSpeechRecognition();
 
-  // use the current editor hook
+  // access editor instance
   const { editor } = useCurrentEditor(); 
 
   // effect hook to handle transcript changes
@@ -64,10 +64,10 @@ const VoiceCommands = () => {
     }
   }, [script]);
 
-  // effect hook to monitor listening state
-  // if not listening, start SpeechRecognition.
-  // autostart set to true to automatically start speech recognition on page load
-  // continuous set to true for continuous listening
+/* effect hook to monitor listening state
+   if not listening, start SpeechRecognition.
+   autostart set to true to automatically start speech recognition on page load
+   continuous set to true for continuous listening */
   useEffect(() => {
     if(!listening) 
       SpeechRecognition.startListening({ autoStart: true, continuous: true });
@@ -79,11 +79,13 @@ const VoiceCommands = () => {
   }
 
   // render the voice commands container
-  // displays the transcript and a mic icon that listens for the user's voice input
-  // if no transcript is detected, display 'Say something...'
   return (
     <div className='voice-cont'>
+        {/* displays command output if command is detected
+          if not, display 'Say something...' */}
         <Transcript transcript={script || 'Say something...'}/>
+      
+      {/* button to toggle listening state */}
       <button onClick={() => setIsListening(prevState => !prevState)} className='mic-icon'>
         {isListening ?
           <OnIcon fontSize='large' /> : 

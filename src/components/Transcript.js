@@ -52,11 +52,9 @@ export default function Transcript({ transcript }) {
   
 
     // render the transcript container with the output
-    // adds bounce animation if the output is a command
-    // if not a command, adds italic styling to the output
     return ( 
-      <div key={key} className={`transcript-cont ${isCommand ? 'bounce' : ''}`}>
-        <p className={!isCommand ? 'italic' : ''}> {output} </p>
+      <div key={key} className={`transcript-cont ${isCommand ? 'bounce' : ''}`}> { /* adds bounce animation if the output is a command */}
+        <p className={!isCommand ? 'italic' : ''}> {output} </p> {/* italicize the output if it is not a command */}
       </div>
     );
 }
