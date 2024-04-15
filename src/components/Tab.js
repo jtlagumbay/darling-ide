@@ -16,7 +16,7 @@ import './Modal/Modal.css';
  * @param {*} id - the unique identifier of the tab
  * @returns tab component
  */
-export default function Tab({ name, isSelected, onTabDelete, onTabChangeName, onTabClick, hasUnsavedChanges, id}) {
+export default function Tab({ name, isSelected, onTabDelete, onTabChangeName, onTabClick, hasUnsavedChanges, id, unsavedChanges}) {
   const [tabName, setTabName] = useState(name);
   const [error, setError] = useState(false);
   const [isClosedModalOpen, setIsClosedModalOpen] = useState(false);
@@ -89,7 +89,7 @@ export default function Tab({ name, isSelected, onTabDelete, onTabChangeName, on
           readOnly={!isSelected}
           onChange={handleChange}
           onBlur={handleBlur}
-          className={`${isSelected ? "tab-name-input-editable" : "tab-name-input-readonly"} ${hasUnsavedChanges ? "italicize" : ""}`}
+          className={`${isSelected ? "tab-name-input-editable" : "tab-name-input-readonly"} ${(hasUnsavedChanges||(unsavedChanges && tabName==getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME))) ? "italicize" : ""}`}
         />
       </div>
       <div className="tab-close-cont" onClick={handleTabDelete} id={"TAB-CLOSE-"+cleanInputForId(tabName)}>

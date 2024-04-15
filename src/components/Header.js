@@ -160,8 +160,8 @@ export default function Header() {
     else {
       newTab = {
         name: generateUniqueTabName(tabs),
-        content: "",
-        initialContent: "",
+        content: "<p></p>",
+        initialContent: "<p></p>",
         isSelected: true,
         key:Date.now()
       }
@@ -262,7 +262,7 @@ export default function Header() {
       {/* No props for the Toolbar */}
       <Toolbar />
       {/* Pass  to the Tabbar the tabs and the functionalities of the tab*/}
-      <Tabbar tabs={tabs} onTabDelete={onTabDelete} onTabAdd={onTabAdd} onTabChangeName={onTabChangeName} onTabClick={onTabClick} />
+      <Tabbar tabs={tabs} onTabDelete={onTabDelete} onTabAdd={onTabAdd} onTabChangeName={onTabChangeName} onTabClick={onTabClick} unsavedChanges={unsavedChanges}/>
   </div>
   );
 }
