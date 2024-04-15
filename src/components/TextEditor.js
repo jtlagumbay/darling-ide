@@ -37,11 +37,8 @@ export default function TextEditor({ transcript }) {
 
   // react hook to set the initial state of the editor
   const [isEmpty, setIsEmpty] = useState(true);
-
   // function to call when EditorProvider => {editor} param is updated/changed
   const onUpdate = ({ editor }) => {
-    setIsEmpty(editor.isEmpty);
-    
     // saving the editor's content to local storage
     setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, editor.getHTML());
     // get the list of files from local storage
@@ -83,8 +80,8 @@ export default function TextEditor({ transcript }) {
     // call fetchFileList immediately
     fetchFileList();
   
-    // set an interval to call fetchFileList every second
-    const intervalId = setInterval(fetchFileList, 1000);
+    // set an interval to call fetchFileList every 50 milliseconds
+    const intervalId = setInterval(fetchFileList, 50);
     // clear the interval when the component unmounts
     return () => clearInterval(intervalId);
   }, []); 
