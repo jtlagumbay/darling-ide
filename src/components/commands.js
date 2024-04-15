@@ -1,3 +1,4 @@
+import { cleanInputForId } from "../utils";
 
 /**
  * Template for command functionalities
@@ -50,4 +51,8 @@ export const commands = [
     command('bullets', 'TB-BULLETS'),
     command('numbers', 'TB-NUMBERS'),
     command('block', 'TB-BLOCK'),
+
+    // tabs
+    command('new tab', 'TAB-ADD'),
+    command('close tab', 'TAB-CLOSE-' + cleanInputForId(localStorage.getItem("file_name"))),
 ]
