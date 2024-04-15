@@ -1,4 +1,9 @@
-// Function to set an item in localStorage
+/**
+ * 
+ * @param {*} key LOCAL_STORAGE_KEY
+ * @param {*} value Value to be saved in localStorage
+ * @description Saves a value to a key in localStorage
+ */
 export const setLocalStorageItem = (key, value) => {
   try {
     localStorage.setItem(key, JSON.stringify(value));
@@ -7,7 +12,12 @@ export const setLocalStorageItem = (key, value) => {
   }
 };
 
-// Function to get an item from localStorage
+/**
+ * 
+ * @param {*} key LOCAL_STORAGE_KEY
+ * @returns Value of the corresponding key in the localStorage
+ * @description Retrieves the value of a key in the localStorage
+ */
 export const getLocalStorageItem = (key) => {
   try {
     const item = localStorage.getItem(key);
@@ -18,7 +28,11 @@ export const getLocalStorageItem = (key) => {
   }
 };
 
-// Function to remove an item from localStorage
+/**
+ * 
+ * @param {*} key LOCAL_STORAGE_KEY 
+ * @description Removes a key from the localStorage
+ */
 export const removeLocalStorageItem = (key) => {
   try {
     localStorage.removeItem(key);
@@ -27,6 +41,9 @@ export const removeLocalStorageItem = (key) => {
   }
 };
 
+/**
+ * @description Removes all keys and value in the localStorage
+ */
 export const clearLocalStorage = () => {
   try {
     localStorage.clear();
@@ -35,24 +52,39 @@ export const clearLocalStorage = () => {
   }
 };
 
+/**
+ * @description Keys in the localStorage
+ */
 export const LOCAL_STORAGE_KEYS = {
-  FILE_NAME: 'file_name',
-  FILE_CONTENT: 'file_content',
-  FILE_INITIAL_CONTENT: 'file_initial_content',
-  FILE_LIST: 'file_list'
+  FILE_NAME: 'file_name', // Name of the active tab
+  FILE_CONTENT: 'file_content', // Content of the active tab
+  FILE_INITIAL_CONTENT: 'file_initial_content', // Initial content of the active tab
+  FILE_LIST: 'file_list' // List of the tabs
 };
 
+/**
+ * 
+ * @param {Array} tabs 
+ * @returns Tab name like Untitled, Untitled (1), depending on the exising tab names
+ */
 export const generateUniqueTabName = (tabs) => {
   let counter = 0;
   let uniqueName = "Untitled";
   
+  // Checks if there are tabs that has Untitled, Untitled (1), and so on, for each found, iterate the counter 
   while (tabs.some(tab => tab.name === uniqueName + (counter > 0 ? ` (${counter})` : ''))) {
     counter++;
   }
 
+  // Concatenates Untitled with the counter and the parenthesis
   return uniqueName + (counter > 0 ? ` (${counter})` : '');
 }
 
+/**
+ * 
+ * @param {String} input 
+ * @returns String that can be used as ID of an HTML tag
+ */
 export const cleanInputForId = (input) => {
   // Remove any characters that are not alphanumeric, hyphens, or underscores
   const cleanedInput = input.replace(/[^\w-]/g, '');
