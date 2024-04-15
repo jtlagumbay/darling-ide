@@ -82,6 +82,7 @@
     font-family: Poppins;
     border-style: none;
     padding: 7px;
+    cursor: pointer;
 }
 
 .modal-submit {
@@ -92,4 +93,5 @@
     font-family: Poppins;
     border-style: none;
     padding: 7px;
+    cursor: pointer;
 }
