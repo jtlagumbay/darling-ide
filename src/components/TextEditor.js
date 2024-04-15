@@ -1,6 +1,8 @@
 import { Color } from "@tiptap/extension-color";
 import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
+import Placeholder from '@tiptap/extension-placeholder';
+
 import {
   EditorProvider
 } from "@tiptap/react";
@@ -24,6 +26,9 @@ export default function TextEditor({ transcript }) {
         keepMarks: true,
         keepAttributes: false,
       },
+    }),
+    Placeholder.configure({
+      placeholder: 'Write content here'
     }),
   ];
 
