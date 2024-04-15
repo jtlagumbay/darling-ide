@@ -16,9 +16,23 @@ import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem, generateU
 import Modal from './Modal/Modal';
 import './Modal/Modal.css';
 
+/**
+ * This function is used for menubar component of the text editor.
+ * It has parameters onTabAdd, onTabSave, enableSaveAs, and unsavedChanges.
+ * onTabAdd is called when a new tab is to be added.
+ * onTabSave is called when the current tab is to be saved.
+ * enableSaveAs indicates whether the "Save As" option should be enabled.
+ * unsavedChanges indicates whether there are unsaved changes in the current tab.
+ */
 export default function Menubar({ onTabAdd, onTabSave,
   enableSaveAs, unsavedChanges
 }) {
+  /**
+   * useCurrentEditor is a hook that provides access to the current editor instance.
+   * useState is a hook that allows to have state variables in functional components.
+   * It is used to manage the zoom level, state of various modals, and the file name input
+   * useRef is a hook that is used to create a ref called fileInputRef that is initially set to null.
+   */
   const { editor } = useCurrentEditor();
   const [zoomLevel, setZoomLevel] = useState(100); // Initial zoom level
   const [isSaveAsModelOpen, setIsSaveAsModelOpen] = useState(false);
@@ -28,14 +42,17 @@ export default function Menubar({ onTabAdd, onTabSave,
   const fileInputRef = useRef(null);
 
   /** New/Open File Functionalities **/
+  /* This is a function that calls the onTabAdd functions passed as a prop. */
   const handleNewFile = (event) => {
     onTabAdd()
   }
 
+  /* This is a function that triggers a click event on the file input element. */
   const handleOpenFile = () => {
     fileInputRef.current.click()
   }
 
+  /* This is a function that reads the selected file and adds a new tab with its content. */
   const openFileExplorer = (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -54,14 +71,14 @@ export default function Menubar({ onTabAdd, onTabSave,
   };
 
   /** Save/As Functionalities **/
-
+  /* This is a function that calls the onTabSave function passed as a prop. */
   const handleSave = () => {
-    // saveFile()
     onTabSave()
   }
 
+  /* This is a function that opens a modal if there are unsaved changes, otherwise it confirms the download. */
   const handleDownload = () => {
-    /* modal to check if there are no unsaved changes */
+    /* Modal to check if there are no unsaved changes */
     if(unsavedChanges){
       setIsDownloadModalOpen(true);
     } else {
@@ -69,18 +86,21 @@ export default function Menubar({ onTabAdd, onTabSave,
     }
   }
 
+  /* This is a function that saves the file and closes the modals. */
   const handleConfirmDownload = () => {
     saveFile();
     setIsDownloadModalOpen(false);
     setIsDownloadConfirm(false);
   }
 
+  /* This is a function that opens a modal to ask for the file name. */
   const handleSaveAs = () => {
-    /* modal to ask for file name using input field */
+    /* Modal to ask for file name using input field */
     setFileNameInput('');
     setIsSaveAsModelOpen(true);
   }
 
+  /* This is a function that adds a new tab with the given file name and content, then closes the modal. */
   const handleConfirmSaveAs = () => {
     let newFileName = fileNameInput;
     let fileContent = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT);
@@ -89,13 +109,14 @@ export default function Menubar({ onTabAdd, onTabSave,
       newFileName = generateUniqueTabName(getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST));
     }
 
-    // Add the new tab with the file name
+    /* Add the new tab with the file name */
     onTabAdd(newFileName, fileContent);
 
-    // Close the modal
+    /* Close the modal */
     setIsSaveAsModelOpen(false);
   }
 
+  /* This is a function that saves the current content of the editor as a file. */
   const saveFile = () => {
     const content = editor.getHTML();
     const blob = new Blob([content], { type: 'text' });
@@ -103,7 +124,7 @@ export default function Menubar({ onTabAdd, onTabSave,
     anchor.href = URL.createObjectURL(blob);
     anchor.download = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME);
     
-    // Programmatically click the anchor element to start the download
+    /* Programmatically click the anchor element to start the download */
     anchor.click();
     
   };
@@ -143,10 +164,10 @@ export default function Menubar({ onTabAdd, onTabSave,
       const { from, to } = editor.state.selection;
       const text = editor.state.doc.textBetween(from, to);
       
-      // Remove the selected text
+      /* Remove the selected text */
       editor.chain().focus().deleteSelection().run();
       
-      // Copy the selected text to the clipboard
+      /* Copy the selected text to the clipboard */
       await navigator.clipboard.writeText(text);
     } catch (error) {
       console.error('Failed to perform cut operation:', error);
@@ -163,10 +184,12 @@ export default function Menubar({ onTabAdd, onTabSave,
   };
 
   /** Extra Commands **/
+  /* This function selects all content in the editor when called. */
   const handleSelectAll = () => {
     editor.chain().focus().selectAll().run();
   };
 
+  /* This functions deletes the current selection in the editor. */
   const handleDelete = () => {
     const { from, to } = editor.state.selection;
 
@@ -177,33 +200,51 @@ export default function Menubar({ onTabAdd, onTabSave,
     editor.chain().focus().deleteSelection().run();
   };
 
+  /* This function deletes all content in the editor. */
   const handleDeleteAll = () => {
     editor.chain().focus().clearContent().run();
   }
 
+  /* This function creates a new line. */
   const handleEnter = () => {
     editor.chain().focus().enter().run();
   }
 
+  /* This function deselects any current selection. */
   const handleDeselect = () => {
     editor.chain().focus().selectTextblockEnd().run();
   }
 
+  /* This function inserts a specific text into the editor. */
   const handleTyping = () => {
     const element = document.getElementById('MENU-TYPE');
     const text = element.dataset.text;
     editor.chain().focus().insertContent(text).run();
   }
 
+  /**
+   * This is a useEffect hook that sets the zoom level of the body element 
+   * to the zoomLevel state variable. It is used to update the zoom level of 
+   * the body element whenever the zoomLevel state changes.
+   */
   useEffect(() => {
     document.body.style.zoom = zoomLevel+'%';
   }, [zoomLevel])
   
-
+  /* The component returns null if there's no editor instance. */
   if (!editor) {
     return null;
   }
   return (
+    /**
+     * Each button has an `onClick` event handler that triggers the corresponding functions 
+     * for file operations, text editing, and zooming when clicked.
+     * It also has an ID for easier implementation of the voice commands.
+     * Some buttons also have a `disabled` prop which is set based certain conditions.
+     * Modals are also added which are only displayed based on the component's state.
+     * It also includes hidden buttons for "Select All", "Deselect", "Delete", "Delete All", 
+     * "Enter", and "Type", which are used for implementing voice commands.
+     */
     <div className="container menubar-container" >
       <button id="MENU-NEW" className="menubar-button" onClick = {handleNewFile}>
         <NoteAddIcon />
@@ -276,7 +317,6 @@ export default function Menubar({ onTabAdd, onTabSave,
         onCancel={() => setIsDownloadConfirm(false)}
         onConfirm={handleConfirmDownload}
       />
-
 
       <div className="vertical-division"/>
       <button id="MENU-UNDO" className="menubar-button" onClick={handleUndo} disabled={!editor.can().undo()}>
