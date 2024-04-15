@@ -58,17 +58,23 @@ function App() {
     <div className="App">
       {/* holds the left components of the screen */}
       <div className='left-component'>
-        {/* header */}
+        {/* logo */}
         <img src={HeaderImg} alt="darling" className='logo' />
 
+        {/* guide */}
         <Guide />
       </div>
         
 
         {/* holds the right ccomponent of the screen */}
         <div className='right-component'>
+          {/* contains toolbar and menubar */}
           <Header />
+
+          {/* text editor */}
           <TextEditor />
+
+          {/* voice commands */}
           <VoiceCommands />
         </div>
     </div>
