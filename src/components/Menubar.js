@@ -70,6 +70,7 @@ export default function Menubar({ onTabAdd, onTabSave,
   }
 
   const handleConfirmDownload = () => {
+    onTabSave()
     saveFile();
     setIsDownloadModalOpen(false);
     setIsDownloadConfirm(false);
