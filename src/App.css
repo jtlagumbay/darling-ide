@@ -308,8 +308,19 @@ div:has(> .ProseMirror) {
   display: flex;
   align-items: center;
   height: 50px;
+  flex-direction: column;
+  padding:10%;
+  justify-content: space-evenly;
 }
 
+.tab-add-cont{
+  display: flex;
+  align-items: center;
+  height: 50px;
+  flex-direction: column;
+  margin-left: 10px;
+  justify-content: space-evenly;
+}
 .tab-close {
   cursor: pointer;
   border-radius: 20px;
@@ -319,6 +330,12 @@ div:has(> .ProseMirror) {
   background-color: var(--beige-2);
 }
 
+.tab-close-label {
+  font-size: small;
+}
+.tab-add-label{
+  font-size: small;
+}
 .tab-name-cont {
   padding: 5%;
   display: flex;

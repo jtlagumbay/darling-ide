@@ -36,7 +36,11 @@ export default function Tabbar({ tabs, onTabDelete, onTabAdd, onTabChangeName, o
       })
       }
       {/* Add Icon for adding new tab */}
-      <AddIcon onClick = {onTabAdd} fontSize="small" className="add-icon" />
+      <div className="tab-add-cont" id="TAB-ADD" >
+        <AddIcon onClick={onTabAdd} fontSize="small" className="add-icon" />
+        <span className="tab-add-label">Add</span>
+
+      </div>
     </div>
   )
 }

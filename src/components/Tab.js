@@ -93,7 +93,8 @@ export default function Tab({ name, isSelected, onTabDelete, onTabChangeName, on
         />
       </div>
       <div className="tab-close-cont" onClick={handleTabDelete} id={"TAB-CLOSE-"+cleanInputForId(tabName)}>
-        <CloseIcon  className="tab-close" fontSize='small' />
+        <CloseIcon className="tab-close" fontSize='small' />
+        <span className="tab-close-label">Close</span>
       </div>
       
       {/* Modal for Closing the Tab with Unsaved Changes */}
