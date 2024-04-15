@@ -1,5 +1,8 @@
+// import necessary hooks from React
 import React, { useState, useEffect } from 'react';
 
+/* intialize a dictionary of commands and their corresponding 
+outputs that are shown to the user */ 
 const commandOutput = {
     'new file': 'created new file',
     'open file': 'opening file...',
@@ -19,31 +22,40 @@ const commandOutput = {
     'delete all': 'deleted all text'
 }
 
-export default function Transcript({ transcript }) {
+/* 
+transcript component that takes a transcript prop.
+component will check if the transcript contains a command. 
+if true, it will display the corresponding output to the user.
+else, it will display the detected transcript.
+*/
+export default function Transcript({ transcript }) { 
     const [output, setOutput] = useState(transcript);
     const [isCommand, setIsCommand] = useState(false);
     const [key, setKey] = useState(0);
   
     useEffect(() => {
       let foundCommand = false;
-      Object.keys(commandOutput).forEach(command => {
-        if (transcript && transcript.includes(command)) {
-          setOutput(commandOutput[command]);
+      Object.keys(commandOutput).forEach(command => { // check if the transcript includes any of the commands
+        if (transcript && transcript.includes(command)) { 
+          setOutput(commandOutput[command]);// if true, set output to corresponding message
           foundCommand = true;
         }
       });
-      if (!foundCommand) { 
+      if (!foundCommand) { // if not a command, set output to transcript
         setIsCommand(false)
         setOutput(transcript);
       } else {
-        setIsCommand(foundCommand);
+        setIsCommand(foundCommand); // if command, increment the key to force re-render when new command is detected
         setKey(prevKey => prevKey + 1);
       }
     }, [transcript]);
   
 
-    return (
-      <div key={key} className={`transcript-cont ${isCommand ? 'bounce' : ''}`}> 
+    // render the transcript container with the output
+    // adds bounce animation if the output is a command
+    // if not a command, adds italic styling to the output
+    return ( 
+      <div key={key} className={`transcript-cont ${isCommand ? 'bounce' : ''}`}>
         <p className={!isCommand ? 'italic' : ''}> {output} </p>
       </div>
     );
