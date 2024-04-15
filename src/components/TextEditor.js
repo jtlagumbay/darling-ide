@@ -71,8 +71,7 @@ export default function TextEditor({ transcript }) {
         return tab; // otherwise, return the current item (tab)
         };
     });
-    // save the updated file list to local storage
-    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST, updatedFileList);
+    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST, updatedFileList); // save the updated file list to local storage
   }
   
   // fetch fileList and update isEmpty to show welcome, honey in the editor
