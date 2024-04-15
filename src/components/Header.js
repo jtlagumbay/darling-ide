@@ -14,6 +14,10 @@ import Menubar from "./Menubar";
 import Tabbar from "./Tabbar"
 import Toolbar from "./Toolbar";
 
+/**
+ * 
+ * @description React Functional Component for the Header (Tools above the text editor)
+ */
 export default function Header() {
   // Get the instance of the text editor
   const { editor } = useCurrentEditor();
