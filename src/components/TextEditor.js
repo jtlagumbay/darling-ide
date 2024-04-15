@@ -11,6 +11,13 @@ import { useState, useEffect } from "react";
 import Header from "./Header";
 import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem } from "../utils";
 
+/**
+ * 
+ * @description React Functional Component for the Text Editor
+ * It uses the EditorProvider component from the 'tiptap' library to create a rich text editor
+ * @param {Object} transcript - the transcript object containing the text content
+ * @returns JSX element
+ */
 export default function TextEditor({ transcript }) {
 // 'extensions' constant is an array of configurations for the EditorProvider component from the 'tiptap' library
 // each configuration in the array is an extension that adds or modifies functionality in the editor
@@ -44,38 +51,33 @@ export default function TextEditor({ transcript }) {
 
   // function to call when EditorProvider => {editor} param is updated/changed
   const onUpdate = ({ editor }) => {
-    setIsEmpty(editor.isEmpty);
     
-    // saving the editor's content to local storage
-    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, editor.getHTML());
-    // get the list of files from local storage
-    var fileList = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST);
-    // get the current file name from local storage
-    var fileName = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME);
+    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, editor.getHTML()); // saving the editor's content to local storage
+    
+    var fileList = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST); // get the list of files from local storage
+
+    var fileName = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_NAME); // get the current file name from local storage
     
     // map function to create new array by iterating through each item in fileList array
     var updatedFileList = fileList.map(tab => {
       // if the name of the current item (tab) matches the fileName
       if (tab.name === fileName) {
-        // create a new object with the updated content of the editor
-        var newContent = {
+        var newContent = { // create a new object with the updated content of the editor
           ...tab,
           content: editor.getHTML()
         }
-        // return the new object
-        return newContent;
+        return newContent; // return the new object
       } else {
-        // otherwise, return the current item (tab)
-        return tab;
+        return tab; // otherwise, return the current item (tab)
         };
     });
-    // save the updated file list to local storage
-    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST, updatedFileList);
+    setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST, updatedFileList); // save the updated file list to local storage
   }
   
-  // a function to fetch fileList and update isEmpty to show welcome screen in the editor
+  // fetch fileList and update isEmpty to show welcome, honey in the editor
   useEffect(() => {
     const fetchFileList = () => {
+      // check if there are tabs that are active in the editor
       var fileList = getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST);
       if (fileList && fileList.length > 0) {
         setIsEmpty(false);
@@ -84,13 +86,9 @@ export default function TextEditor({ transcript }) {
       }
     };
   
-    // call fetchFileList immediately
-    fetchFileList();
-  
-    // set an interval to call fetchFileList every second
-    const intervalId = setInterval(fetchFileList, 1000);
-    // clear the interval when the component unmounts
-    return () => clearInterval(intervalId);
+    fetchFileList(); // call fetchFileList immediately
+    const intervalId = setInterval(fetchFileList, 50); // set an interval to call fetchFileList every 50 milliseconds
+    return () => clearInterval(intervalId); // clear the interval when the component unmounts
   }, []); 
 
     console.log(isEmpty)
