@@ -9,10 +9,12 @@ import { useState, useEffect } from "react"
 // These are the functions from the Utils files. Each of these are explained in the Utils file.
 import { LOCAL_STORAGE_KEYS, getLocalStorageItem, setLocalStorageItem, generateUniqueTabName } from "../utils";
 
-// Import the created Menubar, Tabbar, Toolbar
+// Import the created Menubar, Tabbar, Toolbar, Modal
 import Menubar from "./Menubar";
 import Tabbar from "./Tabbar"
 import Toolbar from "./Toolbar";
+import Modal from "./Modal/Modal";
+import { act } from "react-dom/test-utils";
 
 /**
  * 
@@ -30,7 +32,17 @@ export default function Header() {
 
   // Stores whether there are unsaved changes in the active tab, defaulted to false
   const [unsavedChanges, setUnsavedChanges] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalProps, setModalProps] = useState({});
 
+  function openModal(props){
+    setModalProps(props);
+    setIsModalOpen(true);
+  }
+
+  function closeModal(props){
+    setIsModalOpen(false);
+  }
 
   // Everytime the tab is changed, it saves it to the localStorage to allow data persistence
   useEffect(() => {
@@ -62,49 +74,104 @@ export default function Header() {
    * @param {String} tabToDelete Name of the tab to be deleted
    * @description Deletes an object from the tabs that matches with the parameter, it will be called when the close button on the tab is clicked.
    */
+
   function onTabDelete(tabToDelete) {
     // Finds the index of the tab to be deleted
     var indexToDelete = tabs.findIndex(tab => tab.name === tabToDelete);
+
     // Holds the boolean if the tab to be deleted is an active tab
-    var checkSelected = tabs[indexToDelete].isSelected
-    // Creates a temporary variable that stores the tabs without the tab to be deleted
-    var updatedTabs = tabs.filter(tab => tab.name !== tabToDelete);
+    var checkSelected = tabs[indexToDelete].isSelected;
 
-    // If the tab to be deleted is an active tab, find the next tab to be deleted.
-    if (checkSelected)
-    {
-      // Set isSelected to all files to be false first.
-      updatedTabs = updatedTabs.map(tab => ({
-        ...tab,
-        isSelected: false
-      }));
+    // check if the tab being deleted has unsaved changes
+    const unsavedChangesExist = tabs[indexToDelete].content !== tabs[indexToDelete].initialContent;
+    
+    // if there are unsaved changes, open modal for delete confirmation
+    if (unsavedChangesExist) {
+      openModal({
+      // when there are unsaved changes, the modal will trigger and open
+      isOpen: true,
 
-      // If the index to be deleted is the last remaining tab, disable save as and set unsavedChanges to false
-      if (indexToDelete===0 && updatedTabs.length ===0) {
-        setEnableSaveAs(false)
-        setUnsavedChanges(false)
-        editor.commands.clearContent()
+      // these are the content inside the modal 
+      headerText: "Unsaved Changes",
+      content: "There are unsaved changes. Are you sure you want to delete this tab?",
+      buttonText1: "No",
+      buttonText2: "Yes",
+
+      // when no button is clicked, the modal will close
+      onCancel: () => closeModal(),
+
+      // when yes button is clicked, the tab and its content will be closed and the modal will close as well
+      onConfirm: () => {
+        // proceed with the deletion and closing of modal
+        handleTabDeletion(indexToDelete);
+        closeModal();
+          
+        // If the tab to be deleted is an active tab, find the next tab to be deleted.
+        if (checkSelected) {
+          // Holds the boolean if the tab to be deleted is an active tab
+          var updatedTabs = tabs.filter(tab => tab.name !== tabToDelete);
+          // Set isSelected to all files to be false first.
+          updatedTabs = updatedTabs.map(tab => ({ ...tab, isSelected: false }));
+
+        // If the index to be deleted is the last remaining tab, disable save as and set unsavedChanges to false
+        if (indexToDelete === 0 && updatedTabs.length === 0) {
+          setEnableSaveAs(false);
+          setUnsavedChanges(false);
+        }
+
+        // If there are tabs to the left of the deleted tab, make it the new active tab
+        else if (indexToDelete <= updatedTabs.length - 1 && updatedTabs.length > 0) {
+          updatedTabs[indexToDelete].isSelected = true;
+          var activeTab = updatedTabs[indexToDelete];
+          setActiveTab(activeTab.name, activeTab.content, activeTab.initialContent);
+        }
+
+        // If there are only tabs to the right, make it the new active tab.
+        else if (indexToDelete > updatedTabs.length - 1 && updatedTabs.length > 0) {
+          updatedTabs[--indexToDelete].isSelected = true;
+          var activeTab = updatedTabs[indexToDelete];
+          setActiveTab(activeTab.name, activeTab.content, activeTab.initialContent);
+        }
+          // Update the list of tabs to the updatedTabs
+          setTabs(updatedTabs);
+        } 
       }
-      
-      // If there are tabs to the left of the deleted tab, make it the new active tab
-      else if (indexToDelete <= updatedTabs.length - 1 && updatedTabs.length > 0) {
-        updatedTabs[indexToDelete].isSelected = true
-        var activeTab = updatedTabs[indexToDelete]
-        setActiveTab(activeTab.name, activeTab.content, activeTab.initialContent)
-      }
-      
-      // If there are only tabs to the right, make it the new active tab.
-      else if (indexToDelete > updatedTabs.length - 1 && updatedTabs.length > 0) {
-        updatedTabs[--indexToDelete].isSelected = true
-        var activeTab = updatedTabs[indexToDelete]
-        setActiveTab(activeTab.name, activeTab.content, activeTab.initialContent)
-      }
+    });
+  } else {
+      // if there are no unsaved changes, proceed with deleting directly
+      handleTabDeletion(indexToDelete);
     }
-
-    // Update the list of tabs to the updatedTabs
-    setTabs(updatedTabs)
-
   }
+
+  /**
+ * Handles the deletion of a tab from the tabs array based on its index.
+ * @param {number} indexToDelete The index of the tab to be deleted from the tabs array.
+ * @description This function removes the specified tab from the tabs array, clears its content from local storage, and sets the content of the next tab if there are any
+ */
+function handleTabDeletion(indexToDelete) {
+  // Retrieve the tab object to be deleted from the tabs array based on its index
+  const tabToDelete = tabs[indexToDelete];
+
+  // Remove the content associated with the tab being deleted from local storage
+  if (tabToDelete.content === getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)) {
+      setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT, "");
+      setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_INITIAL_CONTENT, "");
+  }
+
+  // Proceed with deleting the tab from the list
+  const updatedTabs = tabs.filter((tab, index) => index !== indexToDelete);
+  setTabs(updatedTabs);
+
+  // Check if there are remaining tabs
+  if (updatedTabs.length > 0) {
+      // Find the next tab and set its content to the editor
+      const nextTab = updatedTabs[indexToDelete % updatedTabs.length];
+      setActiveTab(nextTab.name, nextTab.content, nextTab.initialContent);
+  } else {
+      // If there are no remaining tabs, clear the editor's content
+      setActiveTab("", "", "");
+  }
+}
 
   /**
    * 
@@ -214,6 +281,8 @@ export default function Header() {
       }
       )
     )
+
+    setUnsavedChanges(false);
   }
 
   /**
@@ -263,6 +332,8 @@ export default function Header() {
       <Toolbar />
       {/* Pass  to the Tabbar the tabs and the functionalities of the tab*/}
       <Tabbar tabs={tabs} onTabDelete={onTabDelete} onTabAdd={onTabAdd} onTabChangeName={onTabChangeName} onTabClick={onTabClick} />
+      {/* Pass to the Modal the content of the modal and the functionalities of its button*/}
+      <Modal {...modalProps} isOpen={isModalOpen} onClose={closeModal} />
   </div>
   );
 }
