@@ -1,8 +1,11 @@
 import React from 'react';
 // import the GIF file for the welcome screen
 import WelcomeScreenGif from '../images/Welcome Screen.gif';
-
-// function to display the welcome screen
+/**
+ * 
+ * @description React Functional Component for the Welcome Screen
+ * @returns JSX element
+ */
 export default function WelcomeScreen() {
     return (
         // full screen display of GIF file
