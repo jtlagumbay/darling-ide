@@ -5,7 +5,6 @@ import OnIcon from '@mui/icons-material/Mic';
 import OffIcon from '@mui/icons-material/MicOff';
 import { commands } from './commands';
 import Transcript from './Transcript';
-import { useCurrentEditor } from '@tiptap/react';
 
 // VoiceCommands component that handles all voice commands and listens for the user's voice input
 const VoiceCommands = () => {
@@ -19,9 +18,6 @@ const VoiceCommands = () => {
     resetTranscript,
     browserSupportsSpeechRecognition
   } = useSpeechRecognition();
-
-  // access editor instance
-  const { editor } = useCurrentEditor(); 
 
   // effect hook to handle transcript changes
   // only takes the transcript between 'honey' and 'please' 
@@ -39,7 +35,7 @@ const VoiceCommands = () => {
       resetTranscript();
     }
   console.log(transcript);
-  }, [transcript]);
+  }, [transcript, resetTranscript]);
 
   // takes the script taken between 'honey' and 'please' 
   // and executes the command.
