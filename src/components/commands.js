@@ -1,3 +1,11 @@
+
+/**
+ * Template for command functionalities
+ * @param {*} name - the command to recognize
+ * @param {*} id - the id of the button to press
+ *              - refer to the menubar.js and toolbar.js to check button id per command
+ * @returns click event for a command
+ */
 const command = (name, id) => {
     return {
         command: name,
@@ -7,6 +15,7 @@ const command = (name, id) => {
     }
 }
 
+// list of commands to be recognized
 export const commands = [
     // file handling
     command('new file', 'MENU-NEW'),  
@@ -22,11 +31,11 @@ export const commands = [
     command('copy', 'MENU-COPY'),
     command('paste', 'MENU-PASTE'),
     
-    // view
+    // screen manipulation
     command('zoom in', 'MENU-ZOOM-IN'),  
     command('zoom out', 'MENU-ZOOM-OUT'), 
     
-    // extra commands
+    // extra commands (commands not seen on neither menubar nor toolbar)
     command('select all', 'MENU-SELECT-ALL'),
     command('deselect', 'MENU-DESELECT'),
     command('enter', 'MENU-ENTER'),
