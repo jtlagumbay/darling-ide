@@ -14,6 +14,7 @@ import Menubar from "./Menubar";
 import Tabbar from "./Tabbar"
 import Toolbar from "./Toolbar";
 import Modal from "./Modal/Modal";
+import { act } from "react-dom/test-utils";
 
 /**
  * 
@@ -61,18 +62,9 @@ export default function Header() {
     // Enable save as if there is an opened tab
     if (tabs && tabs.length > 0) {
       setEnableSaveAs(true)
-      setUnsavedChanges(false)
-      editor && editor.setEditable(true)
-    } else if (tabs.length == 0) {
-      setEnableSaveAs(false)
-      setUnsavedChanges(false)
+    } 
+    if (tabs.length == 0) {
       editor && editor.setEditable(false)
-    }
-
-    // Reset the history of undo
-    if (editor) {
-      editor.state.history$.prevRanges = null;
-      editor.state.history$.done.eventCount = 0
     }
   }, [tabs])
 
@@ -148,13 +140,35 @@ export default function Header() {
   } else {
       // if there are no unsaved changes, proceed with deleting directly
       handleTabDeletion(indexToDelete);
-      
-      var newtabs = tabs.filter(tab => tab.name !== tabToDelete);
-      newtabs[indexToDelete].isSelected = true;
-      setTabs(newtabs);
 
-      var activeTab = newtabs[indexToDelete];
-      setActiveTab(activeTab.name, activeTab.content, activeTab.initialContent);
+      // remove the tab to be deleted
+      var newtabs = tabs.filter(tab => tab.name !== tabToDelete);
+      
+      // set the next available tab as the active tab
+      if(checkSelected) {
+        // set isSelected to next one on the right
+        if(newtabs.length === 0) {
+          // if there are no tabs left, clear the editor's content
+          setActiveTab("", "", "");
+        } else if(newtabs.length - 1 >= indexToDelete) {
+          // set isselected of the tab as true
+          newtabs[indexToDelete].isSelected = true;
+  
+          // set active tab as the next one in the right available
+          var activeTab = newtabs[indexToDelete];
+          setActiveTab(activeTab.name, activeTab.content, activeTab.initialContent);
+        } else {
+          // set isselected of the tab as true
+          newtabs[newtabs.length - 1].isSelected = true;
+          
+          // set active tab as the next one in the right available
+          var activeTab = newtabs[newtabs.length - 1];
+          setActiveTab(activeTab.name, activeTab.content, activeTab.initialContent);
+        }
+      } 
+
+      // update the tabs
+      setTabs(newtabs);
     }
   }
 
