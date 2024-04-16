@@ -14,7 +14,6 @@ import Menubar from "./Menubar";
 import Tabbar from "./Tabbar"
 import Toolbar from "./Toolbar";
 import Modal from "./Modal/Modal";
-import { act } from "react-dom/test-utils";
 
 /**
  * 
@@ -68,7 +67,12 @@ export default function Header() {
       setEnableSaveAs(false)
       setUnsavedChanges(false)
       editor && editor.setEditable(false)
-      
+    }
+
+    // Reset the history of undo
+    if (editor) {
+      editor.state.history$.prevRanges = null;
+      editor.state.history$.done.eventCount = 0
     }
   }, [tabs])
 
@@ -144,6 +148,13 @@ export default function Header() {
   } else {
       // if there are no unsaved changes, proceed with deleting directly
       handleTabDeletion(indexToDelete);
+      
+      var newtabs = tabs.filter(tab => tab.name !== tabToDelete);
+      newtabs[indexToDelete].isSelected = true;
+      setTabs(newtabs);
+
+      var activeTab = newtabs[indexToDelete];
+      setActiveTab(activeTab.name, activeTab.content, activeTab.initialContent);
     }
   }
 
