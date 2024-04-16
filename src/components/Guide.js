@@ -18,6 +18,8 @@ export default function Guide() {
             <p>When opening an existing file, you need to say, <strong>“Honey, open file, please.”</strong></p>
             <p>When saving a file, you need to say, <strong>“Honey, save file, please.”</strong></p>
             <p>When saving as a new file, you need to say, <strong>“Honey, save as new file, please.”</strong></p>
+            <p>When closing a file/tab, you need to say, <strong>“Honey, close tab, please.”</strong></p>
+            <p>When adding a file/tab, you need to say, <strong>“Honey, add tab, please.”</strong></p>
             
             {/* Guide for text editing */}
             <p>When undoing, you need to say, <strong>“Honey, undo, please."</strong></p>
