@@ -97,19 +97,19 @@ div:has(> .ProseMirror) {
 }
 
 .editor-cont .tiptap.ProseMirror {
-  height: calc(100dvh - 40px - 157px - 30px - 35px);
+  height: calc(100dvh - 40px - 157px - 30px - 52px);
   overflow-y: auto;
   border-radius: 0 0 10px 10px;
 }
 
-.editor-cont.first-open .tiptap.ProseMirror {
+/* .editor-cont.first-open .tiptap.ProseMirror {
   height: calc(100dvh - 40px - 157px - 30px - 35px);
   overflow-y: auto;
   border-radius: 0 0 10px 10px;
   background-image: url('../src/images/welcome.png') !important;
   background-size: contain !important;
   background-position: center !important;
-}
+} */
 
 .ProseMirror:focus-visible {
   outline: 0;
