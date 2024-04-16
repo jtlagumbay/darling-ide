@@ -55,11 +55,11 @@ export default function Toolbar() {
         <span className="menubar-button-label">Italic</span>
       </button>
       <button
-        id='TB-STRIKETHROUGH'
+        id='TB-STRIKE'
         onClick={() => editor.chain().focus().toggleStrike().run()}
         disabled={!editor.can().chain().focus().toggleStrike().run()}
         className="menubar-button" 
-        title="Strikethrough"
+        title="Strike"
       >
         <StrikethroughIcon className="menubar-button-icon" />
         <span className="menubar-button-label">Strike</span>

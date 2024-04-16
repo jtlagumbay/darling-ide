@@ -18,6 +18,8 @@ export default function Guide() {
             <p>When opening an existing file, you need to say, <strong>“Honey, open file, please.”</strong></p>
             <p>When saving a file, you need to say, <strong>“Honey, save file, please.”</strong></p>
             <p>When saving as a new file, you need to say, <strong>“Honey, save as new file, please.”</strong></p>
+            <p>When closing a file/tab, you need to say, <strong>“Honey, close tab, please.”</strong></p>
+            <p>When adding a file/tab, you need to say, <strong>“Honey, add tab, please.”</strong></p>
             
             {/* Guide for text editing */}
             <p>When undoing, you need to say, <strong>“Honey, undo, please."</strong></p>
@@ -35,7 +37,7 @@ export default function Guide() {
             <p>When deselecting all, you need to say, <strong>“Honey, deselect all, please."</strong></p>
             <p>When making text bold, you need to say, <strong>“Honey, bold, please."</strong></p>
             <p>When making text italic, you need to say, <strong>“Honey, italic, please."</strong></p>
-            <p>When striking through text, you need to say, <strong>“Honey, strikethrough, please."</strong></p>
+            <p>When striking through text, you need to say, <strong>“Honey, strike, please."</strong></p>
             <p>When coding text, you need to say, <strong>“Honey, code, please."</strong></p>
             <p>When creating a bulleted list, you need to say, <strong>“Honey, bullets, please."</strong></p>
             <p>When creating a numbered list, you need to say, <strong>“Honey, numbers, please."</strong></p>
