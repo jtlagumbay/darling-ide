@@ -60,11 +60,19 @@ export default function Header() {
     setLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_LIST, (tabs))
 
     // Enable save as if there is an opened tab
-    if (tabs && tabs.length > 0) {
+     if (tabs && tabs.length > 0) {
       setEnableSaveAs(true)
-    } 
-    if (tabs.length == 0) {
+      setUnsavedChanges(false)
+      editor && editor.setEditable(true)
+    } else if (tabs.length == 0) {
+      setEnableSaveAs(false)
+      setUnsavedChanges(false)
       editor && editor.setEditable(false)
+      
+    }
+    if (editor) {
+      editor.state.history$.prevRanges = null;
+      editor.state.history$.done.eventCount = 0
     }
   }, [tabs])
 
