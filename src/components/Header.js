@@ -14,7 +14,6 @@ import Menubar from "./Menubar";
 import Tabbar from "./Tabbar"
 import Toolbar from "./Toolbar";
 import Modal from "./Modal/Modal";
-import { act } from "react-dom/test-utils";
 
 /**
  * 
@@ -62,9 +61,18 @@ export default function Header() {
     // Enable save as if there is an opened tab
     if (tabs && tabs.length > 0) {
       setEnableSaveAs(true)
-    } 
-    if (tabs.length == 0) {
+      setUnsavedChanges(false)
+      editor && editor.setEditable(true)
+    } else if (tabs.length == 0) {
+      setEnableSaveAs(false)
+      setUnsavedChanges(false)
       editor && editor.setEditable(false)
+    }
+
+    // Reset the history of undo
+    if (editor) {
+      editor.state.history$.prevRanges = null;
+      editor.state.history$.done.eventCount = 0
     }
   }, [tabs])
 
