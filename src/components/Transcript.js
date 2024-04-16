@@ -27,7 +27,9 @@ const commandOutput = {
     'bullets': 'added bullets',
     'numbers': 'added numbers',
     'block': 'added code block',
-    'type this': 'typed text in editor'
+    'type this': 'typed text in editor',
+    'close tab': 'closed tab',
+    'new tab': 'opened new tab'
 }
 
 /* 
