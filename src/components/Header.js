@@ -62,9 +62,13 @@ export default function Header() {
     // Enable save as if there is an opened tab
     if (tabs && tabs.length > 0) {
       setEnableSaveAs(true)
-    } 
-    if (tabs.length == 0) {
+      setUnsavedChanges(false)
+      editor && editor.setEditable(true)
+    } else if (tabs.length == 0) {
+      setEnableSaveAs(false)
+      setUnsavedChanges(false)
       editor && editor.setEditable(false)
+      
     }
   }, [tabs])
 
