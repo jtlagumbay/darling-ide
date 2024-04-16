@@ -148,6 +148,13 @@ export default function Header() {
   } else {
       // if there are no unsaved changes, proceed with deleting directly
       handleTabDeletion(indexToDelete);
+      
+      var newtabs = tabs.filter(tab => tab.name !== tabToDelete);
+      newtabs[indexToDelete].isSelected = true;
+      setTabs(newtabs);
+
+      var activeTab = newtabs[indexToDelete];
+      setActiveTab(activeTab.name, activeTab.content, activeTab.initialContent);
     }
   }
 
