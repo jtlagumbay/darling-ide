@@ -87,6 +87,7 @@ body {
 }
 
 .editor-cont {
+  position: relative;
   display: grid;
   grid-template-rows: 220px calc(100dvh - 40px - 157px - 30px - 52px);
 }
@@ -102,14 +103,15 @@ div:has(> .ProseMirror) {
   border-radius: 0 0 10px 10px;
 }
 
-/* .editor-cont.first-open .tiptap.ProseMirror {
-  height: calc(100dvh - 40px - 157px - 30px - 35px);
-  overflow-y: auto;
-  border-radius: 0 0 10px 10px;
-  background-image: url('../src/images/welcome.png') !important;
-  background-size: contain !important;
-  background-position: center !important;
-} */
+.text-editor-blob {
+  height: calc(5 * 715px / 12);
+  width: calc(5 * 920px / 12);
+
+  z-index: 99;
+  position: absolute;
+  left: 30%;
+  top: 35%;
+}
 
 .ProseMirror:focus-visible {
   outline: 0;

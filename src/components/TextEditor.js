@@ -6,6 +6,7 @@ import TextStyle from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
 import { EditorProvider } from "@tiptap/react";
 import { useState, useEffect } from "react";
+import BlobImg from '../images/welcome.png';
 
 // import local files and components
 import Header from "./Header";
@@ -91,6 +92,16 @@ export default function TextEditor({ transcript }) {
     return () => clearInterval(intervalId); // clear the interval when the component unmounts
   }, []); 
 
+  const [showBlob, setShowBlob] = useState(false);
+  useEffect(() => {
+    var files = localStorage.getItem("file_list");
+    if(files === "[]") {
+      setShowBlob(true);
+    } else {
+      setShowBlob(false);
+    }
+  }, [localStorage.getItem("file_list")])
+
   return (
   // use css first-open if no active tab
   <div className={`editor-cont ${isEmpty ? 'first-open' : ''}`}>
@@ -101,6 +112,9 @@ export default function TextEditor({ transcript }) {
         content={getLocalStorageItem(LOCAL_STORAGE_KEYS.FILE_CONTENT)} // get the content from local storage
         onUpdate={editor => onUpdate(editor)} // call the onUpdate function when the editor is updated
       ></EditorProvider>
+      {showBlob ?
+      <img src={BlobImg} alt="Darling IDE" className="text-editor-blob" /> 
+      : null} 
     </div>
   );
 }
