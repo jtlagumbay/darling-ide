@@ -150,11 +150,14 @@ export default function Header() {
       handleTabDeletion(indexToDelete);
       
       var newtabs = tabs.filter(tab => tab.name !== tabToDelete);
-      newtabs[indexToDelete].isSelected = true;
-      setTabs(newtabs);
+      if (newtabs.length > 0) {
+        newtabs[indexToDelete].isSelected = true;
+      
+        setTabs(newtabs);
 
-      var activeTab = newtabs[indexToDelete];
-      setActiveTab(activeTab.name, activeTab.content, activeTab.initialContent);
+        var activeTab = newtabs[indexToDelete];
+        setActiveTab(activeTab.name, activeTab.content, activeTab.initialContent);
+      }
     }
   }
 
