@@ -37,7 +37,7 @@ export default function Toolbar() {
       <button
         id='TB-BOLD'
         onClick={() => editor.chain().focus().toggleBold().run()}
-        disabled={!editor.can().chain().focus().toggleBold().run()}
+        disabled={!editor.isEditable}
         className="menubar-button" 
         title="Bold"
       >
@@ -47,7 +47,7 @@ export default function Toolbar() {
       <button
         id='TB-ITALIC'
         onClick={() => editor.chain().focus().toggleItalic().run()}
-        disabled={!editor.can().chain().focus().toggleItalic().run()}
+        disabled={!editor.isEditable}
         className="menubar-button" 
         title="Italic"
       >
@@ -57,7 +57,7 @@ export default function Toolbar() {
       <button
         id='TB-STRIKE'
         onClick={() => editor.chain().focus().toggleStrike().run()}
-        disabled={!editor.can().chain().focus().toggleStrike().run()}
+        disabled={!editor.isEditable}
         className="menubar-button" 
         title="Strike"
       >
@@ -67,6 +67,7 @@ export default function Toolbar() {
       <button
         id='TB-BULLETS'
         onClick={() => editor.chain().focus().toggleBulletList().run()}
+        disabled={!editor.isEditable}
         className="menubar-button" 
         title="List Bullets"
       >
@@ -76,6 +77,7 @@ export default function Toolbar() {
       <button
         id='TB-NUMBERS'
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        disabled={!editor.isEditable}
         className="menubar-button" 
         title="List Numbers"
       >
@@ -85,7 +87,7 @@ export default function Toolbar() {
       <button
         id='TB-CODE'
         onClick={() => editor.chain().focus().toggleCode().run()}
-        disabled={!editor.can().chain().focus().toggleCode().run()}
+        disabled={!editor.isEditable}
         className="menubar-button" 
         title="Code"
       >
@@ -94,7 +96,8 @@ export default function Toolbar() {
       </button>
       <button
         id='TB-BLOCK'
-        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+        onClick={() => editor.chain().focus().toggleCodeBlock().run() && !editor.isEditable}
+        disabled={!editor.isEditable}
         className="menubar-button" 
         title="Code Block"
       >
