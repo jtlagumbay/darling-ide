@@ -92,6 +92,7 @@ export default function TextEditor({ transcript }) {
   }, []); 
 
   return (
+  // use css first-open if no active tab
   <div className={`editor-cont ${isEmpty ? 'first-open' : ''}`}>
       {/* EditorProvider component with the following props */}
       <EditorProvider
