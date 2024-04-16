@@ -328,15 +328,15 @@ export default function Menubar({ onTabAdd, onTabSave,
         <RedoIcon className="menubar-button-icon" />
         <span className="menubar-button-label">Redo</span>
       </button>
-      <button id="MENU-CUT" className="menubar-button" onClick={handleCut}>
+      <button id="MENU-CUT" className="menubar-button" onClick={handleCut} disabled={!editor.getText()}>
         <ContentCutIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Cut</span>
       </button>
-      <button id="MENU-COPY" className="menubar-button" onClick={handleCopy}>
+      <button id="MENU-COPY" className="menubar-button" onClick={handleCopy} disabled={!editor.getText()}>
         <ContentCopyIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Copy</span>
       </button>
-      <button id="MENU-PASTE" className="menubar-button" onClick={handlePaste}>
+      <button id="MENU-PASTE" className="menubar-button" onClick={handlePaste} disabled={!editor.isEditable}>
         <ContentPasteIcon className="menubar-button-icon"/>
         <span className="menubar-button-label">Paste</span>
       </button>
