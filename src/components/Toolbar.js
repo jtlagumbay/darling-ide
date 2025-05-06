@@ -5,6 +5,10 @@ import CodeIcon from '@mui/icons-material/Code';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
+import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
+import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
+import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
+import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
 import { useCurrentEditor } from "@tiptap/react";
 
 /**  
@@ -103,6 +107,48 @@ export default function Toolbar() {
       >
         <DeveloperModeIcon className="menubar-button-icon" />
         <span className="menubar-button-label">Block</span>
+      </button>
+      
+      {/* Add text alignment buttons */}
+      <button
+        id='TB-ALIGN-LEFT'
+        onClick={() => editor.chain().focus().setTextAlign('left').run()}
+        disabled={!editor.isEditable}
+        className={`menubar-button ${editor.isActive({ textAlign: 'left' }) ? 'is-active' : ''}`}
+        title="Align Left"
+      >
+        <FormatAlignLeftIcon className="menubar-button-icon" />
+        <span className="menubar-button-label">Left</span>
+      </button>
+      <button
+        id='TB-ALIGN-CENTER'
+        onClick={() => editor.chain().focus().setTextAlign('center').run()}
+        disabled={!editor.isEditable}
+        className={`menubar-button ${editor.isActive({ textAlign: 'center' }) ? 'is-active' : ''}`}
+        title="Align Center"
+      >
+        <FormatAlignCenterIcon className="menubar-button-icon" />
+        <span className="menubar-button-label">Center</span>
+      </button>
+      <button
+        id='TB-ALIGN-RIGHT'
+        onClick={() => editor.chain().focus().setTextAlign('right').run()}
+        disabled={!editor.isEditable}
+        className={`menubar-button ${editor.isActive({ textAlign: 'right' }) ? 'is-active' : ''}`}
+        title="Align Right"
+      >
+        <FormatAlignRightIcon className="menubar-button-icon" />
+        <span className="menubar-button-label">Right</span>
+      </button>
+      <button
+        id='TB-ALIGN-JUSTIFY'
+        onClick={() => editor.chain().focus().setTextAlign('justify').run()}
+        disabled={!editor.isEditable}
+        className={`menubar-button ${editor.isActive({ textAlign: 'justify' }) ? 'is-active' : ''}`}
+        title="Justify"
+      >
+        <FormatAlignJustifyIcon className="menubar-button-icon" />
+        <span className="menubar-button-label">Justify</span>
       </button>
     </div>
   );

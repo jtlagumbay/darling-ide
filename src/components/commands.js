@@ -51,6 +51,12 @@ export const commands = [
     command('bullets', 'TB-BULLETS'),
     command('numbers', 'TB-NUMBERS'),
     command('block', 'TB-BLOCK'),
+    
+    // text alignment commands
+    command('align left', 'TB-ALIGN-LEFT'),
+    command('align center', 'TB-ALIGN-CENTER'),
+    command('align right', 'TB-ALIGN-RIGHT'),
+    command('justify', 'TB-ALIGN-JUSTIFY'),
 
     // tabs
     command('new tab', 'TAB-ADD'),

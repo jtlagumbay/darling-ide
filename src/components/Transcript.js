@@ -29,7 +29,12 @@ const commandOutput = {
     'block': 'added code block',
     'type this': 'typed text in editor',
     'close tab': 'closed tab',
-    'new tab': 'opened new tab'
+    'new tab': 'opened new tab',
+    // Text alignment commands
+    'align left': 'text aligned left',
+    'align center': 'text aligned center',
+    'align right': 'text aligned right',
+    'justify': 'text justified'
 }
 
 /* 

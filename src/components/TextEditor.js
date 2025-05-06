@@ -7,6 +7,7 @@ import { Color } from "@tiptap/extension-color";
 import { EditorProvider } from "@tiptap/react";
 import { useState, useEffect } from "react";
 import BlobImg from '../images/welcome.png';
+import TextAlign from '@tiptap/extension-text-align'; // Import text alignment extension
 
 // import local files and components
 import Header from "./Header";
@@ -44,6 +45,11 @@ export default function TextEditor({ transcript }) {
     }),
     Placeholder.configure({
       placeholder: 'Write content here'
+    }),
+    TextAlign.configure({ // Add this configuration for text alignment
+      types: ['heading', 'paragraph'],
+      alignments: ['left', 'center', 'right', 'justify'],
+      defaultAlignment: 'left',
     }),
   ];
 
@@ -92,10 +98,11 @@ export default function TextEditor({ transcript }) {
     return () => clearInterval(intervalId); // clear the interval when the component unmounts
   }, []); 
 
+  // Store file_list string in a variable to fix the ESLint warning
   const [showBlob, setShowBlob] = useState(false);
   useEffect(() => {
-    var files = localStorage.getItem("file_list");
-    if(files === "[]") {
+    const fileListString = localStorage.getItem("file_list");
+    if(fileListString === "[]") {
       setShowBlob(true);
     } else {
       setShowBlob(false);
